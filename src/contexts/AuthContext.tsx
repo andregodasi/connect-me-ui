@@ -46,10 +46,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     setCookie(undefined, 'connect.token', token, {
-      maxAge: 60 * 60 * 1, // 1 hour
+      maxAge: 24 * 60 * 60 * 1, // 24 hour
     });
 
-    api.defaults.headers['Authorization'] = `Bearer ${token}`;
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     setUser(user);
 

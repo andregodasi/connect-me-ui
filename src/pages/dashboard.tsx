@@ -9,8 +9,15 @@ import {
   ViewGridIcon as ViewGridIconSolid,
   ViewListIcon,
 } from '@heroicons/react/solid';
+import EventCard from '@/components/EventCard';
+import { useQuery } from 'react-query';
+import { Page } from '@/shared/interfaces/IPage';
+import { PageOptions } from '@/shared/interfaces/IPageOptions';
+import { getPaginatedEvents } from '@/services/event';
+import { Event } from '@/shared/interfaces/IEvent';
+import { Button } from '@/components/Button';
 
-function classNames(...classes) {
+function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ');
 }
 
@@ -19,141 +26,37 @@ const tabs = [
   { name: 'Comunidades', href: '#', current: false },
   { name: 'Empresas', href: '#', current: false },
 ];
-const files = [
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: true,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: false,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: false,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: true,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: false,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: false,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: true,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: false,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: false,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: true,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: false,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: false,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: true,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: false,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: false,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: true,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: false,
-  },
-  {
-    name: 'Web Summit',
-    size: 'Evento de tecnologia',
-    source:
-      'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-    current: false,
-  },
-];
+
+const initPageOptions: PageOptions = { page: 1 };
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [eventList, setEventList] = useState<Event[]>([]);
+  const [pageOptions, setPageOptions] = useState<PageOptions>(initPageOptions);
+  const {
+    isLoading,
+    error,
+    data: dataPage,
+    isFetching,
+  } = useQuery(
+    ['DashboardEvents', pageOptions],
+    () => getPaginatedEvents(pageOptions.page),
+    {}
+  );
+
   useEffect(() => {
-    // api.get('/users');
-  }, []);
+    if (dataPage?.data) {
+      setEventList([...eventList, ...dataPage.data]);
+    }
+  }, [dataPage]);
+
+  const handleLoadMore = () => {
+    setPageOptions({
+      ...pageOptions,
+      page: pageOptions.page ? pageOptions.page + 1 : 1,
+    });
+  };
 
   return (
     <MainContainer>
@@ -229,7 +132,7 @@ export default function Dashboard() {
             </div>
           </form>
         </div>
-        <div className="... col-span-2">
+        <div className="col-span-2">
           <div>
             <div className="flex flex-1 items-stretch overflow-hidden">
               <main className="flex-1 overflow-y-auto">
@@ -346,46 +249,27 @@ export default function Dashboard() {
                           </h2>
                           <ul
                             role="list"
-                            className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"
+                            className="grid grid-cols-1 gap-x-4 gap-y-8 sm:gap-x-6 xl:gap-x-8"
                           >
-                            {files.map((file) => (
-                              <li key={file.name} className="relative">
-                                <div
-                                  className={classNames(
-                                    file.current
-                                      ? 'ring-2 ring-blue-500 ring-offset-2'
-                                      : 'focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100',
-                                    'aspect-w-10 aspect-h-7 group block w-full overflow-hidden rounded-lg bg-gray-100'
-                                  )}
-                                >
-                                  <img
-                                    src={file.source}
-                                    alt=""
-                                    className={classNames(
-                                      file.current
-                                        ? ''
-                                        : 'group-hover:opacity-75',
-                                      'pointer-events-none object-cover'
-                                    )}
-                                  />
-                                  <button
-                                    type="button"
-                                    className="absolute inset-0 focus:outline-none"
-                                  >
-                                    <span className="sr-only">
-                                      View details for {file.name}
-                                    </span>
-                                  </button>
-                                </div>
-                                <p className="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
-                                  {file.name}
-                                </p>
-                                <p className="pointer-events-none block text-sm font-medium text-gray-500">
-                                  {file.size}
-                                </p>
+                            {eventList.map((event) => (
+                              <li key={event.uuid} className="relative">
+                                <EventCard {...(event as any)} />
                               </li>
                             ))}
                           </ul>
+                          {dataPage?.meta?.hasNextPage && (
+                            <div className="my-6 flex justify-center">
+                              <Button
+                                type="button"
+                                variant="solid"
+                                color="blue"
+                                onClick={() => handleLoadMore()}
+                                isLoading={isLoading || isFetching}
+                              >
+                                Carrefar mais
+                              </Button>
+                            </div>
+                          )}
                         </section>
                       </Tab.Panel>
                       <Tab.Panel>Content 2</Tab.Panel>
@@ -415,7 +299,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  await apiClient.get('/me');
+  const news: any = await apiClient.get('/me');
 
   return {
     props: {},

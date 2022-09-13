@@ -24,7 +24,7 @@ const userData = {
   name: 'Whitney Francis',
   email: 'whitney@example.com',
   imageUrl:
-    'https://media-exp1.licdn.com/dms/image/C4D03AQHljtbAqS6Csg/profile-displayphoto-shrink_100_100/0/1634365125855?e=1663200000&v=beta&t=ILrW49we_Z56RIeVFRpreEY7JOeNwsdXdLx-auwIiYQ',
+    'https://media-exp1.licdn.com/dms/image/C4D03AQGxOMYvdCao3A/profile-displayphoto-shrink_200_200/0/1661188755302?e=1666828800&v=beta&t=Iz0p8qAeiT23V3PcGlWFb63H19J4rrbyAxmIYVWidJ0',
 };
 const navigation = [
   { name: 'Eventos', href: '#' },
@@ -40,10 +40,11 @@ const breadcrumbs = [
 const userNavigation = [
   { name: 'Perfil', href: '#' },
   { name: 'Configurações', href: '#' },
+  { name: 'Minhas comunidades', href: '/my-communities' },
   { name: 'Sair', href: '#' },
 ];
 
-function classNames(...classes) {
+function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ');
 }
 
@@ -70,11 +71,11 @@ export default function MainContainer({ children }: MainContainerProps) {
       */}
       <div className="min-h-full">
         <header className="bg-white shadow">
-          <div className="mx-auto container px-2 sm:px-4 lg:px-8">
+          <div className="container mx-auto px-2 sm:px-4 lg:px-8">
             <Popover className="flex h-16 justify-between">
               <div className="flex px-2 lg:px-0">
                 <div className="flex flex-shrink-0 items-center">
-                  <a href="#">
+                  <a href="/">
                     <LogoConnectMe className="hidden h-10 w-auto md:block" />
                     <IconConnectMe className="h-10 w-auto md:hidden" />
                   </a>
