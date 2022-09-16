@@ -20,7 +20,6 @@ export async function signInRequest(data: SignInRequestData) {
   const response = await api.post('/login', data);
 
   const { access_token: token } = response.data;
-  console.log(token);
   const user: User = decodeToken(token) as User;
 
   return {

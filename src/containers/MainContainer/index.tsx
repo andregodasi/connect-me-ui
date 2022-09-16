@@ -27,9 +27,8 @@ const userData = {
     'https://media-exp1.licdn.com/dms/image/C4D03AQGxOMYvdCao3A/profile-displayphoto-shrink_200_200/0/1661188755302?e=1666828800&v=beta&t=Iz0p8qAeiT23V3PcGlWFb63H19J4rrbyAxmIYVWidJ0',
 };
 const navigation = [
-  { name: 'Eventos', href: '#' },
-  { name: 'Comunidades', href: '#' },
-  { name: 'Empresas', href: '#' },
+  { name: 'Eventos', href: '/' },
+  { name: 'Comunidades', href: '/communities' },
   { name: 'Novidades', href: '#' },
 ];
 const breadcrumbs = [
@@ -41,6 +40,7 @@ const userNavigation = [
   { name: 'Perfil', href: '#' },
   { name: 'Configurações', href: '#' },
   { name: 'Minhas comunidades', href: '/my-communities' },
+  { name: 'Meus eventos', href: '/my-events' },
   { name: 'Sair', href: '#' },
 ];
 
@@ -256,7 +256,7 @@ export default function MainContainer({ children }: MainContainerProps) {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       {userNavigation.map((item) => (
                         <Menu.Item key={item.name}>
                           {({ active }) => (

@@ -1,31 +1,25 @@
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
 import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
-import { getAPIClient } from '../services/axios';
-import { Tab } from '@headlessui/react';
+import { AuthContext } from '../../contexts/AuthContext';
+import { getAPIClient } from '../../services/axios';
 import MainContainer from '@/containers/MainContainer';
 import {
   ViewGridIcon as ViewGridIconSolid,
   ViewListIcon,
 } from '@heroicons/react/solid';
-import EventCard from '@/components/EventCard';
 import { useQuery } from 'react-query';
-import { Page } from '@/shared/interfaces/IPage';
 import { PageOptions } from '@/shared/interfaces/IPageOptions';
-import { getPaginatedEvents } from '@/services/event';
-import { Event } from '@/shared/interfaces/IEvent';
 import { Button } from '@/components/Button';
-
-function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(' ');
-}
+import { getPaginatedGroups } from '@/services/group';
+import { Group } from '@/shared/interfaces/IGroup';
+import GroupCard from '@/components/GroupCard';
 
 const initPageOptions: PageOptions = { page: 1 };
 
-export default function Dashboard() {
+export default function Communities() {
   const { user } = useContext(AuthContext);
-  const [eventList, setEventList] = useState<Event[]>([]);
+  const [groupList, setGroupList] = useState<Group[]>([]);
   const [pageOptions, setPageOptions] = useState<PageOptions>(initPageOptions);
   const {
     isLoading,
@@ -33,14 +27,14 @@ export default function Dashboard() {
     data: dataPage,
     isFetching,
   } = useQuery(
-    ['DashboardEvents', pageOptions],
-    () => getPaginatedEvents(pageOptions.page),
+    ['DashboardCommunities', pageOptions],
+    () => getPaginatedGroups(pageOptions.page),
     { staleTime: Infinity }
   );
 
   useEffect(() => {
     if (dataPage?.data) {
-      setEventList([...eventList, ...dataPage.data]);
+      setGroupList([...groupList, ...dataPage.data]);
     }
   }, [dataPage]);
 
@@ -67,29 +61,13 @@ export default function Dashboard() {
                       htmlFor="first-name"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Nome do Evento / Grupo / Empresa
+                      Comunidade
                     </label>
                     <input
                       type="text"
                       name="first-name"
                       id="first-name"
                       autoComplete="given-name"
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    />
-                  </div>
-
-                  <div className="col-span-6">
-                    <label
-                      htmlFor="email-address"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Endereço
-                    </label>
-                    <input
-                      type="text"
-                      name="email-address"
-                      id="email-address"
-                      autoComplete="email"
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     />
                   </div>
@@ -132,7 +110,7 @@ export default function Dashboard() {
                 <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
                   <div className="flex">
                     <h1 className="h-16 flex-1 border-b border-gray-200 text-2xl font-bold text-gray-900">
-                      Acompanhe todos os eventos
+                      Fique de olho em nossas comunidades!
                     </h1>
                     <hr />
                     <div className="ml-6 flex items-center rounded-lg bg-gray-100 p-0.5 sm:hidden">
@@ -167,9 +145,9 @@ export default function Dashboard() {
                       role="list"
                       className="grid grid-cols-1 gap-x-4 gap-y-8 sm:gap-x-6 xl:gap-x-8"
                     >
-                      {eventList.map((event) => (
-                        <li key={event.uuid} className="relative">
-                          <EventCard {...(event as any)} />
+                      {groupList.map((group) => (
+                        <li key={group.uuid} className="relative">
+                          <GroupCard {...(group as any)} />
                         </li>
                       ))}
                     </ul>
@@ -209,6 +187,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     };
   }
+
+  const news: any = await apiClient.get('/me');
 
   return {
     props: {},

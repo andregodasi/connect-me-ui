@@ -1,4 +1,5 @@
-import { GroupForm } from '@/shared/interfaces/IGroup';
+import { Group, GroupForm } from '@/shared/interfaces/IGroup';
+import { Page } from '@/shared/interfaces/IPage';
 import { api } from './api';
 
 export async function saveGroup(groupForm: GroupForm) {
@@ -14,4 +15,10 @@ export async function getMyGroups() {
 
 export async function findByIdentifierGroup(uuid: string) {
   return api.get(`/group/${uuid}`).then((res) => res.data);
+}
+
+export async function getPaginatedGroups(page: number): Promise<Page<Group>> {
+  return api
+    .get<Page<Group>>(`/group/paginated?page=${page}`)
+    .then((res) => res.data);
 }

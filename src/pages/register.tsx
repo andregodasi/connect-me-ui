@@ -21,7 +21,6 @@ export default function Register() {
 
   async function handleRegister(data: RegisterData) {
     try {
-      console.log(data);
       await api.post('/user', data);
       Router.push('/login');
     } catch (e) {}

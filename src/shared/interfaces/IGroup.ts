@@ -1,3 +1,6 @@
+import { Event } from './IEvent';
+import { User } from './IUser';
+
 export interface GroupForm {
   id?: string;
   name: string;
@@ -10,4 +13,6 @@ export interface Group {
   name: string;
   description: string;
   slug: string;
+  users: [User[]];
+  events: Event[];
 }
