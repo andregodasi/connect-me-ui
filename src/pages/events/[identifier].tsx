@@ -4,7 +4,7 @@ import { Tab } from '@headlessui/react';
 import MainContainer from '@/containers/MainContainer';
 import { GetServerSideProps } from 'next';
 import { getAPIClient } from '@/services/axios';
-import { Group } from '@/shared/interfaces/IGroup';
+import { Event } from '@/shared/interfaces/IEvent';
 import OrganizerProfile from '@/components/OrganizerProfile';
 import ParticipantProfile from '@/components/ParticipantProfile';
 import { EventSmallCard } from '@/components/EventSmallCard';
@@ -121,11 +121,11 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
 }
 
-interface CommunityDetailProps {
-  group: Group;
+interface EventDetailProps {
+  event: Event;
 }
 
-export default function CommunityDetail({ group }: CommunityDetailProps) {
+export default function EventDetail({ event }: EventDetailProps) {
   return (
     <MainContainer>
       <div className="container mx-auto bg-white">
@@ -137,7 +137,7 @@ export default function CommunityDetail({ group }: CommunityDetailProps) {
               <div className="aspect-w-4 aspect-h-3 overflow-hidden rounded-lg bg-gray-100">
                 <img
                   src="https://www.ambevtech.com.br/sites/g/files/wnfebl5782/files/styles/webp/public/Fotos%20Ambev%20Tech%20%26%20Cheers/AMBEV-112.jpg.webp?itok=yofkEeM3"
-                  alt={group.name}
+                  alt={event.name}
                   className="object-cover object-center"
                 />
               </div>
@@ -148,14 +148,14 @@ export default function CommunityDetail({ group }: CommunityDetailProps) {
               <div className="flex flex-col-reverse">
                 <div className="mt-4">
                   <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                    {group.name}
+                    {event.name}
                   </h1>
 
                   <h2 id="information-heading" className="sr-only">
                     Nome da comunidade.
                   </h2>
                   <p className="mt-2 text-sm text-gray-500">
-                    Nos encontre assim {group.slug}
+                    Nos encontre assim {event.limitParticipants}
                   </p>
                 </div>
 
@@ -179,14 +179,14 @@ export default function CommunityDetail({ group }: CommunityDetailProps) {
                 </div>
               </div>
 
-              <p className="mt-6 text-gray-500">{group.description}</p>
+              <p className="mt-6 text-gray-500">{event.description}</p>
 
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                 <button
                   type="button"
                   className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                 >
-                  Seguir
+                  Participar
                 </button>
                 <button
                   type="button"
@@ -426,9 +426,9 @@ export default function CommunityDetail({ group }: CommunityDetailProps) {
             </a>
           </div>
           <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
-            {group?.events?.map(({ name, uuid }) => (
+            {/* {group?.events?.map(({ name, uuid }) => (
               <EventSmallCard name={name} uuid={uuid} />
-            ))}
+            ))} */}
           </div>
         </div>
       </div>
@@ -441,9 +441,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const apiClient = getAPIClient(ctx);
 
-  const { data } = await apiClient.get(`/group/${identifier}`);
-  const group: Group = data;
+  const { data } = await apiClient.get(`/event/${identifier}`);
+  const event: Event = data;
   return {
-    props: { group },
+    props: { event },
   };
 };

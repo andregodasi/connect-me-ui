@@ -1,9 +1,11 @@
+import Link from 'next/link';
 import React from 'react';
 
 interface EventCardProps {}
 
 const EventCard: React.FC = ({
   current,
+  uuid,
   name,
   description,
   initialDate,
@@ -11,7 +13,11 @@ const EventCard: React.FC = ({
   source = 'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
 }: any) => {
   return (
-    <div className="w-full max-w-sm lg:flex lg:max-w-full">
+    <div className="relative w-full max-w-sm lg:flex lg:max-w-full">
+      <Link
+        href={`/events/${uuid}`}
+        className="absolute top-0 right-0 left-0 bottom-0"
+      />
       <div
         className="h-48 flex-none overflow-hidden rounded-t bg-cover text-center lg:h-auto lg:w-48 lg:rounded-t-none lg:rounded-l"
         title="Woman holding a mug"

@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import { api } from './api';
 import { decodeToken } from 'react-jwt';
 
@@ -12,9 +11,6 @@ type User = {
   email: string;
   avatar_url: string;
 };
-
-const delay = (amount = 750) =>
-  new Promise((resolve) => setTimeout(resolve, amount));
 
 export async function signInRequest(data: SignInRequestData) {
   const response = await api.post('/login', data);

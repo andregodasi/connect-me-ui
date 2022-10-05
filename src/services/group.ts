@@ -3,8 +3,8 @@ import { Page } from '@/shared/interfaces/IPage';
 import { api } from './api';
 
 export async function saveGroup(groupForm: GroupForm) {
-  if (groupForm.id) {
-    return api.patch(`/group/${groupForm.id}`, groupForm);
+  if (groupForm.uuid) {
+    return api.patch(`/group/${groupForm.uuid}`, groupForm);
   }
   return api.post('/group', groupForm);
 }

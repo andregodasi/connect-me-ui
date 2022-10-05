@@ -5,9 +5,9 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { getAPIClient } from '../../services/axios';
 import MainContainer from '@/containers/MainContainer';
 import {
-  ViewGridIcon as ViewGridIconSolid,
-  ViewListIcon,
-} from '@heroicons/react/solid';
+  Squares2X2Icon as ViewGridIconSolid,
+  Bars4Icon,
+} from '@heroicons/react/20/solid';
 import { useQuery } from 'react-query';
 import { PageOptions } from '@/shared/interfaces/IPageOptions';
 import { Button } from '@/components/Button';
@@ -118,7 +118,7 @@ export default function Communities() {
                         type="button"
                         className="rounded-md p-1.5 text-gray-400 hover:bg-white hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
                       >
-                        <ViewListIcon className="h-5 w-5" aria-hidden="true" />
+                        <Bars4Icon className="h-5 w-5" aria-hidden="true" />
                         <span className="sr-only">Use list view</span>
                       </button>
                       <button

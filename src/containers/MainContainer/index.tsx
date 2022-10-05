@@ -1,5 +1,5 @@
 import { Menu, Transition } from '@headlessui/react';
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
+import { BellIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
 import { Fragment, useContext, useEffect } from 'react';
@@ -8,15 +8,15 @@ import { getAPIClient } from '@/services/axios';
 
 import { Popover } from '@headlessui/react';
 import {
-  ArrowNarrowLeftIcon,
+  ArrowLongLeftIcon,
   CheckIcon,
   HomeIcon,
   PaperClipIcon,
   QuestionMarkCircleIcon,
-  SearchIcon,
-  ThumbUpIcon,
+  MagnifyingGlassIcon,
+  HandThumbUpIcon,
   UserIcon,
-} from '@heroicons/react/solid';
+} from '@heroicons/react/20/solid';
 import { LogoConnectMe } from '@/components/LogoConnectMe';
 import { IconConnectMe } from '@/components/IconConnectMe';
 
@@ -50,9 +50,13 @@ function classNames(...classes: any[]) {
 
 interface MainContainerProps {
   children: React.ReactNode;
+  classNameMain?: string;
 }
 
-export default function MainContainer({ children }: MainContainerProps) {
+export default function MainContainer({
+  children,
+  classNameMain = '',
+}: MainContainerProps) {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -61,14 +65,6 @@ export default function MainContainer({ children }: MainContainerProps) {
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full">
         <header className="bg-white shadow">
           <div className="container mx-auto px-2 sm:px-4 lg:px-8">
@@ -102,7 +98,7 @@ export default function MainContainer({ children }: MainContainerProps) {
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <SearchIcon
+                      <MagnifyingGlassIcon
                         className="h-5 w-5 text-gray-400"
                         aria-hidden="true"
                       />
@@ -121,7 +117,7 @@ export default function MainContainer({ children }: MainContainerProps) {
                 {/* Mobile menu button */}
                 <Popover.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
                   <span className="sr-only">Open main menu</span>
-                  <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                  <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
                 </Popover.Button>
               </div>
               <Transition.Root as={Fragment}>
@@ -163,7 +159,10 @@ export default function MainContainer({ children }: MainContainerProps) {
                             <div className="-mr-2">
                               <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
                                 <span className="sr-only">Close menu</span>
-                                <XIcon className="h-6 w-6" aria-hidden="true" />
+                                <XMarkIcon
+                                  className="h-6 w-6"
+                                  aria-hidden="true"
+                                />
                               </Popover.Button>
                             </div>
                           </div>
@@ -287,7 +286,7 @@ export default function MainContainer({ children }: MainContainerProps) {
                     href="#"
                     className="group inline-flex space-x-3 text-sm font-medium text-gray-500 hover:text-gray-700"
                   >
-                    <ArrowNarrowLeftIcon
+                    <ArrowLongLeftIcon
                       className="h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-600"
                       aria-hidden="true"
                     />
@@ -339,7 +338,7 @@ export default function MainContainer({ children }: MainContainerProps) {
           </div> */}
         </header>
 
-        <main className="py-10">{children}</main>
+        <main className={`py-10 ${classNameMain}`}>{children}</main>
       </div>
     </>
   );

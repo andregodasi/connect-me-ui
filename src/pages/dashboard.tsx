@@ -6,9 +6,9 @@ import { getAPIClient } from '../services/axios';
 import { Tab } from '@headlessui/react';
 import MainContainer from '@/containers/MainContainer';
 import {
-  ViewGridIcon as ViewGridIconSolid,
-  ViewListIcon,
-} from '@heroicons/react/solid';
+  Squares2X2Icon as ViewGridIconSolid,
+  Bars4Icon,
+} from '@heroicons/react/20/solid';
 import EventCard from '@/components/EventCard';
 import { useQuery } from 'react-query';
 import { Page } from '@/shared/interfaces/IPage';
@@ -140,7 +140,7 @@ export default function Dashboard() {
                         type="button"
                         className="rounded-md p-1.5 text-gray-400 hover:bg-white hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
                       >
-                        <ViewListIcon className="h-5 w-5" aria-hidden="true" />
+                        <Bars4Icon className="h-5 w-5" aria-hidden="true" />
                         <span className="sr-only">Use list view</span>
                       </button>
                       <button

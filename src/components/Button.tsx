@@ -47,7 +47,7 @@ interface ButtonProps {
   className?: string;
   type?: 'button' | 'submit' | 'reset' | undefined;
   href?: string;
-  onClick?: () => void;
+  onClick?: (event: any) => void;
   disabled?: boolean;
   isLoading?: boolean;
   children?: React.ReactNode;

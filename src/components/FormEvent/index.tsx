@@ -3,37 +3,38 @@ import { toast } from 'react-toastify';
 import { Button } from '@/components/Button';
 import MainContainer from '@/containers/MainContainer';
 import { useForm } from 'react-hook-form';
-import { GroupForm } from '@/shared/interfaces/IGroup';
+import { EventForm } from '@/shared/interfaces/IEvent';
 import { useMutation, useQuery } from 'react-query';
-import { findByIdentifierGroup, saveGroup } from '@/services/group';
+import { findByIdentifierEvent, saveEvent } from '@/services/event';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-export const FormGroup: React.FC<{ identifier?: string }> = ({
-  identifier = '',
-}) => {
+export const FormEvent: React.FC<{
+  identifier: string;
+  identifierEvent?: string;
+}> = ({ identifier, identifierEvent = '' }) => {
   const router = useRouter();
-  const { register, handleSubmit, reset } = useForm<GroupForm>();
+  const { register, handleSubmit, reset } = useForm<EventForm>();
   const {
     isLoading,
     error,
-    data: group,
+    data: event,
     isFetching,
-  } = useQuery(['MyGroup'], () => findByIdentifierGroup(identifier), {
-    enabled: !!identifier,
+  } = useQuery(['MyEvent'], () => findByIdentifierEvent(identifier), {
+    enabled: !!identifierEvent,
     staleTime: Infinity,
   });
 
-  const { mutate: mutateGroup, isLoading: mutateGroupLoading } = useMutation(
-    saveGroup,
+  const { mutate: mutateEvent, isLoading: mutateEventLoading } = useMutation(
+    saveEvent,
     {
       onError: (error, variables, context: any) => {
         console.log(error);
         console.log(`onError`);
       },
       onSuccess: (data, variables, context) => {
-        toast.success('Comunidade criada com sucesso!');
-        router.push('/my-communities');
+        toast.success('Evento criado com sucesso!');
+        router.push(`/my-communities/management/${identifier}`);
       },
       onSettled: (data, error, variables, context) => {
         // Error or success... doesn't matter!
@@ -44,17 +45,23 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
   );
 
   useEffect(() => {
-    if (group) {
+    if (event) {
       reset({
-        name: group.name,
-        slug: group.slug,
-        description: group.description,
+        name: event.name,
+        description: event.description,
       });
     }
-  }, [group]);
+  }, [event]);
 
-  async function handleSaveGroup(data: GroupForm) {
-    mutateGroup({ ...data, uuid: identifier });
+  async function handleSaveEvent(data: EventForm) {
+    mutateEvent({
+      ...data,
+      idGroup: identifier,
+      uuid: identifierEvent,
+      initialDate: new Date(data.initialDate),
+      finishDate: new Date(data.finishDate),
+      limitParticipants: Number(data.limitParticipants),
+    });
   }
 
   return (
@@ -62,7 +69,7 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
       <div className="container mx-auto px-4 pt-2 pb-8 ">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-            Criar comunidade
+            Criar Evento
           </h2>
           {/*  <Button
             href="my-communities/create"
@@ -80,7 +87,7 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
       </div>
       <div className="container mx-auto px-4">
         <form
-          onSubmit={handleSubmit(handleSaveGroup)}
+          onSubmit={handleSubmit(handleSaveEvent)}
           className="space-y-8 divide-y divide-gray-200"
         >
           <div className="space-y-8 divide-y divide-gray-200">
@@ -100,7 +107,7 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
                       name="name"
                       id="name"
                       autoComplete="given-name"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       required
                     />
                   </div>
@@ -115,7 +122,7 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
                   </label>
                   <div className="mt-1 flex rounded-md shadow-sm">
                     <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-gray-500 sm:text-sm">
-                      connect-me.com.br/
+                      connect-me.com.br/event/
                     </span>
                     <input
                       {...register('slug')}
@@ -151,6 +158,86 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
                     Fale um pouco sobre os assuntos abordados e os objetivos da
                     sua comunidade
                   </p>
+                </div>
+
+                <div className="sm:col-span-4">
+                  <label
+                    htmlFor="address"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Endereço
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      {...register('address')}
+                      type="text"
+                      name="address"
+                      id="address"
+                      autoComplete="given-address"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="sm:col-span-4">
+                  <label
+                    htmlFor="initialDate"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Data inicial
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      {...register('initialDate')}
+                      type="date"
+                      name="initialDate"
+                      id="initialDate"
+                      autoComplete="given-initialDate"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="sm:col-span-4">
+                  <label
+                    htmlFor="finishDate"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Data final
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      {...register('finishDate')}
+                      type="date"
+                      name="finishDate"
+                      id="finishDate"
+                      autoComplete="given-finishDate"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="sm:col-span-4">
+                  <label
+                    htmlFor="limitParticipants"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Limite de participantes
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      {...register('limitParticipants')}
+                      type="number"
+                      name="limitParticipants"
+                      id="limitParticipants"
+                      autoComplete="given-limitParticipants"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div className="sm:col-span-6">
@@ -207,7 +294,7 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
                 type="button"
                 variant="solid"
                 color="white"
-                disabled={mutateGroupLoading}
+                disabled={mutateEventLoading}
                 onClick={() => {
                   router.back();
                 }}
@@ -218,7 +305,7 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
                 type="submit"
                 variant="solid"
                 color="blue"
-                isLoading={mutateGroupLoading}
+                isLoading={mutateEventLoading}
               >
                 Save
               </Button>

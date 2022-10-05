@@ -1,4 +1,4 @@
-import { PlusSmIcon as PlusSmIconSolid } from '@heroicons/react/solid';
+import { PlusSmallIcon as PlusSmIconSolid } from '@heroicons/react/20/solid';
 import { Button } from '@/components/Button';
 import MainContainer from '@/containers/MainContainer';
 import { useQuery } from 'react-query';

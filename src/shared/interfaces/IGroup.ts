@@ -2,7 +2,7 @@ import { Event } from './IEvent';
 import { User } from './IUser';
 
 export interface GroupForm {
-  id?: string;
+  uuid?: string;
   name: string;
   description: string;
   slug: string;
