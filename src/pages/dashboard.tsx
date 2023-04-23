@@ -14,19 +14,37 @@ import { useQuery } from 'react-query';
 import { Page } from '@/shared/interfaces/IPage';
 import { PageOptions } from '@/shared/interfaces/IPageOptions';
 import { getPaginatedEvents } from '@/services/event';
-import { Event } from '@/shared/interfaces/IEvent';
+import {
+  Event,
+  EventFilters,
+  EventPageOptionWithFilters,
+} from '@/shared/interfaces/IEvent';
 import { Button } from '@/components/Button';
+import { TextField } from '@/components/Fields';
+import { useForm } from 'react-hook-form';
+import { Toggle } from '@/components/Toggle';
+import { EventsSummary } from '@/components/EventsSummary';
+import { CommunitiesSummary } from '@/components/CommunitiesSummary';
+import { getPaginatedGroups } from '@/services/group';
+
+interface SerachData {
+  name?: string;
+  isFollowing?: boolean;
+}
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const initPageOptions: PageOptions = { page: 1 };
+const initPageOptions: EventPageOptionWithFilters = { page: 1 };
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
+  const [filters, setFilters] = useState<EventFilters>();
+  const { register, handleSubmit, control } = useForm<SerachData>();
   const [eventList, setEventList] = useState<Event[]>([]);
-  const [pageOptions, setPageOptions] = useState<PageOptions>(initPageOptions);
+  const [pageOptions, setPageOptions] =
+    useState<EventPageOptionWithFilters>(initPageOptions);
   const {
     isLoading,
     error,
@@ -34,12 +52,38 @@ export default function Dashboard() {
     isFetching,
   } = useQuery(
     ['DashboardEvents', pageOptions],
-    () => getPaginatedEvents(pageOptions.page),
+    () => getPaginatedEvents(pageOptions),
     { staleTime: Infinity }
   );
 
+  const {
+    isLoading: isLoadingMyEvents,
+    error: errorMyEvents,
+    data: myEvents,
+  } = useQuery(
+    ['DashboardMyEvents'],
+    () => getPaginatedEvents({ page: 1, take: 5, isSubscribed: true }),
+    {
+      staleTime: Infinity,
+    }
+  );
+
+  const {
+    isLoading: isLoadingMyGroups,
+    error: errorMyGroups,
+    data: myGroups,
+  } = useQuery(
+    ['DashboardMyGroups'],
+    () => getPaginatedGroups({ page: 1, take: 5, isFollowing: true }),
+    {
+      staleTime: Infinity,
+    }
+  );
+
   useEffect(() => {
-    if (dataPage?.data) {
+    if (dataPage?.data && dataPage?.meta?.page === 1) {
+      setEventList([...dataPage.data]);
+    } else if (dataPage?.data) {
       setEventList([...eventList, ...dataPage.data]);
     }
   }, [dataPage]);
@@ -51,11 +95,25 @@ export default function Dashboard() {
     });
   };
 
+  async function searching(data: any) {
+    const filtersData = {
+      q: data.name,
+      isFollowing: data.isFollowing,
+    };
+    setPageOptions({
+      ...pageOptions,
+      page: 1,
+      ...filtersData,
+    });
+
+    setFilters({ ...filtersData });
+  }
+
   return (
     <MainContainer>
       <div className="container mx-auto grid grid-cols-3 gap-4 px-2 sm:px-4 lg:px-8">
-        <div>
-          <form action="#" method="POST">
+        <div className="flex flex-col gap-8">
+          {/* <form action="#" method="POST">
             <div className="overflow-hidden shadow sm:rounded-md">
               <h3 className="flex-1 p-3 pt-8 text-2xl font-bold text-gray-900">
                 Quer buscar algo?
@@ -123,18 +181,57 @@ export default function Dashboard() {
                 </button>
               </div>
             </div>
-          </form>
+          </form> */}
+          <EventsSummary
+            events={myEvents?.data}
+            isLoading={isLoadingMyEvents}
+          />
+          <CommunitiesSummary
+            communities={myGroups?.data || []}
+            isLoading={isLoadingMyGroups}
+          />
         </div>
         <div className="col-span-2">
           <div>
             <div className="flex flex-1 items-stretch overflow-hidden">
               <main className="flex-1 overflow-y-auto">
                 <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
-                  <div className="flex">
+                  <div className="flex flex-col">
                     <h1 className="h-16 flex-1 border-b border-gray-200 text-2xl font-bold text-gray-900">
                       Acompanhe todos os eventos
                     </h1>
                     <hr />
+
+                    <form
+                      onSubmit={handleSubmit(searching)}
+                      className="mt-10 grid grid-cols-12 gap-4"
+                    >
+                      <TextField
+                        className="col-span-10"
+                        register={register}
+                        label="Nome"
+                        name="name"
+                        type="text"
+                        autoComplete="name"
+                      />
+                      <div className="col-span-2">
+                        <Toggle
+                          control={control}
+                          name="isFollowing"
+                          label="Nas suas comunidades"
+                        />
+                      </div>
+                      <div className="col-span-2 flex items-end">
+                        <Button
+                          type="submit"
+                          variant="solid"
+                          color="blue"
+                          className="w-full"
+                        >
+                          <span>Buscar</span>
+                        </Button>
+                      </div>
+                    </form>
                     <div className="ml-6 flex items-center rounded-lg bg-gray-100 p-0.5 sm:hidden">
                       <button
                         type="button"

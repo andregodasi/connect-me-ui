@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useContext, useState } from 'react';
 import { StarIcon } from '@heroicons/react/20/solid';
 import { Tab } from '@headlessui/react';
 import MainContainer from '@/containers/MainContainer';
@@ -7,7 +7,17 @@ import { getAPIClient } from '@/services/axios';
 import { Event } from '@/shared/interfaces/IEvent';
 import OrganizerProfile from '@/components/OrganizerProfile';
 import ParticipantProfile from '@/components/ParticipantProfile';
-import { EventSmallCard } from '@/components/EventSmallCard';
+import { useMutation, useQuery } from 'react-query';
+import { toast } from 'react-toastify';
+import {
+  createSubscription,
+  findByIdentifierEvent,
+  unsubscribe,
+} from '@/services/event';
+import { Button } from '@/components/Button';
+import { parseCookies } from 'nookies';
+import { getCurrentUser } from '@/shared/utils/token';
+import { AuthContext } from '@/contexts/AuthContext';
 
 const product = {
   name: 'Application UI Icon Pack',
@@ -121,11 +131,90 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
 }
 
+const checkIsSubscribe = (event: Event, currentUserId: string): boolean => {
+  return !!event?.users?.find(
+    ({ user: subscribed }) => subscribed.uuid === currentUserId
+  );
+};
+
 interface EventDetailProps {
   event: Event;
+  isSubscribe: boolean;
+  identifier: string;
 }
 
-export default function EventDetail({ event }: EventDetailProps) {
+export default function EventDetail({
+  event,
+  isSubscribe,
+  identifier,
+}: EventDetailProps) {
+  console.log(event);
+  const [eventState, setEventState] = useState(event);
+  const { user } = useContext(AuthContext);
+  const [isSubscribeState, setIsSubscribeState] =
+    useState<boolean>(isSubscribe);
+
+  const {
+    isLoading,
+    error,
+    isFetching,
+    refetch: refetchEvent,
+  } = useQuery(
+    [`event-${identifier}`],
+    () => findByIdentifierEvent(identifier),
+    {
+      staleTime: Infinity,
+      enabled: false,
+      onSuccess(data) {
+        setEventState(data);
+        setIsSubscribeState(checkIsSubscribe(data, user?.uuid || ''));
+      },
+    }
+  );
+
+  const { mutate: mutateSubscription, isLoading: mutateSubscriptionLoading } =
+    useMutation(createSubscription, {
+      onError: (error, variables, context: any) => {
+        console.log(`onError`);
+      },
+      onSuccess: (data, variables, context) => {
+        refetchEvent();
+        toast.success('Inscrição realizada com sucesso!');
+        /* router.push('/my-events'); */
+      },
+      onSettled: (data, error, variables, context) => {
+        // Error or success... doesn't matter!
+        console.log(data);
+        console.log(`onSettled`);
+      },
+    });
+
+  const { mutate: mutateUnsubscribe, isLoading: mutateUnsubscribeLoading } =
+    useMutation(unsubscribe, {
+      onError: (error, variables, context: any) => {
+        console.log(error);
+        console.log(`onError`);
+      },
+      onSuccess: (data, variables, context) => {
+        refetchEvent();
+        toast.success('Inscrição cancelada com sucesso!');
+        /* router.push('/my-events'); */
+      },
+      onSettled: (data, error, variables, context) => {
+        // Error or success... doesn't matter!
+        console.log(data);
+        console.log(`onSettled`);
+      },
+    });
+
+  async function handleSubscribe() {
+    mutateSubscription(eventState?.uuid ? eventState.uuid : ``);
+  }
+
+  async function handleUnsubscribe() {
+    mutateUnsubscribe(eventState?.uuid ? eventState.uuid : ``);
+  }
+
   return (
     <MainContainer>
       <div className="container mx-auto bg-white">
@@ -155,7 +244,7 @@ export default function EventDetail({ event }: EventDetailProps) {
                     Nome da comunidade.
                   </h2>
                   <p className="mt-2 text-sm text-gray-500">
-                    Nos encontre assim {event.limitParticipants}
+                    Nos encontre assim {eventState.limitParticipants}
                   </p>
                 </div>
 
@@ -182,18 +271,39 @@ export default function EventDetail({ event }: EventDetailProps) {
               <p className="mt-6 text-gray-500">{event.description}</p>
 
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-                <button
-                  type="button"
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                >
-                  Participar
-                </button>
-                <button
-                  type="button"
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-50 py-3 px-8 text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                >
-                  Compartilhar
-                </button>
+                {isSubscribeState ? (
+                  <>
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 py-3 px-8 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                    >
+                      Compartilhar
+                    </button>
+                    <button
+                      onClick={() => handleUnsubscribe()}
+                      type="button"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-50 py-3 px-8 text-base font-medium text-blue-700 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                    >
+                      Não vou 😭
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => handleSubscribe()}
+                      type="button"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 py-3 px-8 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                    >
+                      Participar
+                    </button>
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-50 py-3 px-8 text-base font-medium text-blue-700 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                    >
+                      Compartilhar
+                    </button>
+                  </>
+                )}
               </div>
 
               <div className="mt-10 border-t border-gray-200 pt-10">
@@ -209,10 +319,11 @@ export default function EventDetail({ event }: EventDetailProps) {
                 <h3 className="text-sm font-medium text-gray-900">
                   Participantes
                 </h3>
+
                 <div className="mt-4 flex flex-wrap gap-4">
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((key) => (
-                    <div key={key}>
-                      <ParticipantProfile />
+                  {eventState?.users?.map(({ user: subscribed }) => (
+                    <div key={subscribed.uuid}>
+                      <ParticipantProfile name={subscribed.name} />
                     </div>
                   ))}
                 </div>
@@ -291,7 +402,7 @@ export default function EventDetail({ event }: EventDetailProps) {
                       className={({ selected }) =>
                         classNames(
                           selected
-                            ? 'border-indigo-600 text-indigo-600'
+                            ? 'border-blue-600 text-blue-600'
                             : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
                           'whitespace-nowrap border-b-2 py-6 text-sm font-medium'
                         )
@@ -303,7 +414,7 @@ export default function EventDetail({ event }: EventDetailProps) {
                       className={({ selected }) =>
                         classNames(
                           selected
-                            ? 'border-indigo-600 text-indigo-600'
+                            ? 'border-blue-600 text-blue-600'
                             : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
                           'whitespace-nowrap border-b-2 py-6 text-sm font-medium'
                         )
@@ -443,7 +554,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const { data } = await apiClient.get(`/event/${identifier}`);
   const event: Event = data;
+  const currentUser = getCurrentUser(ctx);
+  const isSubscribe = checkIsSubscribe(event, currentUser?.sub);
+
   return {
-    props: { event },
+    props: { event, isSubscribe, identifier },
   };
 };

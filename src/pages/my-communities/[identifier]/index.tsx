@@ -8,7 +8,6 @@ interface MyCommunitiesUpdateProps {
 export default function MyCommunitiesUpdate({
   identifier,
 }: MyCommunitiesUpdateProps) {
-  console.log(identifier);
   return <FormGroup identifier={identifier + ''} />;
 }
 

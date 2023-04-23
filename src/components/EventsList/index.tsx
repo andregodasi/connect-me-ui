@@ -6,7 +6,6 @@ import {
   ArchiveBoxIcon as ArchiveBoxIconMini,
   ArrowUturnLeftIcon,
   ChevronDownIcon,
-  ChevronUpIcon,
   FolderArrowDownIcon,
   PencilIcon,
   UserPlusIcon,
@@ -17,7 +16,7 @@ import { Button } from '@/components/Button';
 import { FullPagination } from '@/components/FullPagination';
 import { useQuery } from 'react-query';
 import { PageOptions } from '@/shared/interfaces/IPageOptions';
-import { getPaginatedMyEvents } from '@/services/event';
+import { getPaginatedMyEventsByGroup } from '@/services/event';
 import { Event } from '@/shared/interfaces/IEvent';
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ');
@@ -51,7 +50,7 @@ export const EventsList: React.FC<EventsListProps> = ({ groupUUID }) => {
     isFetching,
   } = useQuery(
     ['DashboardEvents', pageOptions],
-    () => getPaginatedMyEvents(pageOptions.page),
+    () => getPaginatedMyEventsByGroup(pageOptions.page, groupUUID),
     { staleTime: Infinity }
   );
 

@@ -1,4 +1,4 @@
-export default function ParticipantProfile() {
+export default function ParticipantProfile({ name }: { name: string }) {
   return (
     <a href="#" className="group block flex-shrink-0">
       <div className="flex flex-col items-center">
@@ -11,7 +11,7 @@ export default function ParticipantProfile() {
         </div>
         <div className="ml-3">
           <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-            Tom Cook
+            {name}
           </p>
         </div>
       </div>

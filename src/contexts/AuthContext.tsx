@@ -6,6 +6,7 @@ import { recoverUserInformation, signInRequest } from '../services/auth';
 import { api } from '../services/api';
 
 type User = {
+  uuid: string;
   name: string;
   email: string;
   avatar_url: string;

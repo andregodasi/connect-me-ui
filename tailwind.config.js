@@ -1,7 +1,8 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require('tailwindcss/colors');
 const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
-  content: ['./src/**/*.{ts,tsx}'],
+  content: ['./node_modules/flowbite-react/**/*.js', , './src/**/*.{ts,tsx}'],
   theme: {
     fontSize: {
       xs: ['0.75rem', { lineHeight: '1rem' }],
@@ -29,7 +30,12 @@ module.exports = {
       maxWidth: {
         '2xl': '40rem',
       },
+      colors: {
+        gray: colors.gray,
+        red: colors.rose,
+        pink: colors.fuchsia,
+      },
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('flowbite/plugin')],
 };

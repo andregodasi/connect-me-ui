@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import { UseFormRegister } from 'react-hook-form';
+import { FieldError } from 'react-hook-form';
 
 const formClasses =
   'block w-full appearance-none rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm';
 
-function Label({ htmlFor, children }) {
+function Label({ htmlFor, children }: { htmlFor: string; children: any }) {
   return (
     <label
       htmlFor={htmlFor}
@@ -15,7 +15,28 @@ function Label({ htmlFor, children }) {
   );
 }
 
-interface TextFieldData {
+const ErrorMessageEnum: any = {
+  required: 'Campo obrigatório!',
+};
+
+export function ErrorMessages({
+  errorMessages,
+}: {
+  errorMessages: FieldError | undefined;
+}) {
+  if (!errorMessages?.type) {
+    return null;
+  }
+  return (
+    <span className="mb-1 block text-sm font-medium text-red-400">
+      {ErrorMessageEnum?.[errorMessages.type]
+        ? ErrorMessageEnum[errorMessages.type]
+        : errorMessages.message}
+    </span>
+  );
+}
+
+interface TextFieldProps {
   name: string;
   label: string;
   type: string;
@@ -31,7 +52,7 @@ export function TextField({
   className = '',
   register,
   ...props
-}: TextFieldData) {
+}: TextFieldProps) {
   return (
     <div className={className}>
       {label && <Label htmlFor={name}>{label}</Label>}
@@ -46,7 +67,22 @@ export function TextField({
   );
 }
 
-export function SelectField({ name, label, className = '', ...props }) {
+interface SelectFieldProps {
+  name: string;
+  label: string;
+  errorMesage?: string;
+  className?: string;
+  autoComplete?: string;
+  required?: boolean;
+  register?: any;
+}
+
+export function SelectField({
+  name,
+  label,
+  className = '',
+  ...props
+}: SelectFieldProps) {
   return (
     <div className={className}>
       {label && <Label htmlFor={name}>{label}</Label>}

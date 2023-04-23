@@ -5,6 +5,8 @@ import { useQuery } from 'react-query';
 import { getMyGroups } from '@/services/group';
 import { Group } from '@/shared/interfaces/IGroup';
 import { MyGroupCard } from '@/components/MyGroupCard';
+import { Status } from '@/shared/enums/status.enum';
+import { Role } from '@/shared/enums/role.enum';
 
 export default function MyCommunities() {
   const {
@@ -12,7 +14,9 @@ export default function MyCommunities() {
     error,
     data: groups,
     isFetching,
-  } = useQuery(['MyGroups'], () => getMyGroups());
+  } = useQuery(['MyGroups'], () => getMyGroups(), {
+    staleTime: Infinity,
+  });
   return (
     <MainContainer>
       <div className="container mx-auto py-2 px-4 ">
@@ -39,11 +43,19 @@ export default function MyCommunities() {
           role="list"
           className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
         >
-          {groups?.map(({ uuid, name, description }: Group) => (
-            <li key={uuid}>
-              <MyGroupCard uuid={uuid} name={name} description={description} />
-            </li>
-          ))}
+          {groups?.map(
+            ({ uuid, name, description, coverUrl, users }: Group) => (
+              <li key={uuid}>
+                <MyGroupCard
+                  uuid={uuid}
+                  name={name}
+                  coverUrl={coverUrl}
+                  description={description}
+                  isAdmin={!!users?.find?.(({ role }) => role === Role.ADMIN)}
+                />
+              </li>
+            )
+          )}
         </ul>
       </div>
     </MainContainer>

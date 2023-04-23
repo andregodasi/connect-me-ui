@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useContext, useState } from 'react';
 import { StarIcon } from '@heroicons/react/20/solid';
 import { Tab } from '@headlessui/react';
 import MainContainer from '@/containers/MainContainer';
@@ -8,6 +8,15 @@ import { Group } from '@/shared/interfaces/IGroup';
 import OrganizerProfile from '@/components/OrganizerProfile';
 import ParticipantProfile from '@/components/ParticipantProfile';
 import { EventSmallCard } from '@/components/EventSmallCard';
+import { useMutation, useQuery } from 'react-query';
+import {
+  findByIdentifierGroup,
+  followGrpup,
+  unfollowGroup,
+} from '@/services/group';
+import { toast } from 'react-toastify';
+import { AuthContext } from '@/contexts/AuthContext';
+import { getCurrentUser } from '@/shared/utils/token';
 
 const product = {
   name: 'Application UI Icon Pack',
@@ -123,9 +132,83 @@ function classNames(...classes: any) {
 
 interface CommunityDetailProps {
   group: Group;
+  isFollower: boolean;
 }
 
-export default function CommunityDetail({ group }: CommunityDetailProps) {
+const checkIsFollower = (group: Group, currentUserId: string): boolean => {
+  return !!group?.users?.find(
+    ({ user: follower }) => follower.uuid === currentUserId
+  );
+};
+
+export default function CommunityDetail({
+  group,
+  isFollower,
+}: CommunityDetailProps) {
+  const [groupState, setGroupState] = useState({ ...group });
+  const [isFollowerState, setIsFollowerState] = useState<boolean>(false);
+  const { user } = useContext(AuthContext);
+  const {
+    isLoading,
+    error,
+    isFetching,
+    refetch: refetchGroup,
+  } = useQuery(
+    [`event-${group.uuid}`],
+    () => findByIdentifierGroup(group.uuid),
+    {
+      staleTime: Infinity,
+      enabled: false,
+      onSuccess(data) {
+        setGroupState(data);
+        setIsFollowerState(checkIsFollower(data, user?.uuid || ''));
+      },
+    }
+  );
+
+  const { mutate: mutateFollow, isLoading: mutateFollowLoading } = useMutation(
+    followGrpup,
+    {
+      onError: (error, variables, context: any) => {
+        console.log(`onError`);
+      },
+      onSuccess: (data, variables, context) => {
+        refetchGroup();
+        toast.success(`Agora você esta seguindo a comunidade ${group.name}`);
+        /* router.push('/my-events'); */
+      },
+      onSettled: (data, error, variables, context) => {
+        // Error or success... doesn't matter!
+        console.log(data);
+        console.log(`onSettled`);
+      },
+    }
+  );
+
+  const { mutate: mutateUnfollow, isLoading: mutateUnfollowLoading } =
+    useMutation(unfollowGroup, {
+      onError: (error, variables, context: any) => {
+        console.log(error);
+        console.log(`onError`);
+      },
+      onSuccess: (data, variables, context) => {
+        refetchGroup();
+        toast.success(`Você deixou de seguir a comunidade ${group.name}`);
+      },
+      onSettled: (data, error, variables, context) => {
+        // Error or success... doesn't matter!
+        console.log(data);
+        console.log(`onSettled`);
+      },
+    });
+
+  async function handleFollow() {
+    mutateFollow(groupState?.uuid ? groupState.uuid : ``);
+  }
+
+  async function handleUnfollow() {
+    mutateUnfollow(groupState?.uuid ? groupState.uuid : ``);
+  }
   return (
     <MainContainer>
       <div className="container mx-auto bg-white">
@@ -182,18 +265,39 @@ export default function CommunityDetail({ group }: CommunityDetailProps) {
               <p className="mt-6 text-gray-500">{group.description}</p>
 
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-                <button
-                  type="button"
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                >
-                  Seguir
-                </button>
-                <button
-                  type="button"
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-50 py-3 px-8 text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                >
-                  Compartilhar
-                </button>
+                {isFollowerState ? (
+                  <>
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 py-3 px-8 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                    >
+                      Compartilhar
+                    </button>
+                    <button
+                      onClick={() => handleUnfollow()}
+                      type="button"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-50 py-3 px-8 text-base font-medium text-blue-700 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                    >
+                      Deixar de seguir 😭
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => handleFollow()}
+                      type="button"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 py-3 px-8 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                    >
+                      Seguir
+                    </button>
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-50 py-3 px-8 text-base font-medium text-blue-700 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                    >
+                      Compartilhar
+                    </button>
+                  </>
+                )}
               </div>
 
               <div className="mt-10 border-t border-gray-200 pt-10">
@@ -443,7 +547,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const { data } = await apiClient.get(`/group/${identifier}`);
   const group: Group = data;
+  const currentUser = getCurrentUser(ctx);
+  const isFollower = checkIsFollower(group, currentUser?.sub);
   return {
-    props: { group },
+    props: { group, isFollower },
   };
 };

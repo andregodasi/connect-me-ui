@@ -1,4 +1,6 @@
 import { Group } from './IGroup';
+import { PageOptions } from './IPageOptions';
+import { User } from './IUser';
 
 export interface Event {
   uuid?: string;
@@ -9,6 +11,7 @@ export interface Event {
   address: string;
   limitParticipants: number;
   group?: Group;
+  users?: { user: User }[];
 }
 
 export interface EventForm {
@@ -21,4 +24,12 @@ export interface EventForm {
   finishDate: Date;
   address: string;
   limitParticipants: number;
+}
+
+export interface EventPageOptionWithFilters extends PageOptions, EventFilters {}
+
+export interface EventFilters {
+  q?: string;
+  isFollowing?: boolean;
+  isSubscribed?: boolean;
 }
