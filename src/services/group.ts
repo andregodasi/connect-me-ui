@@ -21,7 +21,6 @@ export async function saveGroupWithFile(groupForm: GroupForm) {
       formData.append(values[0], values[1]);
     }
   });
-
   if (groupForm.uuid) {
     return api.patch(`/group/${groupForm.uuid}`, formData);
   }

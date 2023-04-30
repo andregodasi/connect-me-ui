@@ -5,17 +5,21 @@ import MainContainer from '@/containers/MainContainer';
 import { useForm } from 'react-hook-form';
 import { GroupForm } from '@/shared/interfaces/IGroup';
 import { useMutation, useQuery } from 'react-query';
-import { findByIdentifierGroup, saveGroup } from '@/services/group';
+import {
+  findByIdentifierGroup,
+  saveGroup,
+  saveGroupWithFile,
+} from '@/services/group';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { InputUpload } from '../InputUpload';
-import useYupValidationResolver from '@/hooks/useYupValidationResolver';
 import { transformTextToSlug } from '@/shared/utils/transforms/slug';
 import { Label, Textarea, TextInput } from 'flowbite-react';
 import { ErrorMessages } from '../Fields';
+import { InputUploadSample } from '../InputUploadSample';
+import { AspectRatio } from '@/shared/enums/aspect-ratio.enum';
 
 const validationSchema = yup.object({
   name: yup.string().required(),
@@ -33,7 +37,12 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
   identifier = '',
 }) => {
   const router = useRouter();
-  const [coverCommunity, setCoverCommunity] = useState<any>();
+  const [coverCommunity, setCoverCommunity] = useState<{
+    url: string;
+    file: File;
+  }>();
+  const [initialImage, setInitialImage] = useState('');
+
   const {
     register,
     handleSubmit,
@@ -52,7 +61,7 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
   });
 
   const { mutate: mutateGroup, isLoading: mutateGroupLoading } = useMutation(
-    saveGroup,
+    saveGroupWithFile,
     {
       onError: (error, variables, context: any) => {
         console.log(error);
@@ -77,16 +86,20 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
         slug: group.slug,
         description: group.description,
       });
+
+      setInitialImage(group.coverUrl);
     }
   }, [group]);
 
   async function handleSaveGroup(data: GroupForm) {
-    console.log(data);
+    if (!coverCommunity?.file && !initialImage) {
+      return;
+    }
 
     mutateGroup({
       ...data,
-      newCoverUrl: coverCommunity?.urlImage,
-      newCoverName: coverCommunity?.nameImage,
+      coverImage: coverCommunity?.file,
+      coverUrl: initialImage,
       uuid: identifier,
     });
   }
@@ -99,18 +112,6 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
           <h2 className="text-2xl font-bold tracking-tight text-gray-900">
             Criar comunidade
           </h2>
-          {/*  <Button
-            href="my-communities/create"
-            type="submit"
-            variant="solid"
-            color="blue"
-            aria-label="Criar comunidade"
-          >
-            <span className="flex items-center gap-2">
-              <span className="hidden md:flex">Criar comunidade</span>
-              <PlusSmIconSolid className="h-5 w-5" aria-hidden="true" />
-            </span>
-          </Button> */}
         </div>
       </div>
       <div className="container mx-auto px-4">
@@ -166,28 +167,21 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
                 </div>
 
                 <div className="sm:col-span-6">
-                  <label
-                    className="mb-3 block text-sm font-medium text-gray-700"
-                    htmlFor="file_input"
-                  >
-                    Capa da comunidade
-                  </label>
-                  <InputUpload
-                    imageUrl={group?.coverUrl}
-                    setImage={setCoverCommunity}
-                    isSubmitted={isSubmitted}
-                    label={
-                      coverCommunity
-                        ? 'Alterar a capa da Comunidade'
-                        : 'Selecione a capa da Comunidade'
-                    }
+                  <Label
+                    htmlFor=""
+                    value="Capa da comunidade"
+                    className="label-form"
                   />
-                  <p
-                    className="mt-2 text-sm text-gray-500"
-                    id="file_input_help"
-                  >
-                    SVG, PNG ou JPG (MAX. Size 2MB).
-                  </p>
+                  <InputUploadSample
+                    imageData={coverCommunity}
+                    setImageData={setCoverCommunity}
+                    aspectRatio={AspectRatio.WIDE_SCREEN}
+                    initialImage={initialImage}
+                    setInitialImage={setInitialImage}
+                  />
+                  {!coverCommunity && isSubmitted && (
+                    <ErrorMessages errorMessages={errors['description']} />
+                  )}
                 </div>
               </div>
             </div>
@@ -204,7 +198,7 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
                   router.back();
                 }}
               >
-                Cancel
+                Cancelar
               </Button>
               <Button
                 type="submit"
@@ -212,7 +206,7 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
                 color="blue"
                 isLoading={mutateGroupLoading}
               >
-                Save
+                Savar
               </Button>
             </div>
           </div>

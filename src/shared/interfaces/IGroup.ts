@@ -9,8 +9,7 @@ export interface GroupForm {
   description: string;
   slug: string;
   coverUrl?: string;
-  newCoverUrl?: string;
-  newCoverName?: string;
+  coverImage?: any;
 }
 
 export interface Group {
