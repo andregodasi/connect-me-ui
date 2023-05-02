@@ -180,7 +180,12 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
                     setInitialImage={setInitialImage}
                   />
                   {!coverCommunity && isSubmitted && (
-                    <ErrorMessages errorMessages={errors['description']} />
+                    <ErrorMessages
+                      errorMessages={{
+                        type: '',
+                        message: 'Capa da comunidade é obrigatória!',
+                      }}
+                    />
                   )}
                 </div>
               </div>
@@ -206,7 +211,7 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
                 color="blue"
                 isLoading={mutateGroupLoading}
               >
-                Savar
+                Salvar
               </Button>
             </div>
           </div>

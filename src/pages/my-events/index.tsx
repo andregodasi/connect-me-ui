@@ -43,20 +43,8 @@ export default function MyEvents() {
       <div className="container mx-auto py-2 px-4 ">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-            Minhas comunidades
+            Meus eventos
           </h2>
-          <Button
-            href="my-communities/create"
-            type="submit"
-            variant="solid"
-            color="blue"
-            aria-label="Criar comunidade"
-          >
-            <span className="flex items-center gap-2">
-              <span className="hidden md:flex">Criar comunidade</span>
-              <PlusSmIconSolid className="h-5 w-5" aria-hidden="true" />
-            </span>
-          </Button>
         </div>
       </div>
       <div className="container mx-auto py-2 px-4">

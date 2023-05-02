@@ -16,7 +16,7 @@ export interface Event {
 
 export interface EventForm {
   uuid?: string;
-  idGroup: string;
+  uuidGroup: string;
   name: string;
   slug: string;
   description: string;
@@ -24,6 +24,8 @@ export interface EventForm {
   finishDate: Date;
   address: string;
   limitParticipants: number;
+  coverUrl?: string;
+  coverImage?: File;
 }
 
 export interface EventPageOptionWithFilters extends PageOptions, EventFilters {}

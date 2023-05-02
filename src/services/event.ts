@@ -34,11 +34,18 @@ export async function findByIdentifierEvent(eventUUID: string) {
 }
 
 export async function saveEvent(eventForm: EventForm) {
+  const formData = new FormData();
+  Object.entries(eventForm).forEach((values) => {
+    if (values[1]) {
+      formData.append(values[0], values[1]);
+    }
+  });
+
   if (eventForm.uuid) {
-    return api.patch(`/event/${eventForm.uuid}`, eventForm);
+    return api.patch(`/event/${eventForm.uuid}`, formData);
   }
   delete eventForm.uuid;
-  return api.post('/event', eventForm);
+  return api.post('/event', formData);
 }
 
 export async function createSubscription(eventUUID: string) {
