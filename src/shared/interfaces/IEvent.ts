@@ -1,6 +1,7 @@
 import { Group } from './IGroup';
 import { PageOptions } from './IPageOptions';
 import { User } from './IUser';
+import type { Dayjs } from 'dayjs';
 
 export interface Event {
   uuid?: string;
@@ -20,8 +21,9 @@ export interface EventForm {
   name: string;
   slug: string;
   description: string;
-  initialDate: Date;
-  finishDate: Date;
+  initialDate?: Date;
+  finishDate?: Date;
+  eventDate?: Dayjs[];
   address: string;
   limitParticipants: number;
   coverUrl?: string;

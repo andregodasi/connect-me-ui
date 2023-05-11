@@ -41,10 +41,12 @@ export async function saveEvent(eventForm: EventForm) {
     }
   });
 
+  formData.delete('eventDate');
   if (eventForm.uuid) {
     return api.patch(`/event/${eventForm.uuid}`, formData);
   }
-  delete eventForm.uuid;
+
+  formData.delete('uuid');
   return api.post('/event', formData);
 }
 
