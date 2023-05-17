@@ -1,6 +1,7 @@
 import { PlusSmallIcon as PlusSmIconSolid } from '@heroicons/react/20/solid';
 import { toast } from 'react-toastify';
 import MainContainer from '@/containers/MainContainer';
+import dayjs from 'dayjs';
 import { EventForm } from '@/shared/interfaces/IEvent';
 import { useMutation, useQuery } from 'react-query';
 import { findByIdentifierEvent, saveEvent } from '@/services/event';
@@ -45,7 +46,7 @@ export const FormEvent: React.FC<{
     error,
     data: event,
     isFetching,
-  } = useQuery(['MyEvent'], () => findByIdentifierEvent(identifier), {
+  } = useQuery(['MyEvent'], () => findByIdentifierEvent(identifierEvent), {
     enabled: !!identifierEvent,
     staleTime: Infinity,
     onSuccess(data) {
@@ -53,6 +54,9 @@ export const FormEvent: React.FC<{
         name: data.name,
         slug: data.slug,
         description: data.description,
+        address: data.address,
+        limitParticipants: data.limitParticipants,
+        eventDate: [dayjs(data.initialDate), dayjs(data.finishDate)],
       });
       setInitialImage(data.coverUrl);
     },
@@ -88,7 +92,7 @@ export const FormEvent: React.FC<{
       uuidGroup: identifier,
       uuid: identifierEvent,
       initialDate: data?.eventDate?.[0].toDate(),
-      finishDate: data?.eventDate?.[0].toDate(),
+      finishDate: data?.eventDate?.[1].toDate(),
       limitParticipants: Number(data.limitParticipants),
       coverImage: imageUpload,
       coverUrl: initialImage,

@@ -10,6 +10,8 @@ export interface Event {
   initialDate: Date;
   finishDate: Date;
   address: string;
+  coverUrl: string;
+  isPublised: boolean;
   limitParticipants: number;
   group?: Group;
   users?: { user: User }[];

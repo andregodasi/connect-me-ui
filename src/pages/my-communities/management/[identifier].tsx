@@ -16,6 +16,7 @@ import {
   MagnifyingGlassIcon,
   MapPinIcon,
   PencilIcon,
+  UserGroupIcon,
 } from '@heroicons/react/20/solid';
 import { Tab } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -23,13 +24,10 @@ import MainContainer from '@/containers/MainContainer';
 import { useQuery } from 'react-query';
 import { findByIdentifierGroup } from '@/services/group';
 import { EventsList } from '@/components/EventsList';
-
-const user = {
-  name: 'Whitney Francis',
-  email: 'whitney.francis@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-};
+import Link from 'next/link';
+import { Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { formatWeekYear } from '@/shared/utils/transforms/dates';
 
 const tabs = [
   { name: 'Applied', href: '#', count: '2', current: false },
@@ -38,18 +36,7 @@ const tabs = [
   { name: 'Offer', href: '#', current: false },
   { name: 'Disqualified', href: '#', current: false },
 ];
-const candidates = [
-  {
-    name: 'Emily Selman',
-    email: 'emily.selman@example.com',
-    imageUrl:
-      'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    applied: 'January 7, 2020',
-    appliedDatetime: '2020-07-01T15:34:56',
-    status: 'Completed phone screening',
-  },
-  // More candidates...
-];
+
 const publishingOptions = [
   {
     name: 'Published',
@@ -144,33 +131,49 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                 {group?.name}
               </h1>
               <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-8">
-                <div className="mt-2 flex items-center text-sm text-gray-500">
-                  <BriefcaseIcon
+                <div
+                  className="mt-2 flex items-center text-sm text-gray-500"
+                  title="Link da comunidade"
+                  aria-label="Link da comunidade"
+                >
+                  <LinkIcon
                     className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                     aria-hidden="true"
                   />
-                  Full-time
+                  {group?.slug}
                 </div>
-                <div className="mt-2 flex items-center text-sm text-gray-500">
+                <div
+                  className="mt-2 flex items-center text-sm text-gray-500"
+                  title="Eventos onlines"
+                  aria-label="Eventos onlines"
+                >
                   <MapPinIcon
                     className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                     aria-hidden="true"
                   />
-                  Remote
+                  Online
                 </div>
-                <div className="mt-2 flex items-center text-sm text-gray-500">
-                  <CurrencyDollarIcon
+                <div
+                  className="mt-2 flex items-center text-sm text-gray-500"
+                  title="Quantidade de seguidores"
+                  aria-label="Quantidade de seguidores"
+                >
+                  <UserGroupIcon
                     className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                     aria-hidden="true"
                   />
-                  $120k &ndash; $140k
+                  104
                 </div>
-                <div className="mt-2 flex items-center text-sm text-gray-500">
+                <div
+                  className="mt-2 flex items-center text-sm text-gray-500"
+                  title="Data da criação da comunidade"
+                  aria-label="Data da criação da comunidade"
+                >
                   <CalendarIcon
                     className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                     aria-hidden="true"
                   />
-                  Closing on January 9, 2020
+                  {formatWeekYear(group?.createdAt)}
                 </div>
               </div>
             </div>
@@ -377,7 +380,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                 </select>
               </div>
               <Tab.Group as="div">
-                <div className="hidden border-b border-gray-200 sm:block">
+                <div className="flex items-center justify-between border-b border-gray-200">
                   <Tab.List className="-mb-px flex space-x-8">
                     <Tab
                       className={({ selected }) =>
@@ -416,6 +419,22 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                       Mensagens
                     </Tab>
                   </Tab.List>
+                  <Link href={`/my-communities/${identifier}/my-events/create`}>
+                    <Button
+                      aria-label="Criar evento"
+                      className="items-center"
+                      style={{ display: 'flex' }}
+                      icon={<PlusOutlined />}
+                      size="large"
+                      shape="round"
+                      type="primary"
+                      title="Criar evento"
+                    >
+                      <span className="flex items-center gap-2">
+                        <span className="hidden md:flex">Criar evento</span>
+                      </span>
+                    </Button>
+                  </Link>
                 </div>
                 <Tab.Panels as={Fragment}>
                   <Tab.Panel className="mb-10">

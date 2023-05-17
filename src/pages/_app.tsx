@@ -8,10 +8,13 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { AppProps } from 'next/app';
+import dayjs from 'dayjs';
+import ptbr from 'dayjs/locale/pt-br';
 import 'react-toastify/dist/ReactToastify.min.css';
 import withTheme from '@/theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  dayjs.locale(ptbr);
   const [queryClient] = React.useState(
     () =>
       new QueryClient({

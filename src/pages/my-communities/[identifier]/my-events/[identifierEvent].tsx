@@ -10,6 +10,7 @@ export default function MyEventsUpdate({
   identifier,
   identifierEvent,
 }: MyEventsUpdateProps) {
+  console.log(identifier, identifierEvent);
   return (
     <FormEvent
       identifier={identifier + ''}
