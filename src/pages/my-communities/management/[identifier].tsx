@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { Fragment, useState } from 'react';
 import { Disclosure, Listbox, Menu, Transition } from '@headlessui/react';
+import type { DrawerProps, RadioChangeEvent } from 'antd';
 import {
   ArrowLongLeftIcon,
   ArrowLongRightIcon,
@@ -21,13 +22,27 @@ import {
 import { Tab } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import MainContainer from '@/containers/MainContainer';
-import { useQuery } from 'react-query';
-import { findByIdentifierGroup } from '@/services/group';
-import { EventsList } from '@/components/EventsList';
+import { useMutation, useQuery } from 'react-query';
+import {
+  deleteGroup,
+  findByIdentifierGroup,
+  publishGroup,
+} from '@/services/group';
 import Link from 'next/link';
-import { Button } from 'antd';
+import { Button, Drawer, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { formatWeekYear } from '@/shared/utils/transforms/dates';
+import {
+  ToggleOptions,
+  ToggleStatus,
+  ToggleStatusEnum,
+} from '@/components/ToggleStatus';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
+import { EventsListByGroup } from '@/components/EventsListByCommunity';
+import { FollowersByCommunity } from '@/components/FollowersByCommunity';
+import { CommentsByCommunity } from '@/components/CommentsByCommunity';
+import PreviewCommunity from '@/components/PreviewCommunity';
 
 const tabs = [
   { name: 'Applied', href: '#', count: '2', current: false },
@@ -37,18 +52,31 @@ const tabs = [
   { name: 'Disqualified', href: '#', current: false },
 ];
 
-const publishingOptions = [
-  {
-    name: 'Published',
-    description: 'This job posting can be viewed by anyone who has the link.',
-    current: true,
+const statusOptions: ToggleOptions = {
+  published: {
+    name: 'Publicado',
+    action: 'Publicar',
+    description:
+      'Essa comunidade está publicada e visivel para na plataforma para qualquer usuário.',
   },
-  {
-    name: 'Draft',
-    description: 'This job posting will no longer be publicly accessible.',
-    current: false,
+  draft: {
+    name: 'Rascunho',
+    action: 'Rascunho',
+    description:
+      'Essa comunidade está em rascunho e está visiavel apenas para o seu administrador',
   },
-];
+  delete: {
+    name: 'Excluído',
+    action: 'Excluir',
+    description:
+      'Essa comunidade será excluída e todas suas informação serão apagadas.',
+  },
+  loading: {
+    name: 'Carregando...',
+    action: 'Carregando...',
+    description: 'Carregando...',
+  },
+};
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
@@ -59,13 +87,30 @@ interface ManagementGroupProps {
 }
 
 export default function ManagementGroup({ identifier }: ManagementGroupProps) {
-  const [selected, setSelected] = useState(publishingOptions[0]);
+  const router = useRouter();
+  const [isOpenModalPublished, setIsOpenModalPublished] = useState(false);
+  const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [placement, setPlacement] = useState<DrawerProps['placement']>('left');
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  const onChange = (e: RadioChangeEvent) => {
+    setPlacement(e.target.value);
+  };
 
   const {
     isLoading,
     error,
     data: group,
     isFetching,
+    refetch: refetchGroup,
   } = useQuery(
     [`my-communities-management${identifier}`],
     () => findByIdentifierGroup(identifier),
@@ -74,6 +119,63 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
       refetchOnWindowFocus: false,
     }
   );
+
+  const { mutate: mutatePublishGroup, isLoading: mutatePublishGroupLoading } =
+    useMutation(publishGroup, {
+      onError: (error, variables, context: any) => {
+        console.log(error);
+        console.log(`onError`);
+      },
+      onSuccess: (data, variables, context) => {
+        refetchGroup();
+        toast.success(`Comunidade publicada com sucesso!`);
+      },
+      onSettled: (data, error, variables, context) => {
+        // Error or success... doesn't matter!
+        setIsOpenModalPublished(false);
+      },
+    });
+
+  const { mutate: mutateDeleteGroup, isLoading: mutateDeleteGroupLoading } =
+    useMutation(deleteGroup, {
+      onError: (error, variables, context: any) => {
+        console.log(error);
+        console.log(`onError`);
+      },
+      onSuccess: (data, variables, context) => {
+        router.push('/my-communities');
+        toast.success(`Comunidade excluída com sucesso!`);
+      },
+      onSettled: (data, error, variables, context) => {
+        // Error or success... doesn't matter!
+        setIsOpenModalDelete(false);
+      },
+    });
+
+  const handleToggleStatus = (status: ToggleStatusEnum) => {
+    console.log(status);
+    if (status === ToggleStatusEnum.PUBLISHED) {
+      setIsOpenModalPublished(true);
+      return;
+    }
+
+    if (status === ToggleStatusEnum.DELETE) {
+      setIsOpenModalDelete(true);
+      return;
+    }
+  };
+
+  const handleCancelModalPublished = () => {
+    if (!mutatePublishGroupLoading) {
+      setIsOpenModalPublished(false);
+    }
+  };
+
+  const handleCancelModalDelete = () => {
+    if (!mutateDeleteGroupLoading) {
+      setIsOpenModalDelete(false);
+    }
+  };
 
   return (
     <MainContainer classNameMain="pt-0 pb-10">
@@ -176,10 +278,20 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                   {formatWeekYear(group?.createdAt)}
                 </div>
               </div>
+              <div className="mt-1 flex flex-col sm:mt-4 sm:flex-wrap ">
+                <div
+                  className="mt-2 flex items-center text-sm text-gray-500"
+                  title="Eventos onlines"
+                  aria-label="Eventos onlines"
+                >
+                  Descrição da comunidade
+                </div>
+                <div className="max-w-2xl">{group?.description}</div>
+              </div>
             </div>
             <div className="mt-5 flex xl:mt-0 xl:ml-4">
               <span className="hidden sm:block">
-                <a
+                <Link
                   href={`/my-communities/${identifier}`}
                   type="button"
                   className="inline-flex items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
@@ -188,12 +300,13 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                     className="-ml-1 mr-2 h-5 w-5 text-gray-400"
                     aria-hidden="true"
                   />
-                  Edit
-                </a>
+                  Editar
+                </Link>
               </span>
 
               <span className="ml-3 hidden sm:block">
                 <button
+                  onClick={() => showDrawer()}
                   type="button"
                   className="inline-flex items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                 >
@@ -201,115 +314,29 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                     className="-ml-1 mr-2 h-5 w-5 text-gray-400"
                     aria-hidden="true"
                   />
-                  View
+                  Prévia
                 </button>
               </span>
 
-              <Listbox
-                as="div"
-                value={selected}
-                onChange={setSelected}
-                className="sm:ml-3"
-              >
-                {({ open }) => (
-                  <>
-                    <Listbox.Label className="sr-only rounded-full">
-                      Change published status
-                    </Listbox.Label>
-                    <div className="relative">
-                      <div className="inline-flex divide-x divide-blue-600 rounded-full shadow-sm">
-                        <div className="inline-flex divide-x divide-blue-600 rounded-md shadow-sm">
-                          <div className="inline-flex items-center rounded-l-full border border-transparent bg-blue-500 py-2 pl-3 pr-4 text-white shadow-sm">
-                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                            <p className="ml-2.5 text-sm font-medium">
-                              {selected.name}
-                            </p>
-                          </div>
-                          <Listbox.Button className="inline-flex items-center rounded-r-full bg-blue-500 p-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50">
-                            <span className="sr-only">
-                              Change published status
-                            </span>
-                            <ChevronDownIcon
-                              className="h-5 w-5 text-white"
-                              aria-hidden="true"
-                            />
-                          </Listbox.Button>
-                        </div>
-                      </div>
-
-                      <Transition
-                        show={open}
-                        as={Fragment}
-                        leave="transition ease-in duration-100"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                      >
-                        <Listbox.Options className="absolute left-0 z-10 mt-2 -mr-1 w-72 origin-top-right divide-y divide-gray-200 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:left-auto sm:right-0">
-                          {publishingOptions.map((option) => (
-                            <Listbox.Option
-                              key={option.name}
-                              className={({ active }) =>
-                                classNames(
-                                  active
-                                    ? 'bg-blue-500 text-white'
-                                    : 'text-gray-900',
-                                  'cursor-default select-none p-4 text-sm'
-                                )
-                              }
-                              value={option}
-                            >
-                              {({ selected, active }) => (
-                                <div className="flex flex-col">
-                                  <div className="flex justify-between">
-                                    <p
-                                      className={
-                                        selected
-                                          ? 'font-semibold'
-                                          : 'font-normal'
-                                      }
-                                    >
-                                      {option.name}
-                                    </p>
-                                    {selected ? (
-                                      <span
-                                        className={
-                                          active
-                                            ? 'text-white'
-                                            : 'text-blue-500'
-                                        }
-                                      >
-                                        <CheckIcon
-                                          className="h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      </span>
-                                    ) : null}
-                                  </div>
-                                  <p
-                                    className={classNames(
-                                      active
-                                        ? 'text-blue-200'
-                                        : 'text-gray-500',
-                                      'mt-2'
-                                    )}
-                                  >
-                                    {option.description}
-                                  </p>
-                                </div>
-                              )}
-                            </Listbox.Option>
-                          ))}
-                        </Listbox.Options>
-                      </Transition>
-                    </div>
-                  </>
-                )}
-              </Listbox>
+              <ToggleStatus
+                status={
+                  group?.isPublised
+                    ? ToggleStatusEnum.PUBLISHED
+                    : ToggleStatusEnum.DRAFT
+                }
+                isLoading={
+                  mutatePublishGroupLoading || mutateDeleteGroupLoading
+                }
+                toggleOptions={statusOptions}
+                handleOnChange={(status: ToggleStatusEnum) =>
+                  handleToggleStatus(status)
+                }
+              />
 
               {/* Dropdown */}
               <Menu as="div" className="relative ml-3 sm:hidden">
                 <Menu.Button className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                  More
+                  Mais
                   <ChevronDownIcon
                     className="-mr-1 ml-2 h-5 w-5 text-gray-500"
                     aria-hidden="true"
@@ -328,15 +355,19 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                   <Menu.Items className="absolute right-0 z-10 mt-2 -mr-1 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <Menu.Item>
                       {({ active }) => (
-                        <a
-                          href="#"
+                        <Link
+                          href={`/my-communities/${identifier}`}
                           className={classNames(
                             active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
+                            'flex px-4 py-2 text-sm text-gray-700'
                           )}
                         >
-                          Edit
-                        </a>
+                          <PencilIcon
+                            className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          Editar
+                        </Link>
                       )}
                     </Menu.Item>
                     <Menu.Item>
@@ -348,7 +379,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                             'block px-4 py-2 text-sm text-gray-700'
                           )}
                         >
-                          View
+                          Prévia
                         </a>
                       )}
                     </Menu.Item>
@@ -362,23 +393,28 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
         <main className="pt-8 pb-16">
           <div className="container mx-auto sm:px-6 lg:px-8">
             <div className="px-4 sm:px-0">
-              <h2 className="text-lg font-medium text-gray-900">Candidates</h2>
-              <div className="sm:hidden">
-                <label htmlFor="tabs" className="sr-only">
-                  Select a tab
-                </label>
-                {/* Use an "onChange" listener to redirect the user to the selected tab URL. */}
-                <select
-                  id="tabs"
-                  name="tabs"
-                  className="mt-4 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
-                  defaultValue={tabs.find((tab) => tab?.current)?.name}
+              <h2 className="flex items-center gap-2 text-lg font-medium text-gray-900">
+                <div>Gerencie sua comunidade </div>
+                <Link
+                  className="flex md:hidden"
+                  href={`/my-communities/${identifier}/my-events/create`}
                 >
-                  {tabs.map((tab) => (
-                    <option key={tab.name}>{tab.name}</option>
-                  ))}
-                </select>
-              </div>
+                  <Button
+                    aria-label="Criar evento"
+                    className="items-center"
+                    style={{ display: 'flex' }}
+                    icon={<PlusOutlined />}
+                    size="small"
+                    shape="round"
+                    type="primary"
+                    title="Criar evento"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span>Evento</span>
+                    </span>
+                  </Button>
+                </Link>
+              </h2>
               <Tab.Group as="div">
                 <div className="flex items-center justify-between border-b border-gray-200">
                   <Tab.List className="-mb-px flex space-x-8">
@@ -404,7 +440,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                         )
                       }
                     >
-                      Participantes
+                      Seguidores
                     </Tab>
                     <Tab
                       className={({ selected }) =>
@@ -416,10 +452,13 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                         )
                       }
                     >
-                      Mensagens
+                      Comentários
                     </Tab>
                   </Tab.List>
-                  <Link href={`/my-communities/${identifier}/my-events/create`}>
+                  <Link
+                    className="hidden md:flex"
+                    href={`/my-communities/${identifier}/my-events/create`}
+                  >
                     <Button
                       aria-label="Criar evento"
                       className="items-center"
@@ -438,16 +477,90 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                 </div>
                 <Tab.Panels as={Fragment}>
                   <Tab.Panel className="mb-10">
-                    <EventsList groupUUID={identifier} />
+                    <EventsListByGroup groupUUID={identifier} />
                   </Tab.Panel>
-                  <Tab.Panel className="mb-10">no content</Tab.Panel>
-                  <Tab.Panel className="mb-10">mensagem</Tab.Panel>
+                  <Tab.Panel className="mb-10">
+                    <FollowersByCommunity groupUUID={identifier} />
+                  </Tab.Panel>
+                  <Tab.Panel className="mb-10">
+                    <CommentsByCommunity groupUUID={identifier} />
+                  </Tab.Panel>
                 </Tab.Panels>
               </Tab.Group>
             </div>
           </div>
         </main>
       </div>
+      <Modal
+        title="Publicar comunidade ?"
+        open={isOpenModalPublished}
+        maskClosable={false}
+        onOk={() => mutatePublishGroup(group.uuid)}
+        onCancel={handleCancelModalPublished}
+        okButtonProps={{
+          shape: 'round',
+          size: 'large',
+          loading: mutatePublishGroupLoading,
+        }}
+        cancelButtonProps={{
+          size: 'large',
+          type: 'text',
+          disabled: mutatePublishGroupLoading,
+        }}
+        okText="Publicar"
+        cancelText="Cancelar"
+      >
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </Modal>
+      <Modal
+        title="Excluir comunidade ?"
+        open={isOpenModalDelete}
+        maskClosable={false}
+        onOk={() => mutateDeleteGroup(group.uuid)}
+        onCancel={() => handleCancelModalDelete()}
+        okButtonProps={{
+          shape: 'round',
+          size: 'large',
+          danger: true,
+          loading: mutateDeleteGroupLoading,
+        }}
+        cancelButtonProps={{
+          size: 'large',
+          type: 'text',
+          disabled: mutateDeleteGroupLoading,
+        }}
+        okText="Excluir"
+        cancelText="Cancelar"
+      >
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </Modal>
+      <Drawer
+        title="Prévia da tela da comunidade"
+        placement="bottom"
+        closable={true}
+        onClose={onClose}
+        open={open}
+        key={placement}
+        height="100vh"
+      >
+        {group && <PreviewCommunity group={group} isFollower />}
+      </Drawer>
     </MainContainer>
   );
 }

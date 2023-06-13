@@ -1,5 +1,8 @@
 import React from 'react';
 import { ConfigProvider } from 'antd';
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br';
+import locale from 'antd/locale/pt_BR';
 
 const fontFamily =
   'Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji';
@@ -10,6 +13,7 @@ const colorPrimary = '#2563eb';
 const withTheme = (node: JSX.Element) => (
   <>
     <ConfigProvider
+      locale={locale}
       theme={{
         token: {
           wireframe: false,
@@ -28,6 +32,7 @@ const withTheme = (node: JSX.Element) => (
             fontFamily: fontFamily,
             controlItemBgHover: colorBgHover,
             borderRadiusLG: 6,
+            colorBgContainer: '#F9FAFB',
           },
           Pagination: {
             borderRadius: borderRadius,
@@ -51,6 +56,7 @@ const withTheme = (node: JSX.Element) => (
           },
           Typography: {
             fontFamilyCode: fontFamily,
+            
           },
           Breadcrumb: {
             fontFamily: fontFamily,
@@ -74,6 +80,7 @@ const withTheme = (node: JSX.Element) => (
             fontFamily: fontFamily,
             borderRadius: 6,
             borderRadiusLG: 6,
+            colorBgContainer: '#F9FAFB',
           },
           InputNumber: {
             colorPrimaryHover: colorPrimary,

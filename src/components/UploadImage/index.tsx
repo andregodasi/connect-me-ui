@@ -1,21 +1,8 @@
 import React, { useState } from 'react';
 import ImgCrop from 'antd-img-crop';
-import {
-  Button,
-  Card,
-  Form,
-  Image as ImagePreview,
-  Input,
-  Radio,
-  Upload,
-  Typography,
-} from 'antd';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
-import {
-  DeleteOutlined,
-  InboxOutlined,
-  InfoCircleOutlined,
-} from '@ant-design/icons';
+import { Button, Card, Image as ImagePreview, Upload, Typography } from 'antd';
+import type { RcFile, UploadFile } from 'antd/es/upload/interface';
+import { DeleteOutlined, InboxOutlined } from '@ant-design/icons';
 import { AspectRatio } from '@/shared/enums/aspect-ratio.enum';
 
 const { Text, Paragraph } = Typography;

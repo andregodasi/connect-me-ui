@@ -27,7 +27,7 @@ export function CommunitiesSummary({
       <div className="flow-root">
         <ul role="list">
           {communities?.map((community) => (
-            <li>
+            <li key={community.uuid}>
               <div className="px-4 sm:px-8">
                 <hr />
               </div>

@@ -28,7 +28,7 @@ export default function Communities() {
     isFetching,
   } = useQuery(
     ['DashboardCommunities', pageOptions],
-    () => getPaginatedGroups(pageOptions.page),
+    () => getPaginatedGroups(pageOptions),
     { staleTime: Infinity }
   );
 
@@ -176,7 +176,6 @@ export default function Communities() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const apiClient = getAPIClient(ctx);
   const { ['connect.token']: token } = parseCookies(ctx);
 
   if (!token) {
@@ -187,8 +186,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     };
   }
-
-  const news: any = await apiClient.get('/me');
 
   return {
     props: {},

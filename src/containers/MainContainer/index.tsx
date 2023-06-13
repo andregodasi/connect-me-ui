@@ -19,6 +19,9 @@ import {
 } from '@heroicons/react/20/solid';
 import { LogoConnectMe } from '@/components/LogoConnectMe';
 import { IconConnectMe } from '@/components/IconConnectMe';
+import Link from 'next/link';
+import { Avatar } from 'antd';
+import { getInitials } from '@/shared/utils/transforms/text';
 
 const userData = {
   name: 'Whitney Francis',
@@ -29,19 +32,12 @@ const userData = {
 const navigation = [
   { name: 'Eventos', href: '/' },
   { name: 'Comunidades', href: '/communities' },
-  { name: 'Novidades', href: '#' },
+  { name: 'Novidades', href: '/news' },
 ];
 const breadcrumbs = [
   { name: 'Jobs', href: '#', current: false },
   { name: 'Front End Developer', href: '#', current: false },
   { name: 'Applicants', href: '#', current: true },
-];
-const userNavigation = [
-  { name: 'Perfil', href: '#' },
-  { name: 'Configurações', href: '#' },
-  { name: 'Minhas comunidades', href: '/my-communities' },
-  { name: 'Meus eventos', href: '/my-events' },
-  { name: 'Sair', href: '#' },
 ];
 
 function classNames(...classes: any[]) {
@@ -57,11 +53,15 @@ export default function MainContainer({
   children,
   classNameMain = '',
 }: MainContainerProps) {
-  const { user } = useContext(AuthContext);
+  const { user, signOut } = useContext(AuthContext);
 
-  useEffect(() => {
-    // api.get('/users');
-  }, []);
+  const userNavigation = [
+    { name: 'Perfil', href: '/profile' },
+    { name: 'Configurações', href: '#' },
+    { name: 'Minhas comunidades', href: '/my-communities' },
+    { name: 'Meus eventos', href: '/my-events' },
+    { name: 'Sair', href: '#', action: signOut },
+  ];
 
   return (
     <>
@@ -71,23 +71,23 @@ export default function MainContainer({
             <Popover className="flex h-16 justify-between">
               <div className="flex px-2 lg:px-0">
                 <div className="flex flex-shrink-0 items-center">
-                  <a href="/">
+                  <Link href="/">
                     <LogoConnectMe className="hidden h-10 w-auto md:block" />
                     <IconConnectMe className="h-10 w-auto md:hidden" />
-                  </a>
+                  </Link>
                 </div>
                 <nav
                   aria-label="Global"
                   className="hidden lg:ml-6 lg:flex lg:items-center lg:space-x-4"
                 >
                   {navigation.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
                       href={item.href}
                       className="px-3 py-2 text-sm font-medium text-gray-900"
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </nav>
               </div>
@@ -168,24 +168,38 @@ export default function MainContainer({
                           </div>
                           <div className="mt-3 space-y-1 px-2">
                             {navigation.map((item) => (
-                              <a
+                              <Link
                                 key={item.name}
                                 href={item.href}
                                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
                               >
                                 {item.name}
-                              </a>
+                              </Link>
                             ))}
                           </div>
                         </div>
                         <div className="pt-4 pb-2">
                           <div className="flex items-center px-5">
                             <div className="flex-shrink-0">
-                              <img
-                                className="h-10 w-10 rounded-full"
-                                src={userData.imageUrl}
-                                alt=""
-                              />
+                              {user?.photoUrl ? (
+                                <img
+                                  className="h-10 w-10 rounded-full"
+                                  src={user.photoUrl}
+                                  alt="Sua imagem de perfil"
+                                />
+                              ) : (
+                                <Avatar
+                                  className="border-2 shadow"
+                                  style={{
+                                    backgroundColor: '#e9effd',
+                                    color: '#2563eb',
+                                    borderColor: '#2563eb',
+                                    fontWeight: 600,
+                                  }}
+                                >
+                                  {getInitials(user?.name)}
+                                </Avatar>
+                              )}
                             </div>
                             <div className="ml-3">
                               <div className="text-base font-medium text-gray-800">
@@ -210,13 +224,16 @@ export default function MainContainer({
                           </div>
                           <div className="mt-3 space-y-1 px-2">
                             {userNavigation.map((item) => (
-                              <a
+                              <Link
                                 key={item.name}
                                 href={item.href}
+                                onClick={() => {
+                                  item?.action ? item.action() : null;
+                                }}
                                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
                               >
                                 {item.name}
-                              </a>
+                              </Link>
                             ))}
                           </div>
                         </div>
@@ -239,11 +256,25 @@ export default function MainContainer({
                   <div>
                     <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                       <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src={userData.imageUrl}
-                        alt=""
-                      />
+                      {user?.photoUrl ? (
+                        <img
+                          className="h-10 w-10 rounded-full"
+                          src={user.photoUrl}
+                          alt="Sua imagem de perfil"
+                        />
+                      ) : (
+                        <Avatar
+                          className="border-2 shadow"
+                          style={{
+                            backgroundColor: '#e9effd',
+                            color: '#2563eb',
+                            borderColor: '#2563eb',
+                            fontWeight: 600,
+                          }}
+                        >
+                          {getInitials(user?.name)}
+                        </Avatar>
+                      )}
                     </Menu.Button>
                   </div>
                   <Transition
@@ -259,15 +290,18 @@ export default function MainContainer({
                       {userNavigation.map((item) => (
                         <Menu.Item key={item.name}>
                           {({ active }) => (
-                            <a
+                            <Link
                               href={item.href}
+                              onClick={() => {
+                                item?.action ? item.action() : null;
+                              }}
                               className={classNames(
                                 active ? 'bg-gray-100' : '',
                                 'block px-4 py-2 text-sm text-gray-700'
                               )}
                             >
                               {item.name}
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                       ))}
@@ -338,7 +372,7 @@ export default function MainContainer({
           </div> */}
         </header>
 
-        <main className={`py-10 ${classNameMain}`}>{children}</main>
+        <main className={`py-2 md:py-10 ${classNameMain}`}>{children}</main>
       </div>
     </>
   );

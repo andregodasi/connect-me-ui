@@ -1,16 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import {
   CheckCircleIcon,
-  ChevronRightIcon,
-  EnvelopeIcon,
-  ArchiveBoxIcon as ArchiveBoxIconMini,
-  ArrowUturnLeftIcon,
-  ChevronDownIcon,
-  FolderArrowDownIcon,
   PencilIcon,
-  UserPlusIcon,
-  PlusSmallIcon,
-  ChevronUpIcon,
   CalendarDaysIcon,
   UserGroupIcon,
   FlagIcon,
@@ -25,9 +16,6 @@ import { formatWeekDateTime } from '@/shared/utils/transforms/dates';
 import { Button } from 'antd';
 import Link from 'next/link';
 import { RightOutlined } from '@ant-design/icons';
-function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(' ');
-}
 
 const initPageOptions: PageOptions = { page: 1 };
 
@@ -35,19 +23,7 @@ interface EventsListProps {
   groupUUID: string;
 }
 
-export const EventsList: React.FC<EventsListProps> = ({ groupUUID }) => {
-  const candidates = [
-    {
-      name: 'Emily Selman',
-      email: 'emily.selman@example.com',
-      imageUrl:
-        'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      applied: 'January 7, 2020',
-      appliedDatetime: '2020-07-01T15:34:56',
-      status: 'Completed phone screening',
-    },
-    // More candidates...
-  ];
+export const EventsListByGroup: React.FC<EventsListProps> = ({ groupUUID }) => {
   const [eventPage, setEventPage] = useState<Event[]>([]);
   const [pageOptions, setPageOptions] = useState<PageOptions>(initPageOptions);
   const {
@@ -56,7 +32,7 @@ export const EventsList: React.FC<EventsListProps> = ({ groupUUID }) => {
     data: dataPage,
     isFetching,
   } = useQuery(
-    ['DashboardEvents', pageOptions],
+    ['EventsListByGroup', pageOptions],
     () => getPaginatedMyEventsByGroup(pageOptions.page, groupUUID),
     { staleTime: Infinity }
   );
@@ -75,7 +51,7 @@ export const EventsList: React.FC<EventsListProps> = ({ groupUUID }) => {
   };
   return (
     <div>
-      <div className="mx-auto max-w-7xl">
+      <div className="container mx-auto">
         <div className="mt-8 flow-root">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -165,7 +141,7 @@ export const EventsList: React.FC<EventsListProps> = ({ groupUUID }) => {
                               <div className="font-medium text-gray-900">
                                 {name}
                               </div>
-                              <div className="mt-1 text-gray-500">
+                              <div className="ellipis-4 mt-1 text-gray-500 min-w-[10rem]">
                                 {description}
                               </div>
                             </div>
@@ -215,7 +191,7 @@ export const EventsList: React.FC<EventsListProps> = ({ groupUUID }) => {
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Link
-                              href={`/my-communities/${groupUUID}/my-events/${uuid}`}
+                              href={`/my-communities/${groupUUID}/my-events/management/${uuid}`}
                             >
                               <Button
                                 type="link"

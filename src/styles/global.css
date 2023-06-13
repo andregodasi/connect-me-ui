@@ -93,6 +93,16 @@ a {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  white-space: pre-wrap;
+}
+
+.ellipis-4 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  white-space: pre-wrap;
 }
 
 .uploader__image-cropper__clip img {
@@ -116,11 +126,79 @@ a {
 }
 
 /* ======================== Begin Ant Design ======================== */
+
 /* ======================== Begin Input ======================== */
+.ant-input:hover {
+  border-color: inherit;
+}
+
 .ant-input:focus,
 .ant-input-focused {
+  background-color: #fff;
+  border-color: #2563eb;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
 }
 
 /* ======================== End Input ======================== */
+
+/* ======================== Begin Input ======================== */
+.ant-picker:hover {
+  border-color: inherit;
+}
+
+.ant-picker:focus,
+.ant-picker-focused {
+  background-color: #fff;
+  border-color: #2563eb !important;
+  box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px, rgb(37, 99, 235) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px;
+}
+
+/* ======================== End Input ======================== */
+
+/* ======================== Begin Label ======================== */
+.ant-form-item-label {
+  font-weight: 500;
+}
+
+/* ======================== End label ======================== */
+
+/* ======================== Begin Button ======================== */
+.ant-btn {
+  font-weight: 600;
+}
+
+/* ======================== End button ======================== */
+
+/* ======================== Begin Range Date picker======================== */
+@media(max-width: 768px) {
+  .popup-range-date-picker .ant-picker-panels .ant-picker-panel:nth-child(2) {
+    display: none !important;
+  }
+
+  .popup-range-date-picker .ant-picker-panels .ant-picker-panel:first-child .ant-picker-header-next-btn {
+    visibility: visible !important;
+  }
+
+  .popup-range-date-picker .ant-picker-panels .ant-picker-panel:first-child .ant-picker-header-super-next-btn {
+    visibility: visible !important;
+  }
+
+}
+
+
+/* ======================== End Range Date picker ======================== */
+
+/* ======================== Begin Collapse======================== */
+.collapse .ant-collapse-item-active .ant-collapse-header-text {
+  color: #2563eb !important;
+}
+
+.collapse div.ant-collapse-header {
+  padding: 0px !important;
+  font-weight: 500;
+}
+
+
+/* ======================== End Collapse ======================== */
+
 /* ======================== End Ant Design ======================== */

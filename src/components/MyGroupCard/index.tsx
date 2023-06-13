@@ -14,16 +14,13 @@ export function MyGroupCard({
   name,
   description,
   coverUrl,
-  isAdmin = false,
 }: MyGroupCardProps) {
   return (
     <div className="relative flex h-full flex-col justify-between rounded-lg shadow">
       <a
         className="absolute top-0 right-0 left-0 bottom-0"
         href={`/communities/${uuid}`}
-      >
-        {' '}
-      </a>
+      ></a>
       <div className="aspect-w-10 aspect-h-7 group block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
         <img
           src={coverUrl}
@@ -45,16 +42,14 @@ export function MyGroupCard({
           </p>
         </div>
         <div className="mt-4 flex flex-col justify-start gap-4 md:flex-row">
-          {isAdmin && (
-            <Button
-              href={`/my-communities/management/${uuid}`}
-              type="button"
-              variant="solid"
-              color="blue"
-            >
-              Gerenciar
-            </Button>
-          )}
+          <Button
+            href={`/my-communities/management/${uuid}`}
+            type="button"
+            variant="solid"
+            color="blue"
+          >
+            Gerenciar
+          </Button>
 
           <Button
             href={`/my-communities/${uuid}`}

@@ -5,6 +5,7 @@ import {
 } from '@/shared/interfaces/IGroup';
 import { Page } from '@/shared/interfaces/IPage';
 import { api } from './api';
+import { Follower } from '@/shared/interfaces/IFollower';
 
 export async function saveGroup(groupForm: GroupForm) {
   if (groupForm.uuid) {
@@ -50,4 +51,21 @@ export async function followGrpup(groupUUID: string) {
 
 export async function unfollowGroup(groupUUID: string) {
   return api.delete(`/group/unfollow/${groupUUID}`);
+}
+
+export async function publishGroup(groupUUID: string) {
+  return api.put(`group/${groupUUID}/publish`);
+}
+
+export async function deleteGroup(groupUUID: string) {
+  return api.delete(`/group/${groupUUID}`);
+}
+
+export async function getPaginatedMyCommentsByMyGroup(
+  page: number,
+  groudUUID: string
+): Promise<Page<Comment>> {
+  return api
+    .get<Page<Comment>>(`/group/${groudUUID}/comment/paginated/?page=${page}`)
+    .then((res) => res.data);
 }

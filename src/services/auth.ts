@@ -7,9 +7,10 @@ type SignInRequestData = {
 };
 
 type User = {
+  uuid: string;
   name: string;
   email: string;
-  avatar_url: string;
+  photoUrl: string;
 };
 
 export async function signInRequest(data: SignInRequestData) {

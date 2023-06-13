@@ -1,21 +1,21 @@
+import { Group } from '@/shared/interfaces/IGroup';
 import React from 'react';
 
-const GroupCard: React.FC = ({
+const GroupCard: React.FC<Group> = ({
   uuid,
-  current,
   name,
   description,
   users,
-  coverUrl = 'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-}: any) => {
+  coverUrl,
+}) => {
   return (
     <a
       href={`/communities/${uuid}`}
       title="Clique para ver todas as informações!"
-      className="w-full max-w-sm transition hover:shadow lg:flex lg:max-w-full"
+      className="w-full max-w-sm transition hover:shadow lg:flex lg:max-w-full "
     >
       <div
-        className="h-48 flex-none overflow-hidden rounded-t bg-cover bg-center lg:h-auto lg:w-48 lg:rounded-t-none lg:rounded-l"
+        className="h-48 flex-none overflow-hidden rounded-t bg-cover bg-center lg:h-auto lg:w-48 lg:rounded-t-none lg:rounded-l border  border-gray-400"
         title="Woman holding a mug"
         style={{ backgroundImage: `url(${coverUrl})` }}
       ></div>
