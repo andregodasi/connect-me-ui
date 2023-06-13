@@ -1,8 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
-import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../../contexts/AuthContext';
-import { getAPIClient } from '../../services/axios';
+import { useEffect, useState } from 'react';
 import MainContainer from '@/containers/MainContainer';
 import {
   Squares2X2Icon as ViewGridIconSolid,
@@ -18,24 +16,23 @@ import GroupCard from '@/components/GroupCard';
 const initPageOptions: PageOptions = { page: 1 };
 
 export default function Communities() {
-  const { user } = useContext(AuthContext);
   const [groupList, setGroupList] = useState<Group[]>([]);
   const [pageOptions, setPageOptions] = useState<PageOptions>(initPageOptions);
   const {
     isLoading,
-    error,
     data: dataPage,
     isFetching,
   } = useQuery(
     ['DashboardCommunities', pageOptions],
     () => getPaginatedGroups(pageOptions),
-    { staleTime: Infinity }
+    { staleTime: Infinity },
   );
 
   useEffect(() => {
     if (dataPage?.data) {
       setGroupList([...groupList, ...dataPage.data]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataPage]);
 
   const handleLoadMore = () => {
@@ -176,7 +173,7 @@ export default function Communities() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { ['connect.token']: token } = parseCookies(ctx);
+  const { 'connect.token': token } = parseCookies(ctx);
 
   if (!token) {
     return {

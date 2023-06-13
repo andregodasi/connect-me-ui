@@ -5,16 +5,10 @@ import { useQuery } from 'react-query';
 import { getMyGroups } from '@/services/group';
 import { Group } from '@/shared/interfaces/IGroup';
 import { MyGroupCard } from '@/components/MyGroupCard';
-import { Status } from '@/shared/enums/status.enum';
 import { Role } from '@/shared/enums/role.enum';
 
 export default function MyCommunities() {
-  const {
-    isLoading,
-    error,
-    data: groups,
-    isFetching,
-  } = useQuery(['MyGroups'], () => getMyGroups(), {
+  const { data: groups } = useQuery(['MyGroups'], () => getMyGroups(), {
     staleTime: Infinity,
   });
   return (
@@ -54,7 +48,7 @@ export default function MyCommunities() {
                   isAdmin={!!users?.find?.(({ role }) => role === Role.ADMIN)}
                 />
               </li>
-            )
+            ),
           )}
         </ul>
       </div>

@@ -3,17 +3,14 @@ import React from 'react';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { formatWeekDateTime } from '@/shared/utils/transforms/dates';
 import { CalendarDaysIcon } from '@heroicons/react/20/solid';
-
-interface EventCardProps {}
+import Image from 'next/future/image';
 
 const EventCard: React.FC = ({
-  current,
   uuid,
   name,
   description,
   initialDate,
   group,
-  users,
   coverUrl,
   isSubscribed,
 }: any) => {
@@ -55,7 +52,7 @@ const EventCard: React.FC = ({
           </p>
         </div>
         <div className="flex items-center">
-          <img
+          <Image
             className="mr-4 h-10 w-10 rounded-full border border-gray-400 object-cover"
             src={group?.coverUrl}
             alt="Avatar of Jonathan Reinink"

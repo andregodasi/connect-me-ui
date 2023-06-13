@@ -1,6 +1,5 @@
-import { Fragment, ReactNode, useState } from 'react';
+import { Fragment, ReactNode } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { CheckIcon } from '@heroicons/react/24/outline';
 
 interface ModalProps {
   isOpen: boolean;

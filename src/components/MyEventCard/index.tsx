@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '../Button';
-
+import Image from 'next/future/image';
+import placeholderImage from '@/images/screen-0.webp';
 interface MyEventCardProps {
   uuid: string;
   name: string;
@@ -11,8 +12,8 @@ export function MyEventCard({ uuid, name, description }: MyEventCardProps) {
   return (
     <div className="relative flex h-full flex-col justify-between rounded-lg shadow">
       <div className="aspect-w-10 aspect-h-7 group block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
-        <img
-          src="https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp"
+        <Image
+          src={placeholderImage}
           alt="community"
           className="max-h-[12rem] w-full object-cover group-hover:opacity-75"
         />

@@ -1,4 +1,4 @@
-import { PlusSmallIcon as PlusSmIconSolid } from '@heroicons/react/20/solid';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import MainContainer from '@/containers/MainContainer';
 import dayjs from 'dayjs';
@@ -6,7 +6,6 @@ import { EventForm } from '@/shared/interfaces/IEvent';
 import { useMutation, useQuery } from 'react-query';
 import { findByIdentifierEvent, saveEvent } from '@/services/event';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import type { RcFile } from 'antd/es/upload/interface';
 import {
   Button,
@@ -35,51 +34,42 @@ export const FormEvent: React.FC<{
   const [initialImage, setInitialImage] = useState('');
   const [isSubmited, setIsSubmited] = useState(false);
   const [form] = Form.useForm();
-  /* const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { isSubmitted, errors },
-  } = useForm<EventForm>(); */
-  const {
-    isLoading,
-    error,
-    data: event,
-    isFetching,
-  } = useQuery(['MyEvent'], () => findByIdentifierEvent(identifierEvent), {
-    enabled: !!identifierEvent,
-    staleTime: Infinity,
-    onSuccess(data) {
-      form.setFieldsValue({
-        name: data.name,
-        slug: data.slug,
-        description: data.description,
-        address: data.address,
-        limitParticipants: data.limitParticipants,
-        eventDate: [dayjs(data.initialDate), dayjs(data.finishDate)],
-      });
-      setInitialImage(data.coverUrl);
+
+  const { isLoading, isFetching } = useQuery(
+    ['MyEvent'],
+    () => findByIdentifierEvent(identifierEvent),
+    {
+      enabled: !!identifierEvent,
+      staleTime: Infinity,
+      onSuccess(data) {
+        form.setFieldsValue({
+          name: data.name,
+          slug: data.slug,
+          description: data.description,
+          address: data.address,
+          limitParticipants: data.limitParticipants,
+          eventDate: [dayjs(data.initialDate), dayjs(data.finishDate)],
+        });
+        setInitialImage(data.coverUrl);
+      },
+    },
+  );
+
+  const { mutate: mutateEvent } = useMutation(saveEvent, {
+    onError: (error) => {
+      console.log(error);
+      console.log(`onError`);
+    },
+    onSuccess: () => {
+      toast.success('Evento criado com sucesso!');
+      router.push(`/my-communities/management/${identifier}`);
+    },
+    onSettled: (data) => {
+      // Error or success... doesn't matter!
+      console.log(data);
+      console.log(`onSettled`);
     },
   });
-
-  const { mutate: mutateEvent, isLoading: mutateEventLoading } = useMutation(
-    saveEvent,
-    {
-      onError: (error, variables, context: any) => {
-        console.log(error);
-        console.log(`onError`);
-      },
-      onSuccess: (data, variables, context) => {
-        toast.success('Evento criado com sucesso!');
-        router.push(`/my-communities/management/${identifier}`);
-      },
-      onSettled: (data, error, variables, context) => {
-        // Error or success... doesn't matter!
-        console.log(data);
-        console.log(`onSettled`);
-      },
-    }
-  );
 
   async function handleSubmit(data: EventForm) {
     console.log(data);

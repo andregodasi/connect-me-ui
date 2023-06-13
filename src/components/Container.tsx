@@ -1,8 +1,9 @@
 import clsx from 'clsx';
+import React from 'react';
 
 interface ContainerProps {
   className?: string;
-  children?: JSX.Element;
+  children?: React.ReactNode;
 }
 
 export function Container({ className, ...props }: ContainerProps) {

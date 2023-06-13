@@ -10,10 +10,6 @@ import CommunityImg from '@/images/svg/community.svg';
 import SaveMoenyImg from '@/images/svg/save-money.svg';
 import ConferenceImg from '@/images/svg/conference.svg';
 import SecurityImg from '@/images/svg/security.svg';
-import screenshotExpenses from '@/images/screenshots/expenses.png';
-import screenshotPayroll from '@/images/screenshots/payroll.png';
-import screenshotReporting from '@/images/screenshots/reporting.png';
-import screenshotVatReturns from '@/images/screenshots/vat-returns.png';
 
 const features = [
   {
@@ -43,12 +39,12 @@ const features = [
 ];
 
 export function PrimaryFeatures() {
-  let [tabOrientation, setTabOrientation] = useState('horizontal');
+  const [tabOrientation, setTabOrientation] = useState('horizontal');
 
   useEffect(() => {
-    let lgMediaQuery = window.matchMedia('(min-width: 1024px)');
+    const lgMediaQuery = window.matchMedia('(min-width: 1024px)');
 
-    function onMediaQueryChange({ matches }) {
+    function onMediaQueryChange({ matches }: any) {
       setTabOrientation(matches ? 'vertical' : 'horizontal');
     }
 
@@ -80,10 +76,10 @@ export function PrimaryFeatures() {
             Sobre nós
           </h2>
           <p className="mt-6 text-lg tracking-tight text-blue-100">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
+            {`Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            and scrambled it to make a type specimen book.`}
           </p>
         </div>
         <Tab.Group
@@ -102,7 +98,7 @@ export function PrimaryFeatures() {
                         'group relative rounded-full py-1 px-4 lg:rounded-r-none lg:rounded-l-xl lg:p-6',
                         selectedIndex === featureIndex
                           ? 'bg-white lg:bg-white/10 lg:ring-1 lg:ring-inset lg:ring-white/10'
-                          : 'hover:bg-white/10 lg:hover:bg-white/5'
+                          : 'hover:bg-white/10 lg:hover:bg-white/5',
                       )}
                     >
                       <h3>
@@ -111,7 +107,7 @@ export function PrimaryFeatures() {
                             'font-display text-lg [&:not(:focus-visible)]:focus:outline-none',
                             selectedIndex === featureIndex
                               ? 'text-blue-600 lg:text-white'
-                              : 'text-blue-100 hover:text-white lg:text-white'
+                              : 'text-blue-100 hover:text-white lg:text-white',
                           )}
                         >
                           <span className="absolute inset-0 rounded-full lg:rounded-r-none lg:rounded-l-xl" />
@@ -123,7 +119,7 @@ export function PrimaryFeatures() {
                           'mt-2 hidden text-sm lg:block',
                           selectedIndex === featureIndex
                             ? 'text-white'
-                            : 'text-blue-100 group-hover:text-white'
+                            : 'text-blue-100 group-hover:text-white',
                         )}
                       >
                         {feature.description}

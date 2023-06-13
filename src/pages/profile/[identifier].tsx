@@ -1,13 +1,8 @@
 import MainContainer from '@/containers/MainContainer';
 import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from 'next/future/image';
 import { classNames } from '@/shared/helpers/styleSheets';
-import portraitImage from '@/images/avatars/avatar-1.png';
-import { Profile, User } from '@/shared/interfaces/IUser';
-import { Status } from '@/shared/enums/status.enum';
 import {
-  SocialNetworkType,
   socialNetworksBeautifulName,
   socialNetworksIcons,
 } from '@/shared/enums/socialNetworkType.enum';
@@ -17,6 +12,7 @@ import { transformAnchorURL } from '@/shared/utils/transforms/anchor';
 import { GetServerSideProps } from 'next';
 import { getAPIClient } from '@/services/axios';
 import { getProfileSSR } from '@/services/user';
+import { User } from '@/shared/interfaces/IUser';
 
 const { Title } = Typography;
 
@@ -27,6 +23,7 @@ function SocialLink({ className, href, children, icon: Icon }: any) {
         href={transformAnchorURL(href)}
         target="_blank"
         className="group flex text-sm font-medium text-zinc-800 transition hover:text-blue-500"
+        rel="noreferrer"
       >
         <Icon className="h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-blue-500" />
         <span className="ml-4">{children}</span>
@@ -63,7 +60,6 @@ const profileDetail: React.FC<profileDetailProps> = ({ profile }) => {
                   className="aspect-square !max-w-xs rounded-2xl object-cover"
                   src={profile.photoUrl}
                   alt={profile.name}
-                  layout="fill"
                   sizes="(min-width: 1024px) 20rem, 20rem"
                 />
               </div>
@@ -104,9 +100,7 @@ const profileDetail: React.FC<profileDetailProps> = ({ profile }) => {
                     Informações profissionais
                   </Title>
                   <p>{`Atuo na ${profile.companyName}${
-                    profile.companyRole
-                      ? `, como ${profile.companyRole}`
-                      : '.'
+                    profile.companyRole ? `, como ${profile.companyRole}` : '.'
                   }`}</p>
                 </div>
               )}
@@ -126,7 +120,7 @@ const profileDetail: React.FC<profileDetailProps> = ({ profile }) => {
                 </Title>
                 <div className="flex flex-col gap-4">
                   {profile.knowledge?.map((knowledge) => (
-                    <div>
+                    <div key={knowledge.name}>
                       <small>{knowledge.name}</small>
                       <p>{knowledge.description}</p>
                     </div>
@@ -137,18 +131,17 @@ const profileDetail: React.FC<profileDetailProps> = ({ profile }) => {
           </div>
           <div className="lg:pl-20">
             <ul role="list">
-              {profile.socialNetworks?.map(
-                (socialNetwork: SocialNetwork) => (
-                  <SocialLink
-                    href={socialNetwork.link}
-                    icon={socialNetworksIcons[socialNetwork.type]}
-                  >
-                    {`Me siga no ${
-                      socialNetworksBeautifulName[socialNetwork.type]
-                    }`}
-                  </SocialLink>
-                )
-              )}
+              {profile.socialNetworks?.map((socialNetwork: SocialNetwork) => (
+                <SocialLink
+                  key={socialNetwork.type}
+                  href={socialNetwork.link}
+                  icon={socialNetworksIcons[socialNetwork.type]}
+                >
+                  {`Me siga no ${
+                    socialNetworksBeautifulName[socialNetwork.type]
+                  }`}
+                </SocialLink>
+              ))}
               <SocialLink
                 href="mailto:spencer@planetaria.tech"
                 icon={MailIcon}

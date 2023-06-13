@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   CalendarDaysIcon,
   FlagIcon,
@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { RightOutlined } from '@ant-design/icons';
 import { Subscriber } from '@/shared/interfaces/ISubscribers';
 import { getPaginatedMySubscribersByMyEvent } from '@/services/user';
+import Image from 'next/future/image';
 
 const initPageOptions: PageOptions = { page: 1 };
 
@@ -24,15 +25,10 @@ export const SubscribersList: React.FC<SubscribersListProps> = ({
 }) => {
   const [subscriberPage, setSubscriberPage] = useState<Subscriber[]>([]);
   const [pageOptions, setPageOptions] = useState<PageOptions>(initPageOptions);
-  const {
-    isLoading,
-    error,
-    data: dataPage,
-    isFetching,
-  } = useQuery(
+  const { data: dataPage } = useQuery(
     ['SubscribersList', pageOptions],
     () => getPaginatedMySubscribersByMyEvent(pageOptions.page, eventUUID),
-    { staleTime: Infinity }
+    { staleTime: Infinity },
   );
 
   useEffect(() => {
@@ -115,7 +111,7 @@ export const SubscribersList: React.FC<SubscribersListProps> = ({
                         <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                           <div className="flex items-center">
                             <div className="w-16 flex-shrink-0">
-                              <img
+                              <Image
                                 className="aspect-video w-16 rounded object-cover group-hover:opacity-75"
                                 src={photoUrl}
                                 alt={name}
@@ -171,7 +167,7 @@ export const SubscribersList: React.FC<SubscribersListProps> = ({
                           </a>
                         </td>
                       </tr>
-                    )
+                    ),
                   )}
                 </tbody>
               </table>

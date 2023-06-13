@@ -1,4 +1,3 @@
-import { Button } from '@/components/Button';
 import { usePagination } from '@/hooks/usePagination';
 import {
   ArrowLongLeftIcon,

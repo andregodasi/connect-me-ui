@@ -1,7 +1,8 @@
 import { Uploader } from 'uploader';
 import { UploadButton } from 'react-uploader';
 import { useState } from 'react';
-import { Button } from 'flowbite-react';
+import Image from 'next/future/image';
+import { Button } from 'antd';
 
 // Get production API keys from Upload.io
 const uploader = Uploader({
@@ -27,7 +28,7 @@ export const InputUpload = ({
   return (
     <>
       {imageUrl && (
-        <img
+        <Image
           src={imageUrl}
           alt="Picture of the author"
           width={500}
@@ -68,7 +69,7 @@ export const InputUpload = ({
         }}
       >
         {({ onClick }) => (
-          <Button gradientMonochrome="info" pill onClick={onClick}>
+          <Button shape="round" onClick={onClick}>
             {label}
           </Button>
         )}

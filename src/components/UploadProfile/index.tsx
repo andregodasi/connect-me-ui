@@ -15,9 +15,9 @@ import { RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
 import styles from '../../styles/components/UploadProfile.module.css';
 import useMediaQuery from '@/hooks/useMediaQuery';
 
-const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+const getBase64 = (img: RcFile, fnReturn: (url: string) => void) => {
   const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result as string));
+  reader.addEventListener('load', () => fnReturn(reader.result as string));
   reader.readAsDataURL(img);
 };
 
@@ -37,19 +37,21 @@ interface UploadProfileProps {
   initialImage: string;
   handleImageChange: (dataSrc: RcFile | undefined) => void;
   isLoading?: boolean;
+  alt?: string;
 }
 
 export const UploadProfile: React.FC<UploadProfileProps> = ({
   initialImage,
   handleImageChange,
   isLoading,
+  alt,
 }) => {
   const { isMD } = useMediaQuery();
   const [image, setImage] = useState<string | undefined>(initialImage);
   const [loading, setLoading] = useState(false);
 
   const handleChange: UploadProps['onChange'] = (
-    info: UploadChangeParam<UploadFile>
+    info: UploadChangeParam<UploadFile>,
   ) => {
     if (info.file.status === 'uploading') {
       setLoading(true);
@@ -72,6 +74,7 @@ export const UploadProfile: React.FC<UploadProfileProps> = ({
           className="rounded-full shadow-lg"
           width={isMD ? 240 : 120}
           src={image}
+          alt={alt || 'profile'}
         />
       ) : (
         <Avatar

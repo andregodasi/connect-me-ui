@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
 import Link from 'next/link';
 import { Popover, Transition } from '@headlessui/react';
 import clsx from 'clsx';
@@ -9,7 +9,13 @@ import { LogoConnectMe } from '@/components/LogoConnectMe';
 import { NavLink } from '@/components/NavLink';
 import { IconConnectMe } from '@/components/IconConnectMe';
 
-function MobileNavLink({ href, children }) {
+function MobileNavLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode | string;
+}) {
   return (
     <Popover.Button as={Link} href={href} className="block w-full p-2">
       {children}
@@ -17,7 +23,7 @@ function MobileNavLink({ href, children }) {
   );
 }
 
-function MobileNavIcon({ open }) {
+function MobileNavIcon({ open }: { open: boolean }) {
   return (
     <svg
       aria-hidden="true"
@@ -30,14 +36,14 @@ function MobileNavIcon({ open }) {
         d="M0 1H14M0 7H14M0 13H14"
         className={clsx(
           'origin-center transition',
-          open && 'scale-90 opacity-0'
+          open && 'scale-90 opacity-0',
         )}
       />
       <path
         d="M2 2L12 12M12 2L2 12"
         className={clsx(
           'origin-center transition',
-          !open && 'scale-90 opacity-0'
+          !open && 'scale-90 opacity-0',
         )}
       />
     </svg>
@@ -111,7 +117,7 @@ export function Header() {
             <div className="hidden lg:block">
               <NavLink href="/login">Entrar</NavLink>
             </div>
-            <Button href="/register" color="blue">
+            <Button href="/register" color="blue" variant={'solid'}>
               <span>Cadastre-se</span>
             </Button>
             <div className="-mr-1 lg:hidden">

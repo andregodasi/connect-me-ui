@@ -10,6 +10,23 @@ import {
 import { classNames } from '@/shared/helpers/styleSheets';
 import { LoadingContainer } from '../LoadingContainer';
 
+export enum ToggleStatusEnum {
+  PUBLISHED = 'published',
+  DRAFT = 'draft',
+  DELETE = 'delete',
+  LOADING = 'loading',
+}
+interface Info {
+  name: string;
+  action: string;
+  description: string;
+}
+export interface ToggleOptions {
+  published: Info;
+  draft: Info;
+  delete: Info;
+  loading: Info;
+}
 interface ToggleStatusProps {
   status: ToggleStatusEnum | undefined;
   toggleOptions: ToggleOptions;
@@ -18,31 +35,11 @@ interface ToggleStatusProps {
   disabled?: boolean;
 }
 
-export enum ToggleStatusEnum {
-  PUBLISHED = 'published',
-  DRAFT = 'draft',
-  DELETE = 'delete',
-  LOADING = 'loading',
-}
-
-interface Info {
-  name: string;
-  action: string;
-  description: string;
-}
-
 interface InfoStyles {
   icon: React.ReactNode;
   color: string;
   divideColor: string;
   listBtn: string;
-}
-
-export interface ToggleOptions {
-  published: Info;
-  draft: Info;
-  delete: Info;
-  loading: Info;
 }
 
 export interface ToggleStyles {
@@ -133,7 +130,7 @@ export const ToggleStatus: React.FC<ToggleStatusProps> = ({
               >
                 <div
                   className={classNames(
-                    `inline-flex items-center rounded-l-full border border-transparent bg-${toggleStyles[status].color}-500 py-2 pl-3 pr-4 text-white shadow-sm`
+                    `inline-flex items-center rounded-l-full border border-transparent bg-${toggleStyles[status].color}-500 py-2 pl-3 pr-4 text-white shadow-sm`,
                   )}
                 >
                   {toggleStyles[status].icon}
@@ -168,7 +165,7 @@ export const ToggleStatus: React.FC<ToggleStatusProps> = ({
                     className={({ active }) =>
                       classNames(
                         active ? 'bg-gray-500 text-white' : 'text-gray-900',
-                        'cursor-default select-none p-4 text-sm'
+                        'cursor-default select-none p-4 text-sm',
                       )
                     }
                     disabled={ToggleStatusEnum.DRAFT === status}
@@ -200,7 +197,7 @@ export const ToggleStatus: React.FC<ToggleStatusProps> = ({
                         <p
                           className={classNames(
                             active ? 'text-gray-200' : 'text-gray-500',
-                            'mt-2'
+                            'mt-2',
                           )}
                         >
                           {toggleOptions.draft.description}
@@ -216,7 +213,7 @@ export const ToggleStatus: React.FC<ToggleStatusProps> = ({
                   className={({ active }) =>
                     classNames(
                       active ? 'bg-blue-500 text-white' : 'text-gray-900',
-                      'cursor-default select-none p-4 text-sm'
+                      'cursor-default select-none p-4 text-sm',
                     )
                   }
                   value={ToggleStatusEnum.PUBLISHED}
@@ -240,7 +237,7 @@ export const ToggleStatus: React.FC<ToggleStatusProps> = ({
                       <p
                         className={classNames(
                           active ? 'text-blue-200' : 'text-gray-500',
-                          'mt-2'
+                          'mt-2',
                         )}
                       >
                         {toggleOptions.published.description}
@@ -254,7 +251,7 @@ export const ToggleStatus: React.FC<ToggleStatusProps> = ({
                   className={({ active }) =>
                     classNames(
                       active ? 'bg-red-500 text-white' : 'text-gray-900',
-                      'cursor-default select-none p-4 text-sm'
+                      'cursor-default select-none p-4 text-sm',
                     )
                   }
                   value={ToggleStatusEnum.DELETE}
@@ -278,7 +275,7 @@ export const ToggleStatus: React.FC<ToggleStatusProps> = ({
                       <p
                         className={classNames(
                           active ? 'text-red-200' : 'text-gray-500',
-                          'mt-2'
+                          'mt-2',
                         )}
                       >
                         {toggleOptions.delete.description}

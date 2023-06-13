@@ -1,12 +1,14 @@
+import Image from 'next/future/image';
+import imageProfile from '@/images/avatars/avatar-5.png';
 export default function OrganizerProfile() {
   return (
     <div className="md:flex md:items-center md:justify-between md:space-x-5">
       <div className="flex items-start space-x-5">
         <div className="flex-shrink-0">
           <div className="relative">
-            <img
+            <Image
               className="h-16 w-16 rounded-full"
-              src="https://media-exp1.licdn.com/dms/image/C4D03AQGxOMYvdCao3A/profile-displayphoto-shrink_200_200/0/1661188755302?e=1666828800&v=beta&t=Iz0p8qAeiT23V3PcGlWFb63H19J4rrbyAxmIYVWidJ0"
+              src={imageProfile}
               alt=""
             />
             <span

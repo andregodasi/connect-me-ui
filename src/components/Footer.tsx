@@ -11,7 +11,7 @@ export function Footer() {
         <div className="py-16">
           <LogoConnectMe className="mx-auto h-10 w-auto" />
           <nav className="mt-10 text-sm" aria-label="quick links">
-            <div className="-my-1 flex justify-center gap-x-6 flex-wrap">
+            <div className="-my-1 flex flex-wrap justify-center gap-x-6">
               <NavLink href="#about">Sobre nós</NavLink>
               <NavLink href="#plataform">Plataforma</NavLink>
               <NavLink href="#community">Comunidade</NavLink>

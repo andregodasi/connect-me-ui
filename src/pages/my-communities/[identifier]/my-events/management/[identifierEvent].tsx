@@ -1,9 +1,8 @@
 import { GetServerSideProps } from 'next';
 import { Fragment, useState } from 'react';
-import { Disclosure, Listbox, Menu, Transition } from '@headlessui/react';
+import { Menu, Transition, Tab } from '@headlessui/react';
 import {
   CalendarIcon,
-  CheckIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   LinkIcon,
@@ -11,7 +10,6 @@ import {
   PencilIcon,
   UserGroupIcon,
 } from '@heroicons/react/20/solid';
-import { Tab } from '@headlessui/react';
 import MainContainer from '@/containers/MainContainer';
 import { useMutation, useQuery } from 'react-query';
 import Link from 'next/link';
@@ -80,32 +78,26 @@ export default function ManagementGroup({
   const [isOpenModalPublished, setIsOpenModalPublished] = useState(false);
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
 
-  const {
-    isLoading,
-    error,
-    data: event,
-    isFetching,
-    refetch: refetchEvent,
-  } = useQuery(
+  const { data: event, refetch: refetchEvent } = useQuery(
     [`my-events-management${identifierEvent}`],
     () => findByIdentifierEvent(identifierEvent),
     {
       enabled: !!identifierEvent,
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
   const { mutate: mutatePublishEvent, isLoading: mutatePublishEventLoading } =
     useMutation(publishEvent, {
-      onError: (error, variables, context: any) => {
+      onError: (error) => {
         console.log(error);
         console.log(`onError`);
       },
-      onSuccess: (data, variables, context) => {
+      onSuccess: () => {
         refetchEvent();
         toast.success(`Evento publicado com sucesso!`);
       },
-      onSettled: (data, error, variables, context) => {
+      onSettled: () => {
         // Error or success... doesn't matter!
         setIsOpenModalPublished(false);
       },
@@ -113,15 +105,15 @@ export default function ManagementGroup({
 
   const { mutate: mutateDeleteEvent, isLoading: mutateDeleteEventLoading } =
     useMutation(deleteEvent, {
-      onError: (error, variables, context: any) => {
+      onError: (error) => {
         console.log(error);
         console.log(`onError`);
       },
-      onSuccess: (data, variables, context) => {
+      onSuccess: () => {
         router.push('/my-communities');
         toast.success(`Comunidade excluída com sucesso!`);
       },
-      onSettled: (data, error, variables, context) => {
+      onSettled: () => {
         // Error or success... doesn't matter!
         setIsOpenModalDelete(false);
       },
@@ -136,7 +128,6 @@ export default function ManagementGroup({
 
     if (status === ToggleStatusEnum.DELETE) {
       setIsOpenModalDelete(true);
-      return;
     }
   };
 
@@ -344,7 +335,7 @@ export default function ManagementGroup({
                           href="#"
                           className={classNames(
                             active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
+                            'block px-4 py-2 text-sm text-gray-700',
                           )}
                         >
                           Edit
@@ -357,7 +348,7 @@ export default function ManagementGroup({
                           href="#"
                           className={classNames(
                             active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
+                            'block px-4 py-2 text-sm text-gray-700',
                           )}
                         >
                           View
@@ -402,7 +393,7 @@ export default function ManagementGroup({
                           selected
                             ? 'border-blue-500 text-blue-600'
                             : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700',
-                          'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'
+                          'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium',
                         )
                       }
                     >
@@ -414,7 +405,7 @@ export default function ManagementGroup({
                           selected
                             ? 'border-blue-500 text-blue-600'
                             : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700',
-                          'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'
+                          'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium',
                         )
                       }
                     >

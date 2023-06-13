@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { Button } from '@/components/Button';
 import { Container } from '@/components/Container';
 
-function SwirlyDoodle({ className }) {
+function SwirlyDoodle({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"
@@ -20,13 +20,13 @@ function SwirlyDoodle({ className }) {
   );
 }
 
-function CheckIcon({ className }) {
+function CheckIcon({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"
       className={clsx(
         'h-6 w-6 flex-none fill-current stroke-current',
-        className
+        className,
       )}
     >
       <path
@@ -46,19 +46,26 @@ function CheckIcon({ className }) {
   );
 }
 
-function Plan({ name, price, description, href, features, featured = false }) {
+function Plan({
+  name,
+  price,
+  description,
+  href,
+  features,
+  featured = false,
+}: any) {
   return (
     <section
       className={clsx(
         'flex flex-col rounded-3xl px-6 sm:px-8',
-        featured ? 'order-first bg-blue-600 py-8 lg:order-none' : 'lg:py-8'
+        featured ? 'order-first bg-blue-600 py-8 lg:order-none' : 'lg:py-8',
       )}
     >
       <h3 className="mt-5 font-display text-lg text-white">{name}</h3>
       <p
         className={clsx(
           'mt-2 text-base',
-          featured ? 'text-white' : 'text-slate-400'
+          featured ? 'text-white' : 'text-slate-400',
         )}
       >
         {description}
@@ -70,10 +77,10 @@ function Plan({ name, price, description, href, features, featured = false }) {
         role="list"
         className={clsx(
           'order-last mt-10 flex flex-col gap-y-3 text-sm',
-          featured ? 'text-white' : 'text-slate-200'
+          featured ? 'text-white' : 'text-slate-200',
         )}
       >
-        {features.map((feature) => (
+        {features.map((feature: any) => (
           <li key={feature} className="flex">
             <CheckIcon className={featured ? 'text-white' : 'text-slate-400'} />
             <span className="ml-4">{feature}</span>

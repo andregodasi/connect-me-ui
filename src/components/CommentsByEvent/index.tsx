@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CalendarDaysIcon, RocketLaunchIcon } from '@heroicons/react/20/solid';
 import { FullPagination } from '@/components/FullPagination';
 import { useQuery } from 'react-query';
@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { RightOutlined } from '@ant-design/icons';
 import { Comment } from '@/shared/interfaces/IComment';
 import { getPaginatedMyCommentsByMyEvent } from '@/services/event';
+import Image from 'next/future/image';
 
 const initPageOptions: PageOptions = { page: 1 };
 
@@ -20,20 +21,16 @@ export const CommentsByEvent: React.FC<CommentsByEventProps> = ({
 }) => {
   const [commentsPage, setCommentsPage] = useState<Comment[]>([]);
   const [pageOptions, setPageOptions] = useState<PageOptions>(initPageOptions);
-  const {
-    isLoading,
-    error,
-    data: dataPage,
-    isFetching,
-  } = useQuery(
+  const { data: dataPage } = useQuery(
     ['CommentsByEvent', pageOptions],
     () => getPaginatedMyCommentsByMyEvent(pageOptions.page, eventUUID),
-    { staleTime: Infinity }
+    { staleTime: Infinity },
   );
 
   useEffect(() => {
     if (dataPage?.data) {
-      setCommentsPage([...dataPage.data]);
+      const comments: Comment[] = [...dataPage.data] as unknown as Comment[];
+      setCommentsPage(comments);
     }
   }, [dataPage]);
 
@@ -92,7 +89,7 @@ export const CommentsByEvent: React.FC<CommentsByEventProps> = ({
                         <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                           <div className="flex items-center">
                             <div className="w-16 flex-shrink-0">
-                              <img
+                              <Image
                                 className="aspect-video w-16 rounded object-cover group-hover:opacity-75"
                                 src={photoUrl}
                                 alt={name}
@@ -136,7 +133,7 @@ export const CommentsByEvent: React.FC<CommentsByEventProps> = ({
                           </a>
                         </td>
                       </tr>
-                    )
+                    ),
                   )}
                 </tbody>
               </table>

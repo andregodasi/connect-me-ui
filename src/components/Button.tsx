@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import clsx from 'clsx';
 import styles from '../styles/components/Button.module.css';
+import React from 'react';
 
 type ColorType = {
   slate?: string;
@@ -66,7 +67,7 @@ export function Button({
   className = clsx(
     baseStyles[variant],
     variantStyles[variant][color],
-    className
+    className,
   );
 
   return href ? (

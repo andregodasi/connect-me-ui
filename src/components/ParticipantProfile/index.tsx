@@ -1,12 +1,15 @@
+import Image from 'next/future/image';
+import participantImage from '@/images/avatars/avatar-2.png';
+
 export default function ParticipantProfile({ name }: { name: string }) {
   return (
     <a href="#" className="group block flex-shrink-0">
       <div className="flex flex-col items-center">
         <div>
-          <img
+          <Image
             className="inline-block h-12 w-12 rounded-full"
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-            alt=""
+            src={participantImage}
+            alt={name}
           />
         </div>
         <div className="ml-3">

@@ -1,26 +1,15 @@
 import { GetServerSideProps } from 'next';
 import { Fragment, useState } from 'react';
-import { Disclosure, Listbox, Menu, Transition } from '@headlessui/react';
-import type { DrawerProps, RadioChangeEvent } from 'antd';
+import { Menu, Transition, Tab } from '@headlessui/react';
 import {
-  ArrowLongLeftIcon,
-  ArrowLongRightIcon,
-  BriefcaseIcon,
   CalendarIcon,
-  CheckCircleIcon,
-  CheckIcon,
   ChevronDownIcon,
   ChevronRightIcon,
-  CurrencyDollarIcon,
-  EnvelopeIcon,
   LinkIcon,
-  MagnifyingGlassIcon,
   MapPinIcon,
   PencilIcon,
   UserGroupIcon,
 } from '@heroicons/react/20/solid';
-import { Tab } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import MainContainer from '@/containers/MainContainer';
 import { useMutation, useQuery } from 'react-query';
 import {
@@ -43,14 +32,6 @@ import { EventsListByGroup } from '@/components/EventsListByCommunity';
 import { FollowersByCommunity } from '@/components/FollowersByCommunity';
 import { CommentsByCommunity } from '@/components/CommentsByCommunity';
 import PreviewCommunity from '@/components/PreviewCommunity';
-
-const tabs = [
-  { name: 'Applied', href: '#', count: '2', current: false },
-  { name: 'Phone Screening', href: '#', count: '4', current: false },
-  { name: 'Interview', href: '#', count: '6', current: true },
-  { name: 'Offer', href: '#', current: false },
-  { name: 'Disqualified', href: '#', current: false },
-];
 
 const statusOptions: ToggleOptions = {
   published: {
@@ -91,7 +72,6 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
   const [isOpenModalPublished, setIsOpenModalPublished] = useState(false);
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
   const [open, setOpen] = useState(false);
-  const [placement, setPlacement] = useState<DrawerProps['placement']>('left');
 
   const showDrawer = () => {
     setOpen(true);
@@ -101,36 +81,26 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
     setOpen(false);
   };
 
-  const onChange = (e: RadioChangeEvent) => {
-    setPlacement(e.target.value);
-  };
-
-  const {
-    isLoading,
-    error,
-    data: group,
-    isFetching,
-    refetch: refetchGroup,
-  } = useQuery(
+  const { data: group, refetch: refetchGroup } = useQuery(
     [`my-communities-management${identifier}`],
     () => findByIdentifierGroup(identifier),
     {
       enabled: !!identifier,
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
   const { mutate: mutatePublishGroup, isLoading: mutatePublishGroupLoading } =
     useMutation(publishGroup, {
-      onError: (error, variables, context: any) => {
+      onError: (error) => {
         console.log(error);
         console.log(`onError`);
       },
-      onSuccess: (data, variables, context) => {
+      onSuccess: () => {
         refetchGroup();
         toast.success(`Comunidade publicada com sucesso!`);
       },
-      onSettled: (data, error, variables, context) => {
+      onSettled: () => {
         // Error or success... doesn't matter!
         setIsOpenModalPublished(false);
       },
@@ -138,15 +108,15 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
 
   const { mutate: mutateDeleteGroup, isLoading: mutateDeleteGroupLoading } =
     useMutation(deleteGroup, {
-      onError: (error, variables, context: any) => {
+      onError: (error) => {
         console.log(error);
         console.log(`onError`);
       },
-      onSuccess: (data, variables, context) => {
+      onSuccess: () => {
         router.push('/my-communities');
         toast.success(`Comunidade excluída com sucesso!`);
       },
-      onSettled: (data, error, variables, context) => {
+      onSettled: () => {
         // Error or success... doesn't matter!
         setIsOpenModalDelete(false);
       },
@@ -161,7 +131,6 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
 
     if (status === ToggleStatusEnum.DELETE) {
       setIsOpenModalDelete(true);
-      return;
     }
   };
 
@@ -191,12 +160,12 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                 >
                   <li>
                     <div>
-                      <a
+                      <Link
                         href="/"
                         className="text-sm font-medium text-gray-500 hover:text-gray-700"
                       >
                         Home
-                      </a>
+                      </Link>
                     </div>
                   </li>
                   <li>
@@ -205,12 +174,12 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                         className="h-5 w-5 flex-shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
-                      <a
+                      <Link
                         href="/my-communities"
                         className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
                       >
                         Comunidades
-                      </a>
+                      </Link>
                     </div>
                   </li>
                   <li>
@@ -359,7 +328,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                           href={`/my-communities/${identifier}`}
                           className={classNames(
                             active ? 'bg-gray-100' : '',
-                            'flex px-4 py-2 text-sm text-gray-700'
+                            'flex px-4 py-2 text-sm text-gray-700',
                           )}
                         >
                           <PencilIcon
@@ -376,7 +345,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                           href="#"
                           className={classNames(
                             active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
+                            'block px-4 py-2 text-sm text-gray-700',
                           )}
                         >
                           Prévia
@@ -424,7 +393,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                           selected
                             ? 'border-blue-500 text-blue-600'
                             : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700',
-                          'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'
+                          'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium',
                         )
                       }
                     >
@@ -436,7 +405,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                           selected
                             ? 'border-blue-500 text-blue-600'
                             : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700',
-                          'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'
+                          'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium',
                         )
                       }
                     >
@@ -448,7 +417,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                           selected
                             ? 'border-blue-500 text-blue-600'
                             : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700',
-                          'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'
+                          'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium',
                         )
                       }
                     >
@@ -556,7 +525,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
         closable={true}
         onClose={onClose}
         open={open}
-        key={placement}
+        key="Brawer-Preview"
         height="100vh"
       >
         {group && <PreviewCommunity group={group} isFollower />}

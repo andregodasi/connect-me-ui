@@ -29,15 +29,18 @@ export function Hero() {
       </h1>
       <p className="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700">
         Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
+        industry. Lorem Ipsum has been the industrys standard dummy text ever
         since the 1500s, when an unknown printer took a galley of type and
         scrambled it to make a type specimen book.
       </p>
       <div className="mt-10 flex justify-center gap-x-6">
-        <Button href="/register">Cadastre-se</Button>
+        <Button href="/register" variant={'solid'} color={'blue'}>
+          Cadastre-se
+        </Button>
         <Button
           href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           variant="outline"
+          color={'blue'}
         >
           <svg
             aria-hidden="true"

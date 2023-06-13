@@ -1,43 +1,19 @@
-import { Menu, Transition } from '@headlessui/react';
+import { Menu, Transition, Popover } from '@headlessui/react';
 import { BellIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { GetServerSideProps } from 'next';
-import { parseCookies } from 'nookies';
-import { Fragment, useContext, useEffect } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
-import { getAPIClient } from '@/services/axios';
-
-import { Popover } from '@headlessui/react';
-import {
-  ArrowLongLeftIcon,
-  CheckIcon,
-  HomeIcon,
-  PaperClipIcon,
-  QuestionMarkCircleIcon,
-  MagnifyingGlassIcon,
-  HandThumbUpIcon,
-  UserIcon,
-} from '@heroicons/react/20/solid';
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { LogoConnectMe } from '@/components/LogoConnectMe';
 import { IconConnectMe } from '@/components/IconConnectMe';
 import Link from 'next/link';
 import { Avatar } from 'antd';
 import { getInitials } from '@/shared/utils/transforms/text';
+import Image from 'next/future/image';
 
-const userData = {
-  name: 'Whitney Francis',
-  email: 'whitney@example.com',
-  imageUrl:
-    'https://media-exp1.licdn.com/dms/image/C4D03AQGxOMYvdCao3A/profile-displayphoto-shrink_200_200/0/1661188755302?e=1666828800&v=beta&t=Iz0p8qAeiT23V3PcGlWFb63H19J4rrbyAxmIYVWidJ0',
-};
 const navigation = [
   { name: 'Eventos', href: '/' },
   { name: 'Comunidades', href: '/communities' },
   { name: 'Novidades', href: '/news' },
-];
-const breadcrumbs = [
-  { name: 'Jobs', href: '#', current: false },
-  { name: 'Front End Developer', href: '#', current: false },
-  { name: 'Applicants', href: '#', current: true },
 ];
 
 function classNames(...classes: any[]) {
@@ -182,7 +158,7 @@ export default function MainContainer({
                           <div className="flex items-center px-5">
                             <div className="flex-shrink-0">
                               {user?.photoUrl ? (
-                                <img
+                                <Image
                                   className="h-10 w-10 rounded-full"
                                   src={user.photoUrl}
                                   alt="Sua imagem de perfil"
@@ -228,7 +204,7 @@ export default function MainContainer({
                                 key={item.name}
                                 href={item.href}
                                 onClick={() => {
-                                  item?.action ? item.action() : null;
+                                  item?.action && item.action();
                                 }}
                                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
                               >
@@ -257,7 +233,7 @@ export default function MainContainer({
                     <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                       <span className="sr-only">Open user menu</span>
                       {user?.photoUrl ? (
-                        <img
+                        <Image
                           className="h-10 w-10 rounded-full"
                           src={user.photoUrl}
                           alt="Sua imagem de perfil"
@@ -293,11 +269,11 @@ export default function MainContainer({
                             <Link
                               href={item.href}
                               onClick={() => {
-                                item?.action ? item.action() : null;
+                                item?.action && item.action();
                               }}
                               className={classNames(
                                 active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700'
+                                'block px-4 py-2 text-sm text-gray-700',
                               )}
                             >
                               {item.name}

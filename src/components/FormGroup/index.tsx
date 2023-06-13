@@ -4,7 +4,7 @@ import { GroupForm } from '@/shared/interfaces/IGroup';
 import { useMutation, useQuery } from 'react-query';
 import { findByIdentifierGroup, saveGroupWithFile } from '@/services/group';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import type { RcFile } from 'antd/es/upload/interface';
 import { Button, Form, Input, Spin, Typography } from 'antd';
 import { UploadImage } from '../UploadImage';
@@ -39,23 +39,20 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
         });
         setInitialImage(data.coverUrl);
       },
-    }
+    },
   );
 
-  const { mutate: mutateGroup, isLoading: mutateGroupLoading } = useMutation(
-    saveGroupWithFile,
-    {
-      onError: (error, variables, context: any) => {
-        toast.success(
-          'Ops! Estamos com algum problema temporário, por favor tente novamente mais tarde.'
-        );
-      },
-      onSuccess: (data, variables, context) => {
-        toast.success('Comunidade criada com sucesso!');
-        router.push('/my-communities');
-      },
-    }
-  );
+  const { mutate: mutateGroup } = useMutation(saveGroupWithFile, {
+    onError: () => {
+      toast.success(
+        'Ops! Estamos com algum problema temporário, por favor tente novamente mais tarde.',
+      );
+    },
+    onSuccess: () => {
+      toast.success('Comunidade criada com sucesso!');
+      router.push('/my-communities');
+    },
+  });
 
   async function handleSubmit(data: GroupForm) {
     setIsSubmited(true);

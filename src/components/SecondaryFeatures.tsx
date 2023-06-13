@@ -7,9 +7,6 @@ import { Container } from '@/components/Container';
 import AccessImage from '@/images/svg/access.svg';
 import CommunityImage from '@/images/svg/discussion-rafiki.svg';
 import ConferenceImage from '@/images/svg/conference-rafiki.svg';
-import screenshotContacts from '@/images/screenshots/contacts.png';
-import screenshotInventory from '@/images/screenshots/inventory.png';
-import screenshotProfitLoss from '@/images/screenshots/profit-loss.png';
 
 const features = [
   {
@@ -71,7 +68,7 @@ const features = [
       'It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     image: ConferenceImage,
     icon: function ReportingIcon() {
-      let id = useId();
+      const id = useId();
       return (
         <>
           <defs>
@@ -100,7 +97,7 @@ const features = [
   },
 ];
 
-function Feature({ feature, isActive, className, ...props }) {
+function Feature({ feature, isActive, className, ...props }: any) {
   return (
     <div
       className={clsx(className, !isActive && 'opacity-75 hover:opacity-100')}
@@ -109,7 +106,7 @@ function Feature({ feature, isActive, className, ...props }) {
       <div
         className={clsx(
           'w-9 rounded-lg',
-          isActive ? 'bg-blue-600' : 'bg-slate-500'
+          isActive ? 'bg-blue-600' : 'bg-slate-500',
         )}
       >
         <svg aria-hidden="true" className="h-9 w-9" fill="none">
@@ -119,7 +116,7 @@ function Feature({ feature, isActive, className, ...props }) {
       <h3
         className={clsx(
           'mt-6 text-sm font-medium',
-          isActive ? 'text-blue-600' : 'text-slate-600'
+          isActive ? 'text-blue-600' : 'text-slate-600',
         )}
       >
         {feature.name}
@@ -142,9 +139,9 @@ function FeaturesMobile() {
             <div className="absolute -inset-x-4 bottom-0 top-8 bg-slate-200 sm:-inset-x-6" />
             <div className="relative mx-auto w-[20rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10 md:w-[30rem]">
               <Image
-                className="w-full w-[20rem] md:w-[30rem]"
+                className="w-full  md:w-[30rem]"
                 src={feature.image}
-                alt=""
+                alt={feature.name}
               />
             </div>
           </div>
@@ -185,7 +182,7 @@ function FeaturesDesktop() {
                   key={feature.name}
                   className={clsx(
                     'px-5 transition duration-500 ease-in-out [&:not(:focus-visible)]:focus:outline-none',
-                    featureIndex !== selectedIndex && 'opacity-60'
+                    featureIndex !== selectedIndex && 'opacity-60',
                   )}
                   style={{ transform: `translateX(-${selectedIndex * 100}%)` }}
                   aria-hidden={featureIndex !== selectedIndex}
@@ -221,10 +218,10 @@ export function SecondaryFeatures() {
             Sobre nossa plataforma.
           </h2>
           <p className="mt-4 text-lg tracking-tight text-slate-700">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
+            {` Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            and scrambled it to make a type specimen book.`}
           </p>
         </div>
         <FeaturesMobile />

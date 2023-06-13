@@ -1,4 +1,5 @@
 import { Group } from '@/shared/interfaces/IGroup';
+import Image from 'next/future/image';
 import React from 'react';
 
 const GroupCard: React.FC<Group> = ({
@@ -15,7 +16,7 @@ const GroupCard: React.FC<Group> = ({
       className="w-full max-w-sm transition hover:shadow lg:flex lg:max-w-full "
     >
       <div
-        className="h-48 flex-none overflow-hidden rounded-t bg-cover bg-center lg:h-auto lg:w-48 lg:rounded-t-none lg:rounded-l border  border-gray-400"
+        className="h-48 flex-none overflow-hidden rounded-t border border-gray-400 bg-cover bg-center lg:h-auto lg:w-48 lg:rounded-t-none  lg:rounded-l"
         title="Woman holding a mug"
         style={{ backgroundImage: `url(${coverUrl})` }}
       ></div>
@@ -30,7 +31,7 @@ const GroupCard: React.FC<Group> = ({
           </p>
         </div>
         <div className="flex items-center">
-          <img
+          <Image
             className="mr-4 h-10 w-10 rounded-full object-cover"
             src={coverUrl}
             alt="Avatar of Jonathan Reinink"

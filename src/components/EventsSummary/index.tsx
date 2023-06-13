@@ -1,32 +1,8 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  const colors = require('tailwindcss/colors')
-  
-  module.exports = {
-    // ...
-    theme: {
-      extend: {
-        colors: {
-          rose: colors.rose,
-        },
-      },
-    },
-  }
-  ```
-*/
-import { Fragment } from 'react';
-import {
-  ChatBubbleLeftEllipsisIcon,
-  TagIcon,
-  UserCircleIcon,
-} from '@heroicons/react/20/solid';
 import { Event } from '@/shared/interfaces/IEvent';
 import { formatWeekDateTime } from '@/shared/utils/transforms/dates';
+import Image from 'next/future/image';
 import Link from 'next/link';
-
+import placeholderImage from '@/images/screen-0.webp';
 interface EventsSummaryProps {
   events: Event[] | undefined;
   isLoading: boolean;
@@ -68,9 +44,9 @@ export function EventsSummary({ events, isLoading }: EventsSummaryProps) {
                   ) : null}
                   <div className="relative flex items-start space-x-3">
                     <div className="relative">
-                      <img
+                      <Image
                         className="flex h-10 w-10 items-center justify-center rounded-md bg-gray-400 ring-8 ring-white"
-                        src="https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp"
+                        src={placeholderImage}
                         alt=""
                       />
                     </div>

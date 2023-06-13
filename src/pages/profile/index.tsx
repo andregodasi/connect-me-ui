@@ -1,22 +1,10 @@
-import { PlusSmallIcon as PlusSmIconSolid } from '@heroicons/react/20/solid';
 import { toast } from 'react-toastify';
 import MainContainer from '@/containers/MainContainer';
-import dayjs from 'dayjs';
-import { EventForm } from '@/shared/interfaces/IEvent';
-import { useMutation, useQuery } from 'react-query';
-import { findByIdentifierEvent, saveEvent } from '@/services/event';
+import { useMutation } from 'react-query';
 import { useRouter } from 'next/router';
-import { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import type { RcFile } from 'antd/es/upload/interface';
-import {
-  Button,
-  Form,
-  Input,
-  DatePicker,
-  Spin,
-  Typography,
-  Select,
-} from 'antd';
+import { Button, Form, Input, Spin, Typography, Select } from 'antd';
 import {
   FormMessages,
   maxLengthMessage,
@@ -35,8 +23,7 @@ import {
   userDataToProfileForm,
 } from '@/shared/interfaces/IUser';
 import { Spinner } from '@/components/Spinner';
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import Icon from '@ant-design/icons';
+import Icon, { PlusOutlined } from '@ant-design/icons';
 import { LinkedInIcon } from '@/images/svg/icons/LinkedInIcon';
 import { GitHubIcon } from '@/images/svg/icons/GitHubIcon';
 import { TwitterIcon } from '@/images/svg/icons/TwitterIcon';
@@ -54,39 +41,35 @@ export const Profile: React.FC<{
 }> = ({ currentUser }) => {
   const { refreshUserInformation } = useContext(AuthContext);
   const router = useRouter();
-  const [imageUpload, setImageUpload] = useState<RcFile | undefined>(undefined);
-  const [initialImage, setInitialImage] = useState('');
-  const [isSubmited, setIsSubmited] = useState(false);
   const [form] = Form.useForm();
 
-  const { mutate: mutateProfile, isLoading: mutateProfileLoading } =
-    useMutation(saveProfile, {
-      onError: (error, variables, context: any) => {
-        console.log(error);
-        console.log(`onError`);
-      },
-      onSuccess: (data, variables, context) => {
-        toast.success('Perfil atualizado com sucesso!');
-        refreshUserInformation();
-      },
-      onSettled: (data, error, variables, context) => {
-        // Error or success... doesn't matter!
-        console.log(data);
-        console.log(`onSettled`);
-      },
-    });
+  const { mutate: mutateProfile } = useMutation(saveProfile, {
+    onError: (error) => {
+      console.log(error);
+      console.log(`onError`);
+    },
+    onSuccess: () => {
+      toast.success('Perfil atualizado com sucesso!');
+      refreshUserInformation();
+    },
+    onSettled: (data) => {
+      // Error or success... doesn't matter!
+      console.log(data);
+      console.log(`onSettled`);
+    },
+  });
 
   const { mutate: mutateUpdatePhoto, isLoading: mutateUpdatePhotoLoading } =
     useMutation(uploadPhoto, {
-      onError: (error, variables, context: any) => {
+      onError: (error) => {
         console.log(error);
         console.log(`onError`);
       },
-      onSuccess: (data, variables, context) => {
+      onSuccess: () => {
         toast.success('Foto do Perfil atualizada com sucesso!');
         refreshUserInformation();
       },
-      onSettled: (data, error, variables, context) => {
+      onSettled: (data) => {
         // Error or success... doesn't matter!
         console.log(data);
         console.log(`onSettled`);
@@ -99,10 +82,6 @@ export const Profile: React.FC<{
       ...payload,
     });
   }
-
-  const handleFinishFailed = () => {
-    setIsSubmited(true);
-  };
 
   const handleImageChange = (dataSrc: RcFile | undefined) => {
     if (dataSrc) {
@@ -134,7 +113,6 @@ export const Profile: React.FC<{
             form={form}
             initialValues={userDataToProfileForm(currentUser)}
             onFinish={handleSubmit}
-            onFinishFailed={handleFinishFailed}
             layout="vertical"
           >
             <div className="space-y-12">
@@ -359,6 +337,7 @@ export const Profile: React.FC<{
                       <div className="flex flex-col gap-4">
                         {fields.map(({ key, name, ...restField }) => (
                           <div
+                            key={key}
                             className="rounded-lg p-6"
                             style={{
                               backgroundColor: '#ffffff',

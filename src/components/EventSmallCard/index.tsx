@@ -1,18 +1,16 @@
+import Image from 'next/future/image';
 import React from 'react';
+import placeholderImage from '@/images/screen-0.webp';
 
 export const EventSmallCard: React.FC<{
   uuid?: string;
   name: string;
   img?: string;
-}> = ({
-  uuid,
-  name,
-  img = 'https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp',
-}) => {
+}> = ({ uuid, name, img = placeholderImage }) => {
   return (
     <div key={uuid} className="group relative">
-      <div className="aspect-[4/3] overflow-hidden rounded-lg bg-gray-100 relative">
-        <img src={img} alt={name} className="object-cover object-center" />
+      <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-100">
+        <Image src={img} alt={name} className="object-cover object-center" />
         <div
           className="absolute bottom-0 right-0 left-0 top-0 flex h-full w-full items-end p-4 opacity-0 group-hover:opacity-100"
           aria-hidden="true"

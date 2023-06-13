@@ -5,7 +5,7 @@ import '../../public/antd.min.css';
 import '@/styles/global.css';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { ToastContainer, toast, Slide } from 'react-toastify';
+import { ToastContainer, Slide } from 'react-toastify';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { AppProps } from 'next/app';
 import dayjs from 'dayjs';
@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             refetchOnWindowFocus: false,
           },
         },
-      })
+      }),
   );
   return withTheme(
     <QueryClientProvider client={queryClient}>
@@ -35,7 +35,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </AuthProvider>
       </Hydrate>
       <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 }
 

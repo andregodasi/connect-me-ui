@@ -25,9 +25,14 @@ export function CallToAction() {
           </h2>
           <p className="mt-4 text-lg tracking-tight text-white">
             Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
+            industry. Lorem Ipsum has been the industrys standard dummy text
           </p>
-          <Button href="/register" color="white" className="mt-10">
+          <Button
+            href="/register"
+            color="white"
+            className="mt-10"
+            variant={'solid'}
+          >
             cadastre-se
           </Button>
         </div>

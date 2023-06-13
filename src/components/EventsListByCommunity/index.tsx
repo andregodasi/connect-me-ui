@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   CheckCircleIcon,
   PencilIcon,
@@ -16,6 +16,7 @@ import { formatWeekDateTime } from '@/shared/utils/transforms/dates';
 import { Button } from 'antd';
 import Link from 'next/link';
 import { RightOutlined } from '@ant-design/icons';
+import Image from 'next/future/image';
 
 const initPageOptions: PageOptions = { page: 1 };
 
@@ -26,15 +27,10 @@ interface EventsListProps {
 export const EventsListByGroup: React.FC<EventsListProps> = ({ groupUUID }) => {
   const [eventPage, setEventPage] = useState<Event[]>([]);
   const [pageOptions, setPageOptions] = useState<PageOptions>(initPageOptions);
-  const {
-    isLoading,
-    error,
-    data: dataPage,
-    isFetching,
-  } = useQuery(
+  const { data: dataPage } = useQuery(
     ['EventsListByGroup', pageOptions],
     () => getPaginatedMyEventsByGroup(pageOptions.page, groupUUID),
-    { staleTime: Infinity }
+    { staleTime: Infinity },
   );
 
   useEffect(() => {
@@ -131,7 +127,7 @@ export const EventsListByGroup: React.FC<EventsListProps> = ({ groupUUID }) => {
                         <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                           <div className="flex items-center">
                             <div className="w-16 flex-shrink-0">
-                              <img
+                              <Image
                                 className="aspect-video w-16 rounded object-cover group-hover:opacity-75"
                                 src={coverUrl}
                                 alt={name}
@@ -141,7 +137,7 @@ export const EventsListByGroup: React.FC<EventsListProps> = ({ groupUUID }) => {
                               <div className="font-medium text-gray-900">
                                 {name}
                               </div>
-                              <div className="ellipis-4 mt-1 text-gray-500 min-w-[10rem]">
+                              <div className="ellipis-4 mt-1 min-w-[10rem] text-gray-500">
                                 {description}
                               </div>
                             </div>
@@ -206,7 +202,7 @@ export const EventsListByGroup: React.FC<EventsListProps> = ({ groupUUID }) => {
                           </a>
                         </td>
                       </tr>
-                    )
+                    ),
                   )}
                 </tbody>
               </table>

@@ -1,8 +1,9 @@
-import Image from 'next/future/image'
+import React from 'react';
+import Image from 'next/future/image';
 
-import backgroundImage from '@/images/background-auth.jpg'
+import backgroundImage from '@/images/background-auth.jpg';
 
-export function AuthLayout({ children }) {
+export function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="relative flex min-h-full justify-center md:px-12 lg:px-0">
@@ -21,5 +22,5 @@ export function AuthLayout({ children }) {
         </div>
       </div>
     </>
-  )
+  );
 }

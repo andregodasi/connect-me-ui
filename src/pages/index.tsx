@@ -9,7 +9,6 @@ import { Pricing } from '@/components/Pricing';
 import { PrimaryFeatures } from '@/components/PrimaryFeatures';
 import { SecondaryFeatures } from '@/components/SecondaryFeatures';
 import { Testimonials } from '@/components/Testimonials';
-import { getAPIClient } from '@/services/axios';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
 
@@ -39,8 +38,7 @@ export default function Home() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const apiClient = getAPIClient(ctx);
-  const { ['connect.token']: token } = parseCookies(ctx);
+  const { 'connect.token': token } = parseCookies(ctx);
 
   if (token) {
     return {

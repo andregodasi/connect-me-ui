@@ -4,7 +4,7 @@ interface PaginationProps {
   page: number;
   take: number;
   itemCount: number;
-  pageCount: number;
+  pageCount?: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
   handlePrevious: (previousPage: number) => void;
@@ -15,7 +15,6 @@ export function Pagination({
   page,
   take,
   itemCount,
-  pageCount,
   hasPreviousPage,
   hasNextPage,
   handlePrevious,
@@ -33,7 +32,7 @@ export function Pagination({
           <span className="font-medium">{itemCount}</span>
         </p>
       </div>
-      <div className="flex flex-1 justify-between sm:justify-end gap-4">
+      <div className="flex flex-1 justify-between gap-4 sm:justify-end">
         <Button
           disabled={!hasPreviousPage}
           type="button"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   CalendarDaysIcon,
   FlagIcon,
@@ -7,16 +7,9 @@ import {
 import { FullPagination } from '@/components/FullPagination';
 import { useQuery } from 'react-query';
 import { PageOptions } from '@/shared/interfaces/IPageOptions';
-import { Button } from 'antd';
-import Link from 'next/link';
-import { RightOutlined } from '@ant-design/icons';
-import { Subscriber } from '@/shared/interfaces/ISubscribers';
 import { FollowersTableLine } from './components/FollowersTableLine';
 import { Follower } from '@/shared/interfaces/IFollower';
 import { getPaginatedMyFollowersByMyGroup } from '@/services/user';
-function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(' ');
-}
 
 const initPageOptions: PageOptions = { page: 1 };
 
@@ -29,15 +22,10 @@ export const FollowersByCommunity: React.FC<FollowersByCommunityProps> = ({
 }) => {
   const [followersPage, setFollowersPage] = useState<Follower[]>([]);
   const [pageOptions, setPageOptions] = useState<PageOptions>(initPageOptions);
-  const {
-    isLoading,
-    error,
-    data: dataPage,
-    isFetching,
-  } = useQuery(
+  const { data: dataPage } = useQuery(
     ['DashboardEvents', pageOptions],
     () => getPaginatedMyFollowersByMyGroup(pageOptions.page, groupUUID),
-    { staleTime: Infinity }
+    { staleTime: Infinity },
   );
 
   useEffect(() => {
@@ -108,7 +96,10 @@ export const FollowersByCommunity: React.FC<FollowersByCommunityProps> = ({
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {followersPage?.map((fallower: Follower) => (
-                    <FollowersTableLine follower={fallower} />
+                    <FollowersTableLine
+                      follower={fallower}
+                      key={fallower.name}
+                    />
                   ))}
                 </tbody>
               </table>

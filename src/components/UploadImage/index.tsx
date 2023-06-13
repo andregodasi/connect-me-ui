@@ -9,7 +9,7 @@ const { Text, Paragraph } = Typography;
 const { Dragger } = Upload;
 
 interface UploadImageProps {
-  image: RcFile | undefined;
+  image?: RcFile | undefined;
   setImage: (dataSrc: RcFile | undefined) => void;
   initialImage: string;
   setInitialImage: (dataSrc: string) => void;
@@ -18,7 +18,6 @@ interface UploadImageProps {
 }
 
 export const UploadImage: React.FC<UploadImageProps> = ({
-  image,
   setImage,
   initialImage,
   setInitialImage,
@@ -124,6 +123,7 @@ export const UploadImage: React.FC<UploadImageProps> = ({
           bodyStyle={{ height: 0, padding: 0, margin: 0 }}
           actions={[
             <Button
+              key="upload-btn-remove"
               type="primary"
               shape="round"
               size="large"

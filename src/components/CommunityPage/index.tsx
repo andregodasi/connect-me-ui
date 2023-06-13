@@ -1,9 +1,6 @@
-import { Fragment, useContext, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { StarIcon } from '@heroicons/react/20/solid';
 import { Tab } from '@headlessui/react';
-import MainContainer from '@/containers/MainContainer';
-import { GetServerSideProps } from 'next';
-import { getAPIClient } from '@/services/axios';
 import { Group } from '@/shared/interfaces/IGroup';
 import OrganizerProfile from '@/components/OrganizerProfile';
 import ParticipantProfile from '@/components/ParticipantProfile';
@@ -15,26 +12,13 @@ import {
   unfollowGroup,
 } from '@/services/group';
 import { toast } from 'react-toastify';
-import { AuthContext } from '@/contexts/AuthContext';
-import { getCurrentUser } from '@/shared/utils/token';
 import { classNames } from '@/shared/helpers/styleSheets';
+import Image from 'next/future/image';
+import placeholderImageEvent from '@/images/event-placeholder.webp';
 
-const product = {
-  name: 'Application UI Icon Pack',
-  version: { name: '1.0', date: 'June 5, 2021', datetime: '2021-06-05' },
-  price: '$220',
-  description:
-    'The Application UI Icon Pack comes with over 200 icons in 3 styles: outline, filled, and branded. This playful icon pack is tailored for complex application user interfaces with a friendly and legible look.',
-  highlights: [
-    '200+ SVG icons in 3 unique styles',
-    'Compatible with Figma, Sketch, and Adobe XD',
-    'Drawn on 24 x 24 pixel grid',
-  ],
-  imageSrc:
-    'https://tailwindui.com/img/ecommerce-images/product-page-05-product-01.jpg',
-  imageAlt:
-    'Sample of 30 icons with friendly and fun details in outline, filled, and brand color styles.',
-};
+import imageParticipant from '@/images/avatars/avatar-1.png';
+import imageParticipant2 from '@/images/avatars/avatar-2.png';
+
 const reviews = {
   average: 4,
   featured: [
@@ -47,8 +31,7 @@ const reviews = {
       date: 'July 16, 2021',
       datetime: '2021-07-16',
       author: 'Emily Selman',
-      avatarSrc:
-        'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80',
+      avatarSrc: imageParticipant,
     },
     {
       id: 2,
@@ -59,8 +42,7 @@ const reviews = {
       date: 'July 12, 2021',
       datetime: '2021-07-12',
       author: 'Hector Gibbons',
-      avatarSrc:
-        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80',
+      avatarSrc: imageParticipant2,
     },
     // More reviews...
   ],
@@ -136,17 +118,10 @@ interface CommunityPageProps {
 export default function CommunityPage({
   group,
   isFollower,
-  isPreview,
 }: CommunityPageProps) {
   const [groupState, setGroupState] = useState({ ...group });
   const [isFollowerState, setIsFollowerState] = useState<boolean>(isFollower);
-  const { user } = useContext(AuthContext);
-  const {
-    isLoading,
-    error,
-    isFetching,
-    refetch: refetchGroup,
-  } = useQuery(
+  const { refetch: refetchGroup } = useQuery(
     [`event-${group.uuid}`],
     () => findByIdentifierGroup(group.uuid),
     {
@@ -156,44 +131,40 @@ export default function CommunityPage({
         setGroupState(data);
         setIsFollowerState(isFollowerState);
       },
-    }
+    },
   );
 
-  const { mutate: mutateFollow, isLoading: mutateFollowLoading } = useMutation(
-    followGrpup,
-    {
-      onError: (error, variables, context: any) => {
-        console.log(`onError`);
-      },
-      onSuccess: (data, variables, context) => {
-        refetchGroup();
-        toast.success(`Agora você esta seguindo a comunidade ${group.name}`);
-        /* router.push('/my-events'); */
-      },
-      onSettled: (data, error, variables, context) => {
-        // Error or success... doesn't matter!
-        console.log(data);
-        console.log(`onSettled`);
-      },
-    }
-  );
+  const { mutate: mutateFollow } = useMutation(followGrpup, {
+    onError: () => {
+      console.log(`onError`);
+    },
+    onSuccess: () => {
+      refetchGroup();
+      toast.success(`Agora você esta seguindo a comunidade ${group.name}`);
+      /* router.push('/my-events'); */
+    },
+    onSettled: (data) => {
+      // Error or success... doesn't matter!
+      console.log(data);
+      console.log(`onSettled`);
+    },
+  });
 
-  const { mutate: mutateUnfollow, isLoading: mutateUnfollowLoading } =
-    useMutation(unfollowGroup, {
-      onError: (error, variables, context: any) => {
-        console.log(error);
-        console.log(`onError`);
-      },
-      onSuccess: (data, variables, context) => {
-        refetchGroup();
-        toast.success(`Você deixou de seguir a comunidade ${group.name}`);
-      },
-      onSettled: (data, error, variables, context) => {
-        // Error or success... doesn't matter!
-        console.log(data);
-        console.log(`onSettled`);
-      },
-    });
+  const { mutate: mutateUnfollow } = useMutation(unfollowGroup, {
+    onError: (error) => {
+      console.log(error);
+      console.log(`onError`);
+    },
+    onSuccess: () => {
+      refetchGroup();
+      toast.success(`Você deixou de seguir a comunidade ${group.name}`);
+    },
+    onSettled: (data) => {
+      // Error or success... doesn't matter!
+      console.log(data);
+      console.log(`onSettled`);
+    },
+  });
 
   async function handleFollow() {
     mutateFollow(groupState?.uuid ? groupState.uuid : ``);
@@ -210,8 +181,8 @@ export default function CommunityPage({
           {/* Product image */}
           <div className="lg:col-span-4 lg:row-end-1">
             <div className="aspect-w-4 aspect-h-3 overflow-hidden rounded-lg bg-gray-100">
-              <img
-                src="https://www.ambevtech.com.br/sites/g/files/wnfebl5782/files/styles/webp/public/Fotos%20Ambev%20Tech%20%26%20Cheers/AMBEV-112.jpg.webp?itok=yofkEeM3"
+              <Image
+                src={placeholderImageEvent}
                 alt={group.name}
                 className="object-cover object-center"
               />
@@ -244,7 +215,7 @@ export default function CommunityPage({
                         reviews.average > rating
                           ? 'text-yellow-400'
                           : 'text-gray-300',
-                        'h-5 w-5 flex-shrink-0'
+                        'h-5 w-5 flex-shrink-0',
                       )}
                       aria-hidden="true"
                     />
@@ -403,7 +374,7 @@ export default function CommunityPage({
                         selected
                           ? 'border-indigo-600 text-indigo-600'
                           : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                        'whitespace-nowrap border-b-2 py-6 text-sm font-medium'
+                        'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
                       )
                     }
                   >
@@ -415,7 +386,7 @@ export default function CommunityPage({
                         selected
                           ? 'border-indigo-600 text-indigo-600'
                           : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                        'whitespace-nowrap border-b-2 py-6 text-sm font-medium'
+                        'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
                       )
                     }
                   >
@@ -427,7 +398,7 @@ export default function CommunityPage({
                         selected
                           ? 'border-indigo-600 text-indigo-600'
                           : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                        'whitespace-nowrap border-b-2 py-6 text-sm font-medium'
+                        'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
                       )
                     }
                   >
@@ -445,7 +416,7 @@ export default function CommunityPage({
                       className="flex space-x-4 text-sm text-gray-500"
                     >
                       <div className="flex-none py-10">
-                        <img
+                        <Image
                           src={review.avatarSrc}
                           alt=""
                           className="h-10 w-10 rounded-full bg-gray-100"
@@ -454,7 +425,7 @@ export default function CommunityPage({
                       <div
                         className={classNames(
                           reviewIdx === 0 ? '' : 'border-t border-gray-200',
-                          'py-10'
+                          'py-10',
                         )}
                       >
                         <h3 className="font-medium text-gray-900">
@@ -472,7 +443,7 @@ export default function CommunityPage({
                                 review.rating > rating
                                   ? 'text-yellow-400'
                                   : 'text-gray-300',
-                                'h-5 w-5 flex-shrink-0'
+                                'h-5 w-5 flex-shrink-0',
                               )}
                               aria-hidden="true"
                             />
@@ -535,7 +506,7 @@ export default function CommunityPage({
         </div>
         <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
           {group?.events?.map(({ name, uuid }) => (
-            <EventSmallCard name={name} uuid={uuid} />
+            <EventSmallCard name={name} uuid={uuid} key={name} />
           ))}
         </div>
       </div>

@@ -4,9 +4,7 @@ import Link from 'next/link';
 import { AuthLayout } from '@/components/AuthLayout';
 import { Button } from '@/components/Button';
 import { TextField } from '@/components/Fields';
-import { Logo } from '@/components/Logo';
-import Image from 'next/image';
-import logo from '@/images/logo/rgb.png';
+
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthContext, SignInData } from '@/contexts/AuthContext';
@@ -35,7 +33,7 @@ export default function Login() {
               Acesse agora
             </h2>
             <p className="mt-2 text-sm text-gray-700">
-             Ainda não tem conta?{' '}
+              Ainda não tem conta?{' '}
               <Link
                 href="/register"
                 className="font-medium text-blue-600 hover:underline"

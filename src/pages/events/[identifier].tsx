@@ -14,27 +14,14 @@ import {
   findByIdentifierEvent,
   unsubscribe,
 } from '@/services/event';
-import { Button } from '@/components/Button';
-import { parseCookies } from 'nookies';
 import { getCurrentUser } from '@/shared/utils/token';
 import { AuthContext } from '@/contexts/AuthContext';
+import Image from 'next/future/image';
+import placeholderImageEvent from '@/images/event-placeholder.webp';
 
-const product = {
-  name: 'Application UI Icon Pack',
-  version: { name: '1.0', date: 'June 5, 2021', datetime: '2021-06-05' },
-  price: '$220',
-  description:
-    'The Application UI Icon Pack comes with over 200 icons in 3 styles: outline, filled, and branded. This playful icon pack is tailored for complex application user interfaces with a friendly and legible look.',
-  highlights: [
-    '200+ SVG icons in 3 unique styles',
-    'Compatible with Figma, Sketch, and Adobe XD',
-    'Drawn on 24 x 24 pixel grid',
-  ],
-  imageSrc:
-    'https://tailwindui.com/img/ecommerce-images/product-page-05-product-01.jpg',
-  imageAlt:
-    'Sample of 30 icons with friendly and fun details in outline, filled, and brand color styles.',
-};
+import imageParticipant from '@/images/avatars/avatar-1.png';
+import imageParticipant2 from '@/images/avatars/avatar-2.png';
+
 const reviews = {
   average: 4,
   featured: [
@@ -47,8 +34,7 @@ const reviews = {
       date: 'July 16, 2021',
       datetime: '2021-07-16',
       author: 'Emily Selman',
-      avatarSrc:
-        'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80',
+      avatarSrc: imageParticipant,
     },
     {
       id: 2,
@@ -59,8 +45,7 @@ const reviews = {
       date: 'July 12, 2021',
       datetime: '2021-07-12',
       author: 'Hector Gibbons',
-      avatarSrc:
-        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80',
+      avatarSrc: imageParticipant2,
     },
     // More reviews...
   ],
@@ -133,7 +118,7 @@ function classNames(...classes: any) {
 
 const checkIsSubscribe = (event: Event, currentUserId: string): boolean => {
   return !!event?.users?.find(
-    ({ user: subscribed }) => subscribed.uuid === currentUserId
+    ({ user: subscribed }) => subscribed.uuid === currentUserId,
   );
 };
 
@@ -154,12 +139,7 @@ export default function EventDetail({
   const [isSubscribeState, setIsSubscribeState] =
     useState<boolean>(isSubscribe);
 
-  const {
-    isLoading,
-    error,
-    isFetching,
-    refetch: refetchEvent,
-  } = useQuery(
+  const { refetch: refetchEvent } = useQuery(
     [`event-${identifier}`],
     () => findByIdentifierEvent(identifier),
     {
@@ -169,43 +149,41 @@ export default function EventDetail({
         setEventState(data);
         setIsSubscribeState(checkIsSubscribe(data, user?.uuid || ''));
       },
-    }
+    },
   );
 
-  const { mutate: mutateSubscription, isLoading: mutateSubscriptionLoading } =
-    useMutation(createSubscription, {
-      onError: (error, variables, context: any) => {
-        console.log(`onError`);
-      },
-      onSuccess: (data, variables, context) => {
-        refetchEvent();
-        toast.success('Inscrição realizada com sucesso!');
-        /* router.push('/my-events'); */
-      },
-      onSettled: (data, error, variables, context) => {
-        // Error or success... doesn't matter!
-        console.log(data);
-        console.log(`onSettled`);
-      },
-    });
+  const { mutate: mutateSubscription } = useMutation(createSubscription, {
+    onError: () => {
+      toast.success('Um erro inesperado aconteceu!');
+    },
+    onSuccess: () => {
+      refetchEvent();
+      toast.success('Inscrição realizada com sucesso!');
+      /* router.push('/my-events'); */
+    },
+    onSettled: (data) => {
+      // Error or success... doesn't matter!
+      console.log(data);
+      console.log(`onSettled`);
+    },
+  });
 
-  const { mutate: mutateUnsubscribe, isLoading: mutateUnsubscribeLoading } =
-    useMutation(unsubscribe, {
-      onError: (error, variables, context: any) => {
-        console.log(error);
-        console.log(`onError`);
-      },
-      onSuccess: (data, variables, context) => {
-        refetchEvent();
-        toast.success('Inscrição cancelada com sucesso!');
-        /* router.push('/my-events'); */
-      },
-      onSettled: (data, error, variables, context) => {
-        // Error or success... doesn't matter!
-        console.log(data);
-        console.log(`onSettled`);
-      },
-    });
+  const { mutate: mutateUnsubscribe } = useMutation(unsubscribe, {
+    onError: (error) => {
+      console.log(error);
+      console.log(`onError`);
+    },
+    onSuccess: () => {
+      refetchEvent();
+      toast.success('Inscrição cancelada com sucesso!');
+      /* router.push('/my-events'); */
+    },
+    onSettled: (data) => {
+      // Error or success... doesn't matter!
+      console.log(data);
+      console.log(`onSettled`);
+    },
+  });
 
   async function handleSubscribe() {
     mutateSubscription(eventState?.uuid ? eventState.uuid : ``);
@@ -224,8 +202,8 @@ export default function EventDetail({
             {/* Product image */}
             <div className="lg:col-span-4 lg:row-end-1">
               <div className="aspect-w-4 aspect-h-3 overflow-hidden rounded-lg bg-gray-100">
-                <img
-                  src="https://www.ambevtech.com.br/sites/g/files/wnfebl5782/files/styles/webp/public/Fotos%20Ambev%20Tech%20%26%20Cheers/AMBEV-112.jpg.webp?itok=yofkEeM3"
+                <Image
+                  src={placeholderImageEvent}
                   alt={event.name}
                   className="object-cover object-center"
                 />
@@ -258,7 +236,7 @@ export default function EventDetail({
                           reviews.average > rating
                             ? 'text-yellow-400'
                             : 'text-gray-300',
-                          'h-5 w-5 flex-shrink-0'
+                          'h-5 w-5 flex-shrink-0',
                         )}
                         aria-hidden="true"
                       />
@@ -404,7 +382,7 @@ export default function EventDetail({
                           selected
                             ? 'border-blue-600 text-blue-600'
                             : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                          'whitespace-nowrap border-b-2 py-6 text-sm font-medium'
+                          'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
                         )
                       }
                     >
@@ -416,7 +394,7 @@ export default function EventDetail({
                           selected
                             ? 'border-blue-600 text-blue-600'
                             : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                          'whitespace-nowrap border-b-2 py-6 text-sm font-medium'
+                          'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
                         )
                       }
                     >
@@ -428,7 +406,7 @@ export default function EventDetail({
                           selected
                             ? 'border-indigo-600 text-indigo-600'
                             : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                          'whitespace-nowrap border-b-2 py-6 text-sm font-medium'
+                          'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
                         )
                       }
                     >
@@ -446,7 +424,7 @@ export default function EventDetail({
                         className="flex space-x-4 text-sm text-gray-500"
                       >
                         <div className="flex-none py-10">
-                          <img
+                          <Image
                             src={review.avatarSrc}
                             alt=""
                             className="h-10 w-10 rounded-full bg-gray-100"
@@ -455,7 +433,7 @@ export default function EventDetail({
                         <div
                           className={classNames(
                             reviewIdx === 0 ? '' : 'border-t border-gray-200',
-                            'py-10'
+                            'py-10',
                           )}
                         >
                           <h3 className="font-medium text-gray-900">
@@ -475,7 +453,7 @@ export default function EventDetail({
                                   review.rating > rating
                                     ? 'text-yellow-400'
                                     : 'text-gray-300',
-                                  'h-5 w-5 flex-shrink-0'
+                                  'h-5 w-5 flex-shrink-0',
                                 )}
                                 aria-hidden="true"
                               />

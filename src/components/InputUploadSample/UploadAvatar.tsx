@@ -1,10 +1,18 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import { Button } from '../Button';
 import { AspectRatio } from '@/shared/enums/aspect-ratio.enum';
 
-export const UploadAvatar: React.FC<Props> = ({
+interface UploadAvatarProps {
+  imageData: { url: string; file: File };
+  setImageData: (infoImage: { url: string; file: File }) => void;
+  cancelEdit: () => void;
+  aspectRatio?: AspectRatio;
+  initialImage?: string;
+}
+
+export const UploadAvatar: React.FC<UploadAvatarProps> = ({
   imageData,
   setImageData,
   cancelEdit,
@@ -25,13 +33,14 @@ export const UploadAvatar: React.FC<Props> = ({
         setCropper(file);
         setImageData({
           url: cropper.getCroppedCanvas().toDataURL(),
-          file: file,
+          file,
         });
         cancelEdit();
       }
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getImage = async () => {
     if (imageData?.url) {
       return imageData.url;
@@ -86,12 +95,4 @@ export const UploadAvatar: React.FC<Props> = ({
       </div>
     </div>
   );
-};
-
-type Props = {
-  imageData: { url: string; file: File };
-  setImageData: (infoImage: { url: string; file: File }) => void;
-  cancelEdit: () => void;
-  aspectRatio?: AspectRatio;
-  initialImage?: string;
 };

@@ -1,29 +1,17 @@
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
-import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
-import { getAPIClient } from '../services/axios';
+import { useEffect, useState } from 'react';
 import MainContainer from '@/containers/MainContainer';
-import {
-  Squares2X2Icon as ViewGridIconSolid,
-  Bars4Icon,
-  TicketIcon,
-} from '@heroicons/react/20/solid';
+import { TicketIcon } from '@heroicons/react/20/solid';
 import EventCard from '@/components/EventCard';
 import { useQuery } from 'react-query';
-import { Page } from '@/shared/interfaces/IPage';
-import { PageOptions } from '@/shared/interfaces/IPageOptions';
 import { getPaginatedEvents } from '@/services/event';
 import {
   DatePicker,
   Form,
   Input,
-  Space,
   Button as ButtonAnt,
-  Row,
-  Col,
   Collapse,
-  Typography,
   Drawer,
 } from 'antd';
 import {
@@ -32,9 +20,6 @@ import {
   EventPageOptionWithFilters,
 } from '@/shared/interfaces/IEvent';
 import { Button } from '@/components/Button';
-import { TextField } from '@/components/Fields';
-import { useForm } from 'react-hook-form';
-import { Toggle } from '@/components/Toggle';
 import { EventsSummary } from '@/components/EventsSummary';
 import { CommunitiesSummary } from '@/components/CommunitiesSummary';
 import { getPaginatedGroups } from '@/services/group';
@@ -43,65 +28,47 @@ import styles from '../styles/Dashboard.module.css';
 import { ChevronDownIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import {
   formatFinishDateISO8601,
-  formatISO8601,
   formatInitialDateISO8601,
 } from '@/shared/utils/transforms/dates';
 import useMediaQuery from '@/hooks/useMediaQuery';
 
 const { Panel } = Collapse;
 const { RangePicker } = DatePicker;
-const { Text } = Typography;
-
-interface SerachData {
-  name?: string;
-  isFollowing?: boolean;
-}
 
 const initPageOptions: EventPageOptionWithFilters = { page: 1 };
 
 export default function Dashboard() {
-  const { user } = useContext(AuthContext);
   const { isLG } = useMediaQuery();
   const [openUpcomingAppointments, setOpenUpcomingAppointments] =
     useState(false);
   const [filters, setFilters] = useState<EventFilters>();
-  const { register, handleSubmit, control } = useForm<SerachData>();
   const [eventList, setEventList] = useState<Event[]>([]);
   const [pageOptions, setPageOptions] =
     useState<EventPageOptionWithFilters>(initPageOptions);
   const {
     isLoading,
-    error,
     data: dataPage,
     isFetching,
   } = useQuery(
     ['DashboardEvents', pageOptions, filters],
     () => getPaginatedEvents(pageOptions),
-    { staleTime: Infinity }
+    { staleTime: Infinity },
   );
 
-  const {
-    isLoading: isLoadingMyEvents,
-    error: errorMyEvents,
-    data: myEvents,
-  } = useQuery(
+  const { isLoading: isLoadingMyEvents, data: myEvents } = useQuery(
     ['DashboardMyEvents'],
     () => getPaginatedEvents({ page: 1, take: 5, isSubscribed: true }),
     {
       staleTime: Infinity,
-    }
+    },
   );
 
-  const {
-    isLoading: isLoadingMyGroups,
-    error: errorMyGroups,
-    data: myGroups,
-  } = useQuery(
+  const { isLoading: isLoadingMyGroups, data: myGroups } = useQuery(
     ['DashboardMyGroups'],
     () => getPaginatedGroups({ page: 1, take: 5, isFollowing: true }),
     {
       staleTime: Infinity,
-    }
+    },
   );
 
   useEffect(() => {
@@ -110,6 +77,7 @@ export default function Dashboard() {
     } else if (dataPage?.data) {
       setEventList([...eventList, ...dataPage.data]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataPage]);
 
   const handleLoadMore = () => {
@@ -126,13 +94,11 @@ export default function Dashboard() {
     };
 
     if (data?.rangeDate?.[0]) {
-      filtersData['dateInitial'] = formatInitialDateISO8601(
-        data.rangeDate?.[0]
-      );
+      filtersData.dateInitial = formatInitialDateISO8601(data.rangeDate?.[0]);
     }
 
     if (data?.rangeDate?.[1]) {
-      filtersData['dateFinal'] = formatFinishDateISO8601(data.rangeDate?.[1]);
+      filtersData.dateFinal = formatFinishDateISO8601(data.rangeDate?.[1]);
     }
 
     setPageOptions({
@@ -344,8 +310,7 @@ export default function Dashboard() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const apiClient = getAPIClient(ctx);
-  const { ['connect.token']: token } = parseCookies(ctx);
+  const { 'connect.token': token } = parseCookies(ctx);
 
   if (!token) {
     return {

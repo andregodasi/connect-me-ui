@@ -1,16 +1,15 @@
 import { Group } from '@/shared/interfaces/IGroup';
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
+import Image from 'next/future/image';
 import Link from 'next/link';
+import placeholderImage from '@/images/screen-0.webp';
 
 interface CommunitiesSummaryProps {
   communities: Group[];
   isLoading: boolean;
 }
 
-export function CommunitiesSummary({
-  communities,
-  isLoading,
-}: CommunitiesSummaryProps) {
+export function CommunitiesSummary({ communities }: CommunitiesSummaryProps) {
   return (
     <div className="w-full rounded-lg border bg-white pt-4 shadow-md sm:pt-8">
       <div className="mb-4 flex items-center justify-between px-4 sm:px-8">
@@ -37,9 +36,9 @@ export function CommunitiesSummary({
               >
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0">
-                    <img
+                    <Image
                       className="h-12 w-12 rounded-md object-cover"
-                      src="https://image.winudf.com/v2/image1/Y29tLmNpbGFicy5jb25mLndlYnN1bW1pdF9zY3JlZW5fMF8xNjM0MTE1ODc3XzA4OQ/screen-0.jpg?fakeurl=1&type=.webp"
+                      src={community.coverUrl || placeholderImage}
                       alt="Neil image"
                     />
                   </div>
