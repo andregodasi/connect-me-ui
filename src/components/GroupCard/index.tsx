@@ -1,5 +1,5 @@
 import { Group } from '@/shared/interfaces/IGroup';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import React from 'react';
 
 const GroupCard: React.FC<Group> = ({
@@ -32,6 +32,8 @@ const GroupCard: React.FC<Group> = ({
         </div>
         <div className="flex items-center">
           <Image
+            width={200}
+            height={200}
             className="mr-4 h-10 w-10 rounded-full object-cover"
             src={coverUrl}
             alt="Avatar of Jonathan Reinink"

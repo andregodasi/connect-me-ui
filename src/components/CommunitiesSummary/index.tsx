@@ -1,6 +1,6 @@
 import { Group } from '@/shared/interfaces/IGroup';
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import Link from 'next/link';
 import placeholderImage from '@/images/screen-0.webp';
 
@@ -37,6 +37,8 @@ export function CommunitiesSummary({ communities }: CommunitiesSummaryProps) {
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0">
                     <Image
+                      width={100}
+                      height={100}
                       className="h-12 w-12 rounded-md object-cover"
                       src={community.coverUrl || placeholderImage}
                       alt="Neil image"

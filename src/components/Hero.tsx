@@ -1,4 +1,4 @@
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 import { Button } from '@/components/Button';
 import { Container } from '@/components/Container';
@@ -78,7 +78,13 @@ export function Hero() {
               >
                 {group.map((company) => (
                   <li key={company.name} className="flex">
-                    <Image src={company.logo} alt={company.name} unoptimized />
+                    <Image
+                      width={200}
+                      height={200}
+                      src={company.logo}
+                      alt={company.name}
+                      unoptimized
+                    />
                   </li>
                 ))}
               </ul>

@@ -13,7 +13,7 @@ import {
 } from '@/services/group';
 import { toast } from 'react-toastify';
 import { classNames } from '@/shared/helpers/styleSheets';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import placeholderImageEvent from '@/images/event-placeholder.webp';
 
 import imageParticipant from '@/images/avatars/avatar-1.png';
@@ -182,6 +182,8 @@ export default function CommunityPage({
           <div className="lg:col-span-4 lg:row-end-1">
             <div className="aspect-w-4 aspect-h-3 overflow-hidden rounded-lg bg-gray-100">
               <Image
+                width={200}
+                height={200}
                 src={placeholderImageEvent}
                 alt={group.name}
                 className="object-cover object-center"
@@ -417,6 +419,8 @@ export default function CommunityPage({
                     >
                       <div className="flex-none py-10">
                         <Image
+                          width={200}
+                          height={200}
                           src={review.avatarSrc}
                           alt=""
                           className="h-10 w-10 rounded-full bg-gray-100"

@@ -1,22 +1,22 @@
 import { getWindow } from '@/shared/helpers/dom';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 export default function useMediaQuery() {
   const safeWindow = getWindow();
   const isSSR = !safeWindow;
 
-  const setDimensions = () => {
+  const setDimensions = useCallback(() => {
     return {
       width: isSSR ? 1200 : safeWindow?.innerWidth,
       height: isSSR ? 800 : safeWindow?.innerHeight,
     };
-  };
+  }, [isSSR, safeWindow?.innerHeight, safeWindow?.innerWidth]);
 
   const [windowSize, setWindowSize] = React.useState(setDimensions());
 
-  function changeWindowSize() {
+  const changeWindowSize = useCallback(() => {
     setWindowSize(setDimensions());
-  }
+  }, [setDimensions]);
 
   React.useEffect(() => {
     window.addEventListener('resize', changeWindowSize);
@@ -24,7 +24,7 @@ export default function useMediaQuery() {
     return () => {
       window.removeEventListener('resize', changeWindowSize);
     };
-  }, []);
+  }, [changeWindowSize]);
 
   const width = windowSize.width;
   const height = windowSize.height;

@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { Tab } from '@headlessui/react';
 import clsx from 'clsx';
 
@@ -139,6 +139,8 @@ function FeaturesMobile() {
             <div className="absolute -inset-x-4 bottom-0 top-8 bg-slate-200 sm:-inset-x-6" />
             <div className="relative mx-auto w-[20rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10 md:w-[30rem]">
               <Image
+                width={200}
+                height={200}
                 className="w-full  md:w-[30rem]"
                 src={feature.image}
                 alt={feature.name}
@@ -189,6 +191,8 @@ function FeaturesDesktop() {
                 >
                   <div className="h-full w-[28rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10">
                     <Image
+                      width={200}
+                      height={200}
                       className="h-full w-full"
                       src={feature.image}
                       alt=""

@@ -1,4 +1,4 @@
-import Image from 'next/future/image';
+import Image from 'next/image';
 import imageProfile from '@/images/avatars/avatar-5.png';
 export default function OrganizerProfile() {
   return (
@@ -7,6 +7,8 @@ export default function OrganizerProfile() {
         <div className="flex-shrink-0">
           <div className="relative">
             <Image
+              width={200}
+              height={200}
               className="h-16 w-16 rounded-full"
               src={imageProfile}
               alt=""

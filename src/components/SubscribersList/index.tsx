@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { RightOutlined } from '@ant-design/icons';
 import { Subscriber } from '@/shared/interfaces/ISubscribers';
 import { getPaginatedMySubscribersByMyEvent } from '@/services/user';
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 const initPageOptions: PageOptions = { page: 1 };
 
@@ -112,6 +112,8 @@ export const SubscribersList: React.FC<SubscribersListProps> = ({
                           <div className="flex items-center">
                             <div className="w-16 flex-shrink-0">
                               <Image
+                                width={200}
+                                height={200}
                                 className="aspect-video w-16 rounded object-cover group-hover:opacity-75"
                                 src={photoUrl}
                                 alt={name}

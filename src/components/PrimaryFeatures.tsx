@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { Tab } from '@headlessui/react';
 import clsx from 'clsx';
 
@@ -63,6 +63,7 @@ export function PrimaryFeatures() {
       className="relative overflow-hidden bg-blue-600 pt-20 pb-28 sm:py-32"
     >
       <Image
+        fill
         className="absolute top-1/2 left-1/2 max-w-none translate-x-[-44%] translate-y-[-42%]"
         src={backgroundImage}
         alt=""
@@ -139,6 +140,8 @@ export function PrimaryFeatures() {
                     </div>
                     <div className="mt-10 overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]">
                       <Image
+                        width={200}
+                        height={200}
                         className="max-h-[45rem] w-full p-10 md:p-20"
                         src={feature.image}
                         alt=""

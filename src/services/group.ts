@@ -5,7 +5,6 @@ import {
 } from '@/shared/interfaces/IGroup';
 import { Page } from '@/shared/interfaces/IPage';
 import { api } from './api';
-import { Follower } from '@/shared/interfaces/IFollower';
 
 export async function saveGroup(groupForm: GroupForm) {
   if (groupForm.uuid) {
@@ -38,7 +37,7 @@ export async function findByIdentifierGroup(uuid: string) {
 }
 
 export async function getPaginatedGroups(
-  pageOptions: GroupPageOptionWithFilters
+  pageOptions: GroupPageOptionWithFilters,
 ): Promise<Page<Group>> {
   return api
     .get<Page<Group>>(`/group/paginated`, { params: { ...pageOptions } })
@@ -63,7 +62,7 @@ export async function deleteGroup(groupUUID: string) {
 
 export async function getPaginatedMyCommentsByMyGroup(
   page: number,
-  groudUUID: string
+  groudUUID: string,
 ): Promise<Page<Comment>> {
   return api
     .get<Page<Comment>>(`/group/${groudUUID}/comment/paginated/?page=${page}`)

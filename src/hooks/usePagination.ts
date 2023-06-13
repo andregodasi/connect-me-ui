@@ -1,23 +1,21 @@
-import React from 'react';
-
 export const usePagination = (
   pageCount: number,
-  current: number
+  current: number,
 ): (string | number)[] => {
   const delta = 2;
   const hasLeft = current - delta;
   const hasRight = current + delta + 1;
-  let range = [];
-  let rangeWithDots = [];
+  const range = [];
+  const rangeWithDots = [];
   let aux;
 
   for (let i = 1; i <= pageCount; i++) {
-    if (i == 1 || i == pageCount || (i >= hasLeft && i < hasRight)) {
+    if (i === 1 || i === pageCount || (i >= hasLeft && i < hasRight)) {
       range.push(i);
     }
   }
 
-  for (let i of range) {
+  for (const i of range) {
     if (aux) {
       if (i - aux === 2) {
         rangeWithDots.push(aux + 1);

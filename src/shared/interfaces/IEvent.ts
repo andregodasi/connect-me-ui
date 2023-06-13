@@ -31,11 +31,10 @@ export interface EventForm {
   coverUrl?: string;
   coverImage?: File;
 }
-
-export interface EventPageOptionWithFilters extends PageOptions, EventFilters {}
-
 export interface EventFilters {
   q?: string;
   isFollowing?: boolean;
   isSubscribed?: boolean;
 }
+
+export interface EventPageOptionWithFilters extends PageOptions, EventFilters {}

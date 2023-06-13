@@ -1,4 +1,4 @@
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 import { Button } from '@/components/Button';
 import { Container } from '@/components/Container';
@@ -11,6 +11,7 @@ export function CallToAction() {
       className="relative overflow-hidden bg-blue-600 py-32"
     >
       <Image
+        fill
         className="absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2"
         src={backgroundImage}
         alt=""

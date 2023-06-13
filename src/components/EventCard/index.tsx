@@ -3,7 +3,7 @@ import React from 'react';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { formatWeekDateTime } from '@/shared/utils/transforms/dates';
 import { CalendarDaysIcon } from '@heroicons/react/20/solid';
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 const EventCard: React.FC = ({
   uuid,
@@ -53,6 +53,9 @@ const EventCard: React.FC = ({
         </div>
         <div className="flex items-center">
           <Image
+            width={200}
+            height={200}
+            sizes="auto"
             className="mr-4 h-10 w-10 rounded-full border border-gray-400 object-cover"
             src={group?.coverUrl}
             alt="Avatar of Jonathan Reinink"

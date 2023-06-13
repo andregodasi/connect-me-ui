@@ -5,10 +5,9 @@ import {
 } from '@/shared/interfaces/IEvent';
 import { Page } from '@/shared/interfaces/IPage';
 import { api } from './api';
-import { Subscriber } from '@/shared/interfaces/ISubscribers';
 
 export async function getPaginatedEvents(
-  pageOptions: EventPageOptionWithFilters
+  pageOptions: EventPageOptionWithFilters,
 ): Promise<Page<Event>> {
   return api
     .get<Page<Event>>(`/event/paginated`, { params: { ...pageOptions } })
@@ -23,7 +22,7 @@ export async function getPaginatedMyEvents(page: number): Promise<Page<Event>> {
 
 export async function getPaginatedMyEventsByGroup(
   page: number,
-  groudUUID: string
+  groudUUID: string,
 ): Promise<Page<Event>> {
   return api
     .get<Page<Event>>(`/event/my/group/${groudUUID}?page=${page}`)
@@ -61,7 +60,7 @@ export async function unsubscribe(eventUUID: string) {
 
 export async function getPaginatedMyCommentsByMyEvent(
   page: number,
-  eventUUID: string
+  eventUUID: string,
 ): Promise<Page<Comment>> {
   return api
     .get<Page<Comment>>(`/event/${eventUUID}/comment/paginated/?page=${page}`)

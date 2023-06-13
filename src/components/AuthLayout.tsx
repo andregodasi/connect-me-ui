@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 import backgroundImage from '@/images/background-auth.jpg';
 
@@ -14,6 +14,8 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
         </div>
         <div className="hidden sm:contents lg:relative lg:block lg:flex-1">
           <Image
+            width={100}
+            height={100}
             className="absolute inset-0 h-full w-full object-cover"
             src={backgroundImage}
             alt=""

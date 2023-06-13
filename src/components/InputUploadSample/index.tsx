@@ -4,7 +4,7 @@ import { UploadAvatar } from './UploadAvatar';
 import Modal from '../Modal';
 import { Button } from '../Button';
 import { AspectRatio } from '@/shared/enums/aspect-ratio.enum';
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 export const InputUploadSample: React.FC<{
   imageData?: any;
@@ -36,6 +36,8 @@ export const InputUploadSample: React.FC<{
       {isShowPreview && (
         <>
           <Image
+            width={200}
+            height={200}
             alt="Capa da comunidade"
             className="max-w-120 max-h-80 rounded object-cover shadow-md"
             src={imageData?.url || initialImage}

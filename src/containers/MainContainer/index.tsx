@@ -8,7 +8,7 @@ import { IconConnectMe } from '@/components/IconConnectMe';
 import Link from 'next/link';
 import { Avatar } from 'antd';
 import { getInitials } from '@/shared/utils/transforms/text';
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 const navigation = [
   { name: 'Eventos', href: '/' },
@@ -159,6 +159,8 @@ export default function MainContainer({
                             <div className="flex-shrink-0">
                               {user?.photoUrl ? (
                                 <Image
+                                  width={200}
+                                  height={200}
                                   className="h-10 w-10 rounded-full"
                                   src={user.photoUrl}
                                   alt="Sua imagem de perfil"
@@ -234,6 +236,8 @@ export default function MainContainer({
                       <span className="sr-only">Open user menu</span>
                       {user?.photoUrl ? (
                         <Image
+                          width={200}
+                          height={200}
                           className="h-10 w-10 rounded-full"
                           src={user.photoUrl}
                           alt="Sua imagem de perfil"

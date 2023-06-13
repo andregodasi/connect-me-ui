@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import MainContainer from '../MainContainer';
 import { toast } from 'react-toastify';
 
@@ -15,7 +15,7 @@ export const MainContainerPreview: React.FC<MainContainerPreviewProps> = ({
   const handleOnClickBlock = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     toast.warn(
-      'Essa é uma prévia da página de comunidade, não é possível interagir com ela.'
+      'Essa é uma prévia da página de comunidade, não é possível interagir com ela.',
     );
   };
   return (

@@ -16,7 +16,7 @@ import { formatWeekDateTime } from '@/shared/utils/transforms/dates';
 import { Button } from 'antd';
 import Link from 'next/link';
 import { RightOutlined } from '@ant-design/icons';
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 const initPageOptions: PageOptions = { page: 1 };
 
@@ -128,6 +128,8 @@ export const EventsListByGroup: React.FC<EventsListProps> = ({ groupUUID }) => {
                           <div className="flex items-center">
                             <div className="w-16 flex-shrink-0">
                               <Image
+                                width={200}
+                                height={200}
                                 className="aspect-video w-16 rounded object-cover group-hover:opacity-75"
                                 src={coverUrl}
                                 alt={name}

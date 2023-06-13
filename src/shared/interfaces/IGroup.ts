@@ -21,10 +21,9 @@ export interface Group {
   users: { user: User; role: Role }[];
   events: Event[];
 }
-
-export interface GroupPageOptionWithFilters extends PageOptions, GroupFilters {}
-
 export interface GroupFilters {
   q?: string;
   isFollowing?: boolean;
 }
+
+export interface GroupPageOptionWithFilters extends PageOptions, GroupFilters {}

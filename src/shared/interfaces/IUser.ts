@@ -81,7 +81,7 @@ export const userDataToProfileForm = (user: User): ProfileForm => {
 };
 
 export const profileFromToPayload = (
-  profileForm: ProfileForm
+  profileForm: ProfileForm,
 ): ProfilePayload => {
   return {
     name: profileForm.name,

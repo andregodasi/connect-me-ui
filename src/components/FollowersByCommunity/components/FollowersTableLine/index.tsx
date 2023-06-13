@@ -1,7 +1,7 @@
 import { Follower } from '@/shared/interfaces/IFollower';
 import { RightOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
@@ -21,6 +21,8 @@ export const FollowersTableLine: React.FC<FollowersTableLineProps> = ({
           <div className="flex items-center">
             <div className="w-16 flex-shrink-0">
               <Image
+                width={200}
+                height={200}
                 className="aspect-square w-12 rounded-full object-cover group-hover:opacity-75"
                 src={photoUrl}
                 alt={name}

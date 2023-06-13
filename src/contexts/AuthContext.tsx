@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       maxAge: 24 * 60 * 60 * 30, // 30 days
     });
 
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    api.defaults.headers.common.Authorization = `Bearer ${token}`;
     setUser(user);
 
     Router.push('/dashboard');

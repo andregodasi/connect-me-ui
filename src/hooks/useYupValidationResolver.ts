@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { object, ValidationError } from 'yup';
 
 const useYupValidationResolver = (
-  validationSchema: ReturnType<typeof object>
+  validationSchema: ReturnType<typeof object>,
 ) =>
   useCallback(
     async (data: any) => {
@@ -27,14 +27,14 @@ const useYupValidationResolver = (
                   message: currentError.message,
                 },
               }),
-              {}
+              {},
             ),
           };
 
         throw new Error('Error trying to validate form schema');
       }
     },
-    [validationSchema]
+    [validationSchema],
   );
 
 export default useYupValidationResolver;

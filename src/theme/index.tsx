@@ -1,6 +1,5 @@
 import React from 'react';
 import { ConfigProvider } from 'antd';
-import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import locale from 'antd/locale/pt_BR';
 
@@ -10,16 +9,16 @@ const colorBgHover = 'rgb(241 245 249/1)';
 const borderRadius = 9999;
 const colorPrimary = '#2563eb';
 
-const withTheme = (node: JSX.Element) => (
+const withTheme = (node: React.ReactNode) => (
   <>
     <ConfigProvider
       locale={locale}
       theme={{
         token: {
           wireframe: false,
-          colorPrimary: colorPrimary,
+          colorPrimary,
           borderRadius: 8,
-          fontFamily: fontFamily,
+          fontFamily,
         },
         components: {
           Button: {
@@ -29,104 +28,103 @@ const withTheme = (node: JSX.Element) => (
           },
           DatePicker: {
             borderRadius: 6,
-            fontFamily: fontFamily,
+            fontFamily,
             controlItemBgHover: colorBgHover,
             borderRadiusLG: 6,
             colorBgContainer: '#F9FAFB',
           },
           Pagination: {
-            borderRadius: borderRadius,
+            borderRadius,
             colorBgTextHover: colorBgHover,
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Steps: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Radio: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Popover: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Timeline: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Modal: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Typography: {
             fontFamilyCode: fontFamily,
-            
           },
           Breadcrumb: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Menu: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Cascader: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Checkbox: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Form: {
-            fontFamily: fontFamily,
+            fontFamily,
             borderRadius: 6,
             borderRadiusLG: 6,
           },
           Input: {
             colorPrimaryHover: colorPrimary,
-            fontFamily: fontFamily,
+            fontFamily,
             borderRadius: 6,
             borderRadiusLG: 6,
             colorBgContainer: '#F9FAFB',
           },
           InputNumber: {
             colorPrimaryHover: colorPrimary,
-            fontFamily: fontFamily,
+            fontFamily,
             borderRadius: 6,
             borderRadiusLG: 6,
           },
           Select: {
             colorPrimaryHover: colorPrimary,
-            fontFamily: fontFamily,
+            fontFamily,
             borderRadius: 6,
             borderRadiusLG: 6,
           },
           Slider: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Switch: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           TreeSelect: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Upload: {
             colorPrimaryHover: colorPrimary,
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Badge: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Calendar: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Card: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           List: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Table: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Tag: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
           Anchor: {
-            fontFamily: fontFamily,
+            fontFamily,
           },
         },
       }}

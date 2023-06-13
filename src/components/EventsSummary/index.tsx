@@ -1,6 +1,6 @@
 import { Event } from '@/shared/interfaces/IEvent';
 import { formatWeekDateTime } from '@/shared/utils/transforms/dates';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import Link from 'next/link';
 import placeholderImage from '@/images/screen-0.webp';
 interface EventsSummaryProps {
@@ -45,6 +45,8 @@ export function EventsSummary({ events, isLoading }: EventsSummaryProps) {
                   <div className="relative flex items-start space-x-3">
                     <div className="relative">
                       <Image
+                        width={200}
+                        height={200}
                         className="flex h-10 w-10 items-center justify-center rounded-md bg-gray-400 ring-8 ring-white"
                         src={placeholderImage}
                         alt=""

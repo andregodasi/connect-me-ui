@@ -1,7 +1,7 @@
 import { Uploader } from 'uploader';
 import { UploadButton } from 'react-uploader';
 import { useState } from 'react';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { Button } from 'antd';
 
 // Get production API keys from Upload.io

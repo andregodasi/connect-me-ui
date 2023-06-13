@@ -1,18 +1,13 @@
-import {
-  Group,
-  GroupForm,
-  GroupPageOptionWithFilters,
-} from '@/shared/interfaces/IGroup';
 import { Page } from '@/shared/interfaces/IPage';
 import { api } from './api';
 import { Follower } from '@/shared/interfaces/IFollower';
 import { Subscriber } from '@/shared/interfaces/ISubscribers';
-import { ProfileForm, ProfilePayload, User } from '@/shared/interfaces/IUser';
+import { ProfilePayload, User } from '@/shared/interfaces/IUser';
 import { AxiosInstance } from 'axios';
 
 export async function getPaginatedMyFollowersByMyGroup(
   page: number,
-  groudUUID: string
+  groudUUID: string,
 ): Promise<Page<Follower>> {
   return api
     .get<Page<Follower>>(`/user/my-group/${groudUUID}/paginated?page=${page}`)
@@ -21,7 +16,7 @@ export async function getPaginatedMyFollowersByMyGroup(
 
 export async function getPaginatedMySubscribersByMyEvent(
   page: number,
-  eventUUID: string
+  eventUUID: string,
 ): Promise<Page<Subscriber>> {
   return api
     .get<Page<Subscriber>>(`/user/my-event/${eventUUID}/paginated?page=${page}`)
@@ -37,7 +32,7 @@ export async function saveProfile(profilePayload: ProfilePayload) {
 }
 
 export async function getCurrentProfileSSR(
-  apiSSR: AxiosInstance
+  apiSSR: AxiosInstance,
 ): Promise<User> {
   return apiSSR.get<User>(`/user/current/profile`).then((res) => res.data);
 }
@@ -52,7 +47,7 @@ export async function uploadPhoto(photo: File) {
 
 export async function getProfileSSR(
   apiSSR: AxiosInstance,
-  identifier: string
+  identifier: string,
 ): Promise<User> {
   return apiSSR
     .get<User>(`/user/${identifier}/profile`)

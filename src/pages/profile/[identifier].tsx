@@ -1,6 +1,6 @@
 import MainContainer from '@/containers/MainContainer';
 import React from 'react';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { classNames } from '@/shared/helpers/styleSheets';
 import {
   socialNetworksBeautifulName,
@@ -57,6 +57,8 @@ const profileDetail: React.FC<profileDetailProps> = ({ profile }) => {
             <div className="mx-auto !max-w-xs px-2.5 lg:mx-0 lg:max-w-none">
               <div className="aspect-square !max-w-xs rotate-3 rounded-2xl object-cover shadow-lg">
                 <Image
+                  width={200}
+                  height={200}
                   className="aspect-square !max-w-xs rounded-2xl object-cover"
                   src={profile.photoUrl}
                   alt={profile.name}

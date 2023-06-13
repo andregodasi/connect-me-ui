@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '../Button';
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 interface MyGroupCardProps {
   uuid: string;
@@ -24,6 +24,8 @@ export function MyGroupCard({
       ></a>
       <div className="aspect-w-10 aspect-h-7 group block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
         <Image
+          width={200}
+          height={200}
           src={coverUrl}
           alt="community"
           className="max-h-[12rem] w-full object-cover group-hover:opacity-75"

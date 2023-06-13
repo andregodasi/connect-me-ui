@@ -20,7 +20,7 @@ export async function signInRequest(data: SignInRequestData) {
   const user: User = decodeToken(token) as User;
 
   return {
-    token: token,
+    token,
     user: {
       ...user,
     },

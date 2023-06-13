@@ -1,4 +1,4 @@
-//algoritmo que recebe um texto ou undefined
+// algoritmo que recebe um texto ou undefined
 // caso undefined retorna uma string vazia
 // caso o texto conter somente uma palavra retorna a primeira e segunda letra
 // caso o texto conter mais que duas palavras deverá retorna somente a primeira letra da primeira palabra e a primeira lebra da da segunda palavra
@@ -20,13 +20,13 @@ export function getInitials(text: string | undefined): string {
     if (words[1] === 'de' || words[1] === 'da' || words[1] === 'do') {
       return `${words[0].substring(0, 1)}${words[2].substring(
         0,
-        1
+        1,
       )}`.toLocaleUpperCase();
     }
 
     return `${words[0].substring(0, 1)}${words[1].substring(
       0,
-      1
+      1,
     )}`.toLocaleUpperCase();
   }
 

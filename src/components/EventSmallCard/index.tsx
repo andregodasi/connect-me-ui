@@ -1,4 +1,4 @@
-import Image from 'next/future/image';
+import Image from 'next/image';
 import React from 'react';
 import placeholderImage from '@/images/screen-0.webp';
 
@@ -10,7 +10,13 @@ export const EventSmallCard: React.FC<{
   return (
     <div key={uuid} className="group relative">
       <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-100">
-        <Image src={img} alt={name} className="object-cover object-center" />
+        <Image
+          width={200}
+          height={200}
+          src={img}
+          alt={name}
+          className="object-cover object-center"
+        />
         <div
           className="absolute bottom-0 right-0 left-0 top-0 flex h-full w-full items-end p-4 opacity-0 group-hover:opacity-100"
           aria-hidden="true"

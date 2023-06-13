@@ -1,4 +1,4 @@
-import Image from 'next/future/image';
+import Image from 'next/image';
 import participantImage from '@/images/avatars/avatar-2.png';
 
 export default function ParticipantProfile({ name }: { name: string }) {
@@ -7,6 +7,8 @@ export default function ParticipantProfile({ name }: { name: string }) {
       <div className="flex flex-col items-center">
         <div>
           <Image
+            width={200}
+            height={200}
             className="inline-block h-12 w-12 rounded-full"
             src={participantImage}
             alt={name}
