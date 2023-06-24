@@ -26,7 +26,7 @@ const features = [
   {
     name: 'Participe da comunidade',
     summary:
-      'Conheça cultura incríveis, compartilhe conhecimento e faça conexões.',
+      'Conheça culturas incríveis, compartilhe conhecimento e faça conexões.',
     description:
       'Junte-se a comunidades ativas na Connect Me, compartilhe interesses comuns e faça conexões significativas com pessoas que compartilham sua paixão por aprendizado e desenvolvimento.',
     image: CommunityImage,

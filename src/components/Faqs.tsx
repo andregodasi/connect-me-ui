@@ -6,7 +6,7 @@ import backgroundImage from '@/images/background-faqs.jpg';
 const faqs = [
   [
     {
-      question: 'Como faço para me inscrever em um evento?. ',
+      question: 'Como faço para me inscrever em um evento?',
       answer:
         'Ao encontrar um evento de seu interesse, clique nele para ver mais detalhes. você encontratá um botão de se inscrever. Clique nele e sua inscrição será realizada.',
     },
