@@ -87,6 +87,24 @@ a {
   outline-color: #3b82f6;
 } */
 
+.ellipis-1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  white-space: pre-wrap;
+}
+
+.ellipis-2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: pre-wrap;
+}
+
 .ellipis-3 {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -141,7 +159,26 @@ a {
 
 /* ======================== End Input ======================== */
 
-/* ======================== Begin Input ======================== */
+/* ======================== Begin Input Password ======================== */
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+  border-color: inherit;
+}
+
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):focus-within {
+  border-color: #2563eb;
+}
+
+.ant-input-password:focus,
+.ant-input-password:focus-within,
+.ant-input-password-focused {
+  background-color: #fff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 0px #fff, 0 0 0 1px #2563eb, 0 0 #0000
+}
+
+/* ======================== End Input Password ======================== */
+
+/* ======================== Begin Input picker ======================== */
 .ant-picker:hover {
   border-color: inherit;
 }
@@ -153,7 +190,7 @@ a {
   box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px, rgb(37, 99, 235) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px;
 }
 
-/* ======================== End Input ======================== */
+/* ======================== End Input picker ======================== */
 
 /* ======================== Begin Label ======================== */
 .ant-form-item-label {
@@ -185,7 +222,6 @@ a {
 
 }
 
-
 /* ======================== End Range Date picker ======================== */
 
 /* ======================== Begin Collapse======================== */
@@ -200,5 +236,52 @@ a {
 
 
 /* ======================== End Collapse ======================== */
+
+/* ======================== Begin Skeleton ======================== */
+
+.skeleton {
+  background: -webkit-gradient(linear,
+      left top,
+      right top,
+      color-stop(25%, #f2f2f2),
+      color-stop(37%, #e6e6e6),
+      color-stop(63%, #f2f2f2));
+  background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+  background-size: 400% 100%;
+  -webkit-animation: ant-skeleton-loading 1.4s ease infinite;
+  animation: ant-skeleton-loading 1.4s ease infinite;
+}
+
+@-webkit-keyframes ant-skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+@keyframes ant-skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+/* ======================== End Skeleton ======================== */
+
+/* ======================== Begin Rate ======================== */
+
+.rate-custom li {
+  margin-inline-end: 3px !important;
+}
+
+
+/* ======================== End Rate ======================== */
+
 
 /* ======================== End Ant Design ======================== */

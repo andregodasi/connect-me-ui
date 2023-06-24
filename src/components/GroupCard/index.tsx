@@ -1,4 +1,6 @@
 import { Group } from '@/shared/interfaces/IGroup';
+import { coverImgPlaceholder } from '@/shared/utils/helpers/coverImg';
+import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import React from 'react';
 
@@ -8,6 +10,7 @@ const GroupCard: React.FC<Group> = ({
   description,
   users,
   coverUrl,
+  isFollowed,
 }) => {
   return (
     <a
@@ -18,11 +21,22 @@ const GroupCard: React.FC<Group> = ({
       <div
         className="h-48 flex-none overflow-hidden rounded-t border border-gray-400 bg-cover bg-center lg:h-auto lg:w-48 lg:rounded-t-none  lg:rounded-l"
         title="Woman holding a mug"
-        style={{ backgroundImage: `url(${coverUrl})` }}
+        style={{ backgroundImage: `url(${coverUrl || coverImgPlaceholder})` }}
       ></div>
       <div className="flex w-full flex-col justify-between rounded-b border-r border-b border-l border-gray-400 bg-white p-4 leading-normal lg:rounded-b-none lg:rounded-r lg:border-l-0 lg:border-t lg:border-gray-400">
         <div className="mb-8">
-          <div className="mb-2 text-xl font-bold text-gray-900">{name}</div>
+          <div className="mb-2 text-xl font-bold text-gray-900">
+            {name}
+            {isFollowed && (
+              <span className="inline-flex items-center rounded-full bg-gray-100 px-3 py-0.5 text-sm font-medium text-gray-800">
+                <CheckCircleIcon
+                  className="mr-1.5 h-5 w-5 flex-shrink-0 text-green-400"
+                  aria-hidden="true"
+                />
+                Seguidor
+              </span>
+            )}
+          </div>
           <p
             className="ellipis-3 whitespace-break-spaces break-all text-base text-gray-700"
             title={description}
@@ -35,7 +49,7 @@ const GroupCard: React.FC<Group> = ({
             width={200}
             height={200}
             className="mr-4 h-10 w-10 rounded-full object-cover"
-            src={coverUrl}
+            src={coverUrl || coverImgPlaceholder}
             alt="Avatar of Jonathan Reinink"
           />
           <div className="text-sm">

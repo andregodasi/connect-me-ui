@@ -4,6 +4,7 @@ import { Button, Card, Image as ImagePreview, Upload, Typography } from 'antd';
 import type { RcFile, UploadFile } from 'antd/es/upload/interface';
 import { DeleteOutlined, InboxOutlined } from '@ant-design/icons';
 import { AspectRatio } from '@/shared/enums/aspect-ratio.enum';
+import { toast } from 'react-toastify';
 
 const { Text, Paragraph } = Typography;
 const { Dragger } = Upload;
@@ -64,6 +65,7 @@ export const UploadImage: React.FC<UploadImageProps> = ({
 
       console.log(`${info.file.name} file uploaded successfully.`);
     } else if (status === 'error') {
+      toast.error(`${info.file.name} file upload failed.`);
       console.log(`${info.file.name} file upload failed.`);
     }
   };

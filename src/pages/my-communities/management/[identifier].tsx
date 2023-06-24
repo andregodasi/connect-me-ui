@@ -5,8 +5,8 @@ import {
   CalendarIcon,
   ChevronDownIcon,
   ChevronRightIcon,
+  EyeIcon,
   LinkIcon,
-  MapPinIcon,
   PencilIcon,
   UserGroupIcon,
 } from '@heroicons/react/20/solid';
@@ -30,8 +30,8 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { EventsListByGroup } from '@/components/EventsListByCommunity';
 import { FollowersByCommunity } from '@/components/FollowersByCommunity';
-import { CommentsByCommunity } from '@/components/CommentsByCommunity';
 import PreviewCommunity from '@/components/PreviewCommunity';
+import { MyComments } from '@/components/MyComments';
 
 const statusOptions: ToggleOptions = {
   published: {
@@ -92,10 +92,6 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
 
   const { mutate: mutatePublishGroup, isLoading: mutatePublishGroupLoading } =
     useMutation(publishGroup, {
-      onError: (error) => {
-        console.log(error);
-        console.log(`onError`);
-      },
       onSuccess: () => {
         refetchGroup();
         toast.success(`Comunidade publicada com sucesso!`);
@@ -108,10 +104,6 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
 
   const { mutate: mutateDeleteGroup, isLoading: mutateDeleteGroupLoading } =
     useMutation(deleteGroup, {
-      onError: (error) => {
-        console.log(error);
-        console.log(`onError`);
-      },
       onSuccess: () => {
         router.push('/my-communities');
         toast.success(`Comunidade excluída com sucesso!`);
@@ -123,7 +115,6 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
     });
 
   const handleToggleStatus = (status: ToggleStatusEnum) => {
-    console.log(status);
     if (status === ToggleStatusEnum.PUBLISHED) {
       setIsOpenModalPublished(true);
       return;
@@ -215,17 +206,6 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                 </div>
                 <div
                   className="mt-2 flex items-center text-sm text-gray-500"
-                  title="Eventos onlines"
-                  aria-label="Eventos onlines"
-                >
-                  <MapPinIcon
-                    className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                    aria-hidden="true"
-                  />
-                  Online
-                </div>
-                <div
-                  className="mt-2 flex items-center text-sm text-gray-500"
                   title="Quantidade de seguidores"
                   aria-label="Quantidade de seguidores"
                 >
@@ -233,7 +213,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                     className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                     aria-hidden="true"
                   />
-                  104
+                  {group?.users?.length}
                 </div>
                 <div
                   className="mt-2 flex items-center text-sm text-gray-500"
@@ -274,17 +254,31 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
               </span>
 
               <span className="ml-3 hidden sm:block">
-                <button
-                  onClick={() => showDrawer()}
-                  type="button"
-                  className="inline-flex items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                >
-                  <LinkIcon
-                    className="-ml-1 mr-2 h-5 w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
-                  Prévia
-                </button>
+                {group?.isPublised ? (
+                  <Link
+                    href={`/communities/${group.slug}`}
+                    type="button"
+                    className="inline-flex items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                  >
+                    <LinkIcon
+                      className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                      aria-hidden="true"
+                    />
+                    Ver comunidade
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => showDrawer()}
+                    type="button"
+                    className="inline-flex items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                  >
+                    <EyeIcon
+                      className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                      aria-hidden="true"
+                    />
+                    Prévia
+                  </button>
+                )}
               </span>
 
               <ToggleStatus
@@ -339,19 +333,43 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                         </Link>
                       )}
                     </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          href="#"
-                          className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700',
-                          )}
-                        >
-                          Prévia
-                        </a>
-                      )}
-                    </Menu.Item>
+                    {!group?.isPublised && (
+                      <Menu.Item>
+                        {({ active }) => (
+                          <button
+                            className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'flex w-full items-center px-4 py-2 text-sm text-gray-700',
+                            )}
+                          >
+                            <EyeIcon
+                              className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                              aria-hidden="true"
+                            />
+                            Prévia
+                          </button>
+                        )}
+                      </Menu.Item>
+                    )}
+                    {group?.isPublised && (
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link
+                            href={`/communities/${group.slug}`}
+                            className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'flex w-full items-center px-4 py-2 text-sm text-gray-700',
+                            )}
+                          >
+                            <LinkIcon
+                              className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                              aria-hidden="true"
+                            />
+                            Ver comunidade
+                          </Link>
+                        )}
+                      </Menu.Item>
+                    )}
                   </Menu.Items>
                 </Transition>
               </Menu>
@@ -391,7 +409,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                       className={({ selected }) =>
                         classNames(
                           selected
-                            ? 'border-blue-500 text-blue-600'
+                            ? 'border-blue-500 text-blue-500'
                             : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700',
                           'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium',
                         )
@@ -403,7 +421,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                       className={({ selected }) =>
                         classNames(
                           selected
-                            ? 'border-blue-500 text-blue-600'
+                            ? 'border-blue-500 text-blue-500'
                             : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700',
                           'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium',
                         )
@@ -415,7 +433,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                       className={({ selected }) =>
                         classNames(
                           selected
-                            ? 'border-blue-500 text-blue-600'
+                            ? 'border-blue-500 text-blue-500'
                             : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700',
                           'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium',
                         )
@@ -452,7 +470,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                     <FollowersByCommunity groupUUID={identifier} />
                   </Tab.Panel>
                   <Tab.Panel className="mb-10">
-                    <CommentsByCommunity groupUUID={identifier} />
+                    <MyComments uuidEntity={identifier} type="group" />
                   </Tab.Panel>
                 </Tab.Panels>
               </Tab.Group>
@@ -461,7 +479,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
         </main>
       </div>
       <Modal
-        title="Publicar comunidade ?"
+        title="Publicar comunidade?"
         open={isOpenModalPublished}
         maskClosable={false}
         onOk={() => mutatePublishGroup(group.uuid)}
@@ -480,13 +498,8 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
         cancelText="Cancelar"
       >
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          Após a publicação da comunidade ele ficará disponível para todos os
+          usuários da plataforma, você tem certeza quer deseja publicar?
         </p>
       </Modal>
       <Modal
@@ -510,13 +523,8 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
         cancelText="Cancelar"
       >
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          Após a exclusão, todos os dados da comunidade serão deletados e não
+          poderão ser recuperados, você tem certeza que deseja excluir o evento?
         </p>
       </Modal>
       <Drawer

@@ -1,18 +1,46 @@
 import Image from 'next/image';
 import imageProfile from '@/images/avatars/avatar-5.png';
-export default function OrganizerProfile() {
+import { User } from '@/shared/interfaces/IUser';
+import Link from 'next/link';
+import { Avatar } from 'antd';
+import { getInitials } from '@/shared/utils/transforms/text';
+
+interface OrganizerProfileProps {
+  organizer: User | undefined;
+}
+
+export default function OrganizerProfile({ organizer }: OrganizerProfileProps) {
   return (
-    <div className="md:flex md:items-center md:justify-between md:space-x-5">
+    <Link
+      href={`/profile/${organizer?.uuid}`}
+      className="md:flex md:items-center md:justify-between md:space-x-5"
+    >
       <div className="flex items-start space-x-5">
         <div className="flex-shrink-0">
           <div className="relative">
-            <Image
-              width={200}
-              height={200}
-              className="h-16 w-16 rounded-full"
-              src={imageProfile}
-              alt=""
-            />
+            {organizer?.photoUrl ? (
+              <Image
+                width={200}
+                height={200}
+                className="h-16 w-16 rounded-full"
+                src={organizer?.photoUrl || imageProfile}
+                alt={organizer?.name || ''}
+              />
+            ) : (
+              <Avatar
+                className="border-2 shadow"
+                size={64}
+                style={{
+                  backgroundColor: '#e9effd',
+                  color: '#2563eb',
+                  borderColor: '#2563eb',
+                  fontWeight: 600,
+                }}
+              >
+                {getInitials(organizer?.name)}
+              </Avatar>
+            )}
+
             <span
               className="absolute inset-0 rounded-full shadow-inner"
               aria-hidden="true"
@@ -24,11 +52,16 @@ export default function OrganizerProfile() {
           but preserve the same layout if the text wraps without making the image jump around.
         */}
         <div className="pt-1.5">
-          <h1 className="text-2xl font-bold text-gray-900">André Gonçalves</h1>
+          <h1 className="text-2xl font-bold text-gray-900">
+            {organizer?.name}
+          </h1>
           <p className="text-sm font-medium text-gray-500">
-            <a href="#" className="text-gray-900">
-              Front End Developer
-            </a>{' '}
+            {/*  <Link
+              href={`/profile/${organizer?.uuid}`}
+              className="text-gray-900"
+            > */}
+            {organizer?.title}
+            {/*  </Link> */}
           </p>
         </div>
       </div>
@@ -46,6 +79,6 @@ export default function OrganizerProfile() {
           Advance to offer
         </button>
       </div> */}
-    </div>
+    </Link>
   );
 }

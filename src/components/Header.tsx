@@ -102,14 +102,14 @@ export function Header() {
       <Container>
         <nav className="relative z-50 flex justify-between">
           <div className="flex items-center lg:gap-x-12">
-            <Link href="#" aria-label="Home">
+            <Link href="/" aria-label="Home">
               <LogoConnectMe className="hidden h-10 w-auto sm:block" />
               <IconConnectMe className="h-10 w-auto sm:hidden" />
             </Link>
             <div className="hidden lg:flex lg:gap-x-6">
               <NavLink href="#about">Sobre nós</NavLink>
               <NavLink href="#plataform">Plataforma</NavLink>
-              <NavLink href="#community">Comunidade</NavLink>
+              {/* <NavLink href="#community">Comunidade</NavLink> */}
               <NavLink href="#how-we-work">Como funcionamos</NavLink>
             </div>
           </div>

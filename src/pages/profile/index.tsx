@@ -44,35 +44,17 @@ export const Profile: React.FC<{
   const [form] = Form.useForm();
 
   const { mutate: mutateProfile } = useMutation(saveProfile, {
-    onError: (error) => {
-      console.log(error);
-      console.log(`onError`);
-    },
     onSuccess: () => {
       toast.success('Perfil atualizado com sucesso!');
       refreshUserInformation();
-    },
-    onSettled: (data) => {
-      // Error or success... doesn't matter!
-      console.log(data);
-      console.log(`onSettled`);
     },
   });
 
   const { mutate: mutateUpdatePhoto, isLoading: mutateUpdatePhotoLoading } =
     useMutation(uploadPhoto, {
-      onError: (error) => {
-        console.log(error);
-        console.log(`onError`);
-      },
       onSuccess: () => {
         toast.success('Foto do Perfil atualizada com sucesso!');
         refreshUserInformation();
-      },
-      onSettled: (data) => {
-        // Error or success... doesn't matter!
-        console.log(data);
-        console.log(`onSettled`);
       },
     });
 
@@ -95,10 +77,7 @@ export const Profile: React.FC<{
         <Title level={3} className="!font-bold">
           Perfil
         </Title>
-        <Text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </Text>
+        <Text>Cadastre as Informações referente ao seu perfil.</Text>
         <div className="flex justify-center">
           <UploadProfile
             initialImage={currentUser.photoUrl}
@@ -121,11 +100,7 @@ export const Profile: React.FC<{
                   <Title level={3} className="!font-bold">
                     Informações pessoais
                   </Title>
-                  <Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </Text>
+                  <Text>Queremos saber um pouco mais sobre você.</Text>
                 </div>
                 <Form.Item
                   label="Nome"
@@ -177,9 +152,7 @@ export const Profile: React.FC<{
                     Informações profissionais
                   </Title>
                   <Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    Queremos saber um pouco mais sobre sua vida profissional.
                   </Text>
                 </div>
 
@@ -205,9 +178,8 @@ export const Profile: React.FC<{
                     Redes sociais
                   </Title>
                   <Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    Como andam suas redes, isso é uma parte importante para seu
+                    networking
                   </Text>
                 </div>
                 <Form.Item
@@ -293,9 +265,7 @@ export const Profile: React.FC<{
                     Informações acadêmicas
                   </Title>
                   <Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    Como foi usa vida acadêmica? Conte um pouco para nós.
                   </Text>
                 </div>
                 <Form.Item
@@ -312,9 +282,8 @@ export const Profile: React.FC<{
                     Cursos, licenças e certificados
                   </Title>
                   <Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    Quais foram os ultimos cursos, licenças e certificados que
+                    você fez? Conte um pouco para nós.
                   </Text>
                 </div>
 

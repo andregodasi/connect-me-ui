@@ -91,8 +91,8 @@ export function Testimonials() {
             Depoimentos das nossas comunidades
           </h2>
           <p className="mt-4 text-lg tracking-tight text-slate-700">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+            Veja todos os depoimentos das nossas comunidades. Você também pode
+            enviar o seu depoimento para nós.
           </p>
         </div>
         <ul

@@ -9,7 +9,8 @@ interface CurrentUser {
 }
 
 export const getCurrentUser = (ctx: GetServerSidePropsContext): CurrentUser => {
-  const { 'connect.token': token } = parseCookies(ctx);
+  // eslint-disable-next-line no-useless-computed-key
+  const { ['connect.token']: token } = parseCookies(ctx);
   const currentUser = decodeToken(token) as CurrentUser;
 
   return currentUser;

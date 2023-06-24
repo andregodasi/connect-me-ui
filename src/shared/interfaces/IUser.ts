@@ -6,15 +6,15 @@ import { SocialNetwork } from './ISocialNetwork';
 export interface User {
   uuid: string;
   name: string;
-  email: string;
-  nickname: string;
-  status: Status;
-  photoUrl: string;
-  title: string;
-  companyRole: string;
-  companyName: string;
-  degree: string;
-  aboutMe: string;
+  email?: string;
+  nickname?: string;
+  status?: Status;
+  photoUrl?: string | any;
+  title?: string;
+  companyRole?: string;
+  companyName?: string;
+  degree?: string;
+  aboutMe?: string;
   socialNetworks?: SocialNetwork[];
   knowledge?: Knowledge[];
 }
@@ -54,9 +54,9 @@ export const userDataToProfileForm = (user: User): ProfileForm => {
   return {
     uuid: user.uuid,
     name: user.name,
-    nickname: user.nickname,
-    status: user.status,
-    title: user.title,
+    nickname: user?.nickname || '',
+    status: user?.status || Status.DEACTIVATED,
+    title: user?.title || '',
     companyRole: user.companyRole,
     companyName: user.companyName,
     degree: user.degree,

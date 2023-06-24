@@ -15,7 +15,7 @@ export const MainContainerPreview: React.FC<MainContainerPreviewProps> = ({
   const handleOnClickBlock = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     toast.warn(
-      'Essa é uma prévia da página de comunidade, não é possível interagir com ela.',
+      'Essa é uma prévia de conteúdo, não é possível interagir com ela.',
     );
   };
   return (

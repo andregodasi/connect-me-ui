@@ -1,21 +1,20 @@
 import Image from 'next/image';
 import React from 'react';
-import placeholderImage from '@/images/screen-0.webp';
+import { Event } from '@/shared/interfaces/IEvent';
+import Link from 'next/link';
 
 export const EventSmallCard: React.FC<{
-  uuid?: string;
-  name: string;
-  img?: string;
-}> = ({ uuid, name, img = placeholderImage }) => {
+  event: Event;
+}> = ({ event }) => {
   return (
-    <div key={uuid} className="group relative">
+    <div key={event.uuid} className="group relative">
       <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-100">
         <Image
-          width={200}
-          height={200}
-          src={img}
-          alt={name}
-          className="object-cover object-center"
+          width={600}
+          height={400}
+          src={event.coverUrl}
+          alt={event.name}
+          className="!h-full object-cover object-center"
         />
         <div
           className="absolute bottom-0 right-0 left-0 top-0 flex h-full w-full items-end p-4 opacity-0 group-hover:opacity-100"
@@ -28,13 +27,15 @@ export const EventSmallCard: React.FC<{
       </div>
       <div className="mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900">
         <h3>
-          <a href="#">
+          <Link href={`/events/${event.uuid}`}>
             <span aria-hidden="true" className="absolute inset-0" />
-            {name}
-          </a>
+            {event.name}
+          </Link>
         </h3>
       </div>
-      <p className="mt-1 text-sm text-gray-500">Tecnology</p>
+      <p className="ellipis-2 mt-1 text-sm text-gray-500">
+        {event.description}
+      </p>
     </div>
   );
 };

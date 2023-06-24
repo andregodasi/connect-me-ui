@@ -1,3 +1,4 @@
+import SendHail from '@/components/SendHail';
 import { Follower } from '@/shared/interfaces/IFollower';
 import { RightOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
@@ -50,9 +51,12 @@ export const FollowersTableLine: React.FC<FollowersTableLineProps> = ({
           </div>
         </td>
         <td className="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+          <SendHail toUserUUID={uuid} />
+        </td>
+        <td className="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
           <Link
             target="_blank"
-            className="text-indigo-600 hover:text-indigo-900"
+            className="text-blue-600 hover:text-blue-900"
             href={`/profile/${uuid}`}
           >
             <Button

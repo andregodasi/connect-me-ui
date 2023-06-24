@@ -21,8 +21,8 @@ const EventCard: React.FC = ({
         className="absolute top-0 right-0 left-0 bottom-0"
       />
       <div
-        className="h-48 flex-none overflow-hidden rounded-t bg-cover text-center md:h-auto md:w-48 md:rounded-t-none md:rounded-l"
-        title="Woman holding a mug"
+        className="h-48 flex-none overflow-hidden rounded-t border border-gray-400 bg-cover bg-center md:h-auto md:w-48 md:rounded-t-none md:rounded-l"
+        title={name}
         style={{ backgroundImage: `url(${coverUrl})` }}
       ></div>
       <div className="flex w-full flex-col justify-between rounded-b border-r border-b border-l border-gray-400 bg-white p-4 leading-normal md:rounded-b-none md:rounded-r md:border-l-0 md:border-t md:border-gray-400">

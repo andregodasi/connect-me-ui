@@ -1,3 +1,4 @@
+import { EventType } from '../enums/event-type.enum';
 import { Group } from './IGroup';
 import { PageOptions } from './IPageOptions';
 import { User } from './IUser';
@@ -5,14 +6,18 @@ import type { Dayjs } from 'dayjs';
 
 export interface Event {
   uuid?: string;
-  name: string;
-  description: string;
-  initialDate: Date;
-  finishDate: Date;
-  address: string;
-  coverUrl: string;
-  isPublised: boolean;
-  limitParticipants: number;
+  name?: string;
+  description?: string;
+  initialDate?: Date;
+  finishDate?: Date;
+  address?: string;
+  link?: string;
+  type?: EventType;
+  isSubscribed?: boolean;
+  organizer?: User;
+  coverUrl?: string;
+  isPublised?: boolean;
+  limitParticipants?: number;
   group?: Group;
   users?: { user: User }[];
 }

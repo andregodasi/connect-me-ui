@@ -26,7 +26,7 @@ export default function Login() {
       <AuthLayout>
         <div className="flex flex-col">
           <Link href="/" aria-label="Home">
-            <LogoConnectMe className="hidden h-10 w-auto" />
+            <LogoConnectMe className="h-10 w-auto" />
           </Link>
           <div className="mt-20">
             <h2 className="text-lg font-semibold text-gray-900">
@@ -50,7 +50,7 @@ export default function Login() {
         >
           <TextField
             register={register}
-            label="Email address"
+            label="E-mail"
             name="email"
             type="email"
             autoComplete="email"
@@ -58,12 +58,20 @@ export default function Login() {
           />
           <TextField
             register={register}
-            label="Password"
+            label="Senha"
             name="password"
             type="password"
             autoComplete="current-password"
             required
           />
+          <div className="flex justify-end">
+            <Link
+              href="/forgot-password"
+              className="text-sm font-medium text-blue-600 hover:underline"
+            >
+              Esqueceu sua senha?
+            </Link>
+          </div>
           <div>
             <Button
               type="submit"
@@ -72,7 +80,7 @@ export default function Login() {
               className="w-full"
             >
               <span>
-                Sign in <span aria-hidden="true">&rarr;</span>
+                Entrar <span aria-hidden="true">&rarr;</span>
               </span>
             </Button>
           </div>

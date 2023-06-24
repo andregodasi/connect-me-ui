@@ -15,25 +15,25 @@ const features = [
   {
     title: 'A comunidade em primeiro lugar',
     description:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      'Acreditamos na importância de construir uma comunidade vibrante, conectando pessoas apaixonadas por eventos e promovendo interações significativas.',
     image: CommunityImg,
   },
   {
     title: 'Totalmente gratuita',
     description:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      'Queremos democratizar o acesso a eventos de qualidade, tornando-os acessíveis a todos, sem qualquer custo financeiro.',
     image: SaveMoenyImg,
   },
   {
     title: 'Eventos online e presenciais',
     description:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      'Oferecemos uma ampla variedade de eventos, permitindo que os usuários escolham entre participar virtualmente ou desfrutar de experiências presenciais, de acordo com suas preferências.',
     image: ConferenceImg,
   },
   {
     title: 'Seus dados estão seguros',
     description:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      'Priorizamos a segurança dos dados pessoais dos nossos usuários, adotando medidas avançadas para proteger suas informações e garantir a confidencialidade em todas as interações.',
     image: SecurityImg,
   },
 ];
@@ -63,7 +63,6 @@ export function PrimaryFeatures() {
       className="relative overflow-hidden bg-blue-600 pt-20 pb-28 sm:py-32"
     >
       <Image
-        fill
         className="absolute top-1/2 left-1/2 max-w-none translate-x-[-44%] translate-y-[-42%]"
         src={backgroundImage}
         alt=""
@@ -74,13 +73,13 @@ export function PrimaryFeatures() {
       <Container className="relative">
         <div className="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
           <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl md:text-5xl">
-            Sobre nós
+            Nosso pilares
           </h2>
           <p className="mt-6 text-lg tracking-tight text-blue-100">
-            {`Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.`}
+            Connect Me é uma plataforma que coloca a comunidade em primeiro
+            lugar, oferecendo eventos incríveis de forma totalmente gratuita.
+            Proporcionamos experiências online e presenciais, garantindo a
+            segurança dos dados dos nossos usuários.
           </p>
         </div>
         <Tab.Group

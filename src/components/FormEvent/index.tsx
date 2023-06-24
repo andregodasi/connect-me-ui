@@ -56,23 +56,13 @@ export const FormEvent: React.FC<{
   );
 
   const { mutate: mutateEvent } = useMutation(saveEvent, {
-    onError: (error) => {
-      console.log(error);
-      console.log(`onError`);
-    },
     onSuccess: () => {
       toast.success('Evento criado com sucesso!');
       router.push(`/my-communities/management/${identifier}`);
     },
-    onSettled: (data) => {
-      // Error or success... doesn't matter!
-      console.log(data);
-      console.log(`onSettled`);
-    },
   });
 
   async function handleSubmit(data: EventForm) {
-    console.log(data);
     setIsSubmited(true);
     if (!imageUpload && !initialImage) {
       return;

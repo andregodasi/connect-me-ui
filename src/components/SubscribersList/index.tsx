@@ -13,6 +13,10 @@ import { RightOutlined } from '@ant-design/icons';
 import { Subscriber } from '@/shared/interfaces/ISubscribers';
 import { getPaginatedMySubscribersByMyEvent } from '@/services/user';
 import Image from 'next/image';
+import { Placeholder } from '../Placeholder';
+import noSubscribers from '@/images/svg/no_subscribers.svg';
+import SendHail from '../SendHail';
+import { SubscribersTableLoading } from './components/LoadingList';
 
 const initPageOptions: PageOptions = { page: 1 };
 
@@ -25,7 +29,11 @@ export const SubscribersList: React.FC<SubscribersListProps> = ({
 }) => {
   const [subscriberPage, setSubscriberPage] = useState<Subscriber[]>([]);
   const [pageOptions, setPageOptions] = useState<PageOptions>(initPageOptions);
-  const { data: dataPage } = useQuery(
+  const {
+    data: dataPage,
+    isLoading,
+    isFetching,
+  } = useQuery(
     ['SubscribersList', pageOptions],
     () => getPaginatedMySubscribersByMyEvent(pageOptions.page, eventUUID),
     { staleTime: Infinity },
@@ -43,6 +51,11 @@ export const SubscribersList: React.FC<SubscribersListProps> = ({
       page: loadPage,
     });
   };
+
+  const isShowLoading = isLoading || isFetching;
+  const isShowList = !isLoading && subscriberPage?.length;
+  const isShowEmpty = !isLoading && !subscriberPage?.length;
+
   return (
     <div>
       <div className="container mx-auto">
@@ -50,111 +63,119 @@ export const SubscribersList: React.FC<SubscribersListProps> = ({
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
               <table className="min-w-full divide-y divide-gray-300">
-                <thead>
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                    >
-                      <div className="flex">
-                        <RocketLaunchIcon
-                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                          aria-hidden="true"
-                        />
-                        Inscrito
-                      </div>
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      <div className="flex">
-                        <CalendarDaysIcon
-                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                          aria-hidden="true"
-                        />
-                        Titulo
-                      </div>
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      <div className="flex">
-                        <FlagIcon
-                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                          aria-hidden="true"
-                        />
-                        Empresa
-                      </div>
-                    </th>
-                    <th
-                      scope="col"
-                      className="relative py-3.5 pl-3 pr-4 sm:pr-0"
-                    >
-                      <span className="sr-only">Ver mais</span>
-                    </th>
-                  </tr>
-                </thead>
+                {(isShowLoading || isShowList) && (
+                  <thead>
+                    <tr>
+                      <th
+                        scope="col"
+                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                      >
+                        <div className="flex">
+                          <RocketLaunchIcon
+                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          Inscrito
+                        </div>
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        <div className="flex">
+                          <CalendarDaysIcon
+                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          Titulo
+                        </div>
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        <div className="flex">
+                          <FlagIcon
+                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          Empresa
+                        </div>
+                      </th>
+                      <th
+                        scope="col"
+                        className="relative py-3.5 pl-3 pr-4 sm:pr-0"
+                      >
+                        <span className="sr-only">Mandar Salve!</span>
+                      </th>
+                      <th
+                        scope="col"
+                        className="relative py-3.5 pl-3 pr-4 sm:pr-0"
+                      >
+                        <span className="sr-only">Ver mais</span>
+                      </th>
+                    </tr>
+                  </thead>
+                )}
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {subscriberPage?.map(
-                    ({
-                      uuid,
-                      name,
-                      title,
-                      photoUrl,
-                      nickname,
-                      companyName,
-                      companyRole,
-                    }: Subscriber) => (
-                      <tr key={uuid}>
-                        <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                          <div className="flex items-center">
-                            <div className="w-16 flex-shrink-0">
-                              <Image
-                                width={200}
-                                height={200}
-                                className="aspect-video w-16 rounded object-cover group-hover:opacity-75"
-                                src={photoUrl}
-                                alt={name}
-                              />
-                            </div>
-                            <div className="ml-4">
-                              <div className="font-medium text-gray-900">
-                                {name}
+                  {isShowList &&
+                    subscriberPage?.map(
+                      ({
+                        uuid,
+                        name,
+                        title,
+                        photoUrl,
+                        nickname,
+                        companyName,
+                        companyRole,
+                      }: Subscriber) => (
+                        <tr key={uuid}>
+                          <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                            <div className="flex items-center">
+                              <div className="w-16 flex-shrink-0">
+                                <Image
+                                  width={200}
+                                  height={200}
+                                  className="aspect-square w-12 rounded-full object-cover group-hover:opacity-75"
+                                  src={photoUrl}
+                                  alt={name}
+                                />
                               </div>
-                              <div className="mt-1 text-gray-500">
-                                {nickname}
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                          <div className="flex items-center">
-                            <div className="ml-4">
-                              <div className="font-medium text-gray-900">
-                                {title}
-                              </div>
-                              <div className="mt-1 text-gray-500">
-                                {companyRole}
+                              <div className="ml-4">
+                                <div className="font-medium text-gray-900">
+                                  {name}
+                                </div>
+                                <div className="mt-1 text-gray-500">
+                                  {nickname}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </td>
-                        <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                          <div className="flex items-center">
-                            <div className="ml-4">
-                              <div className="font-medium text-gray-900">
-                                {companyName}
+                          </td>
+                          <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                            <div className="flex items-center">
+                              <div className="ml-4">
+                                <div className="font-medium text-gray-900">
+                                  {title}
+                                </div>
+                                <div className="mt-1 text-gray-500">
+                                  {companyRole}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </td>
-                        <td className="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                          <a
-                            href="#"
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
+                          </td>
+                          <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                            <div className="flex items-center">
+                              <div className="ml-4">
+                                <div className="font-medium text-gray-900">
+                                  {companyName}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                            <SendHail toUserUUID={uuid} />
+                          </td>
+                          <td className="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                             <Link href={`/profile/${uuid}`}>
                               <Button
                                 type="link"
@@ -166,11 +187,11 @@ export const SubscribersList: React.FC<SubscribersListProps> = ({
                               </Button>
                             </Link>
                             <span className="sr-only">, {name}</span>
-                          </a>
-                        </td>
-                      </tr>
-                    ),
-                  )}
+                          </td>
+                        </tr>
+                      ),
+                    )}
+                  {isShowLoading && <SubscribersTableLoading />}
                 </tbody>
               </table>
             </div>
@@ -185,6 +206,14 @@ export const SubscribersList: React.FC<SubscribersListProps> = ({
             handleGoToPage={(goToPage) => handleLoad(goToPage)}
           />
         </div>
+      )}
+      {isShowEmpty && (
+        <Placeholder
+          image={noSubscribers}
+          alt="Nenhum seguidor encontrado"
+          title="Nenhum seguidor encontrado"
+          descriptionTop="Ainda não temos nenhum seguidor para essa comunidade."
+        />
       )}
     </div>
   );

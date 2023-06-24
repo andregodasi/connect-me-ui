@@ -6,4 +6,5 @@ export interface Comment {
   text: string;
   starts: number;
   reasonDeleted: string;
+  createAt: Date;
 }

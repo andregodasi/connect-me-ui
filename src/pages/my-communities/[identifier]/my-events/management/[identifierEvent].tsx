@@ -5,7 +5,10 @@ import {
   CalendarIcon,
   ChevronDownIcon,
   ChevronRightIcon,
+  EyeIcon,
+  GlobeAltIcon,
   LinkIcon,
+  MapIcon,
   MapPinIcon,
   PencilIcon,
   UserGroupIcon,
@@ -20,7 +23,6 @@ import {
   publishEvent,
 } from '@/services/event';
 import { SubscribersList } from '@/components/SubscribersList';
-import { CommentsByEvent } from '@/components/CommentsByEvent';
 import {
   ToggleOptions,
   ToggleStatus,
@@ -29,7 +31,10 @@ import {
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { classNames } from '@/shared/helpers/styleSheets';
-import { Modal } from 'antd';
+import { Drawer, Modal } from 'antd';
+import { MyComments } from '@/components/MyComments';
+import PreviewEvent from '@/components/PreviewEvent';
+import { EventType } from '@/shared/enums/event-type.enum';
 
 const tabs = [
   { name: 'Applied', href: '#', count: '2', current: false },
@@ -77,6 +82,15 @@ export default function ManagementGroup({
   const router = useRouter();
   const [isOpenModalPublished, setIsOpenModalPublished] = useState(false);
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
 
   const { data: event, refetch: refetchEvent } = useQuery(
     [`my-events-management${identifierEvent}`],
@@ -89,26 +103,17 @@ export default function ManagementGroup({
 
   const { mutate: mutatePublishEvent, isLoading: mutatePublishEventLoading } =
     useMutation(publishEvent, {
-      onError: (error) => {
-        console.log(error);
-        console.log(`onError`);
-      },
       onSuccess: () => {
         refetchEvent();
         toast.success(`Evento publicado com sucesso!`);
       },
       onSettled: () => {
-        // Error or success... doesn't matter!
         setIsOpenModalPublished(false);
       },
     });
 
   const { mutate: mutateDeleteEvent, isLoading: mutateDeleteEventLoading } =
     useMutation(deleteEvent, {
-      onError: (error) => {
-        console.log(error);
-        console.log(`onError`);
-      },
       onSuccess: () => {
         router.push('/my-communities');
         toast.success(`Comunidade excluída com sucesso!`);
@@ -120,7 +125,6 @@ export default function ManagementGroup({
     });
 
   const handleToggleStatus = (status: ToggleStatusEnum) => {
-    console.log(status);
     if (status === ToggleStatusEnum.PUBLISHED) {
       setIsOpenModalPublished(true);
       return;
@@ -226,11 +230,47 @@ export default function ManagementGroup({
                   title="Eventos onlines"
                   aria-label="Eventos onlines"
                 >
-                  <MapPinIcon
-                    className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                    aria-hidden="true"
-                  />
-                  Online
+                  {event?.address && (
+                    <>
+                      <MapIcon
+                        className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      <address className="not-italic">{event.address}</address>
+                    </>
+                  )}
+                  {event?.link && (
+                    <>
+                      <LinkIcon
+                        className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      <address className="not-italic">{event.link}</address>
+                    </>
+                  )}
+                </div>
+                <div
+                  className="mt-2 flex items-center text-sm text-gray-500"
+                  title="Eventos onlines"
+                  aria-label="Eventos onlines"
+                >
+                  {event?.type === EventType.IN_PERSON ? (
+                    <>
+                      <MapPinIcon
+                        className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      Presencial
+                    </>
+                  ) : (
+                    <>
+                      <GlobeAltIcon
+                        className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      Online
+                    </>
+                  )}
                 </div>
                 <div
                   className="mt-2 flex items-center text-sm text-gray-500"
@@ -241,7 +281,7 @@ export default function ManagementGroup({
                     className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                     aria-hidden="true"
                   />
-                  104
+                  {event?.users?.length || 0}
                 </div>
                 <div
                   className="mt-2 flex items-center text-sm text-gray-500"
@@ -268,8 +308,8 @@ export default function ManagementGroup({
             </div>
             <div className="mt-5 flex xl:mt-0 xl:ml-4">
               <span className="hidden sm:block">
-                <a
-                  href={`/my-communities/${identifier}`}
+                <Link
+                  href={`/my-events/${identifier}`}
                   type="button"
                   className="inline-flex items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                 >
@@ -277,21 +317,35 @@ export default function ManagementGroup({
                     className="-ml-1 mr-2 h-5 w-5 text-gray-400"
                     aria-hidden="true"
                   />
-                  Edit
-                </a>
+                  Editar
+                </Link>
               </span>
-
               <span className="ml-3 hidden sm:block">
-                <button
-                  type="button"
-                  className="inline-flex items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                >
-                  <LinkIcon
-                    className="-ml-1 mr-2 h-5 w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
-                  View
-                </button>
+                {event?.isPublised ? (
+                  <Link
+                    href={`/events/${event.slug}`}
+                    type="button"
+                    className="inline-flex items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                  >
+                    <LinkIcon
+                      className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                      aria-hidden="true"
+                    />
+                    Ver evento
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => showDrawer()}
+                    type="button"
+                    className="inline-flex items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                  >
+                    <EyeIcon
+                      className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                      aria-hidden="true"
+                    />
+                    Prévia
+                  </button>
+                )}
               </span>
 
               <ToggleStatus
@@ -312,7 +366,7 @@ export default function ManagementGroup({
               {/* Dropdown */}
               <Menu as="div" className="relative ml-3 sm:hidden">
                 <Menu.Button className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                  More
+                  Mais
                   <ChevronDownIcon
                     className="-mr-1 ml-2 h-5 w-5 text-gray-500"
                     aria-hidden="true"
@@ -331,30 +385,58 @@ export default function ManagementGroup({
                   <Menu.Items className="absolute right-0 z-10 mt-2 -mr-1 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <Menu.Item>
                       {({ active }) => (
-                        <a
-                          href="#"
+                        <Link
+                          href={`/my-events/${identifier}`}
                           className={classNames(
                             active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700',
+                            'flex px-4 py-2 text-sm text-gray-700',
                           )}
                         >
-                          Edit
-                        </a>
+                          <PencilIcon
+                            className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          Editar
+                        </Link>
                       )}
                     </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          href="#"
-                          className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700',
-                          )}
-                        >
-                          View
-                        </a>
-                      )}
-                    </Menu.Item>
+                    {!event?.isPublised && (
+                      <Menu.Item>
+                        {({ active }) => (
+                          <button
+                            className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'flex w-full items-center px-4 py-2 text-sm text-gray-700',
+                            )}
+                          >
+                            <EyeIcon
+                              className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                              aria-hidden="true"
+                            />
+                            Prévia
+                          </button>
+                        )}
+                      </Menu.Item>
+                    )}
+                    {event?.isPublised && (
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link
+                            href={`/events/${event.slug}`}
+                            className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'flex w-full items-center px-4 py-2 text-sm text-gray-700',
+                            )}
+                          >
+                            <LinkIcon
+                              className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                              aria-hidden="true"
+                            />
+                            Ver evento
+                          </Link>
+                        )}
+                      </Menu.Item>
+                    )}
                   </Menu.Items>
                 </Transition>
               </Menu>
@@ -418,7 +500,7 @@ export default function ManagementGroup({
                     <SubscribersList eventUUID={identifierEvent} />
                   </Tab.Panel>
                   <Tab.Panel className="mb-10">
-                    <CommentsByEvent eventUUID={identifierEvent} />
+                    <MyComments uuidEntity={identifierEvent} type="event" />
                   </Tab.Panel>
                 </Tab.Panels>
               </Tab.Group>
@@ -427,7 +509,7 @@ export default function ManagementGroup({
         </main>
       </div>
       <Modal
-        title="Publicar evento ?"
+        title="Publicar evento?"
         open={isOpenModalPublished}
         maskClosable={false}
         onOk={() => mutatePublishEvent(event.uuid)}
@@ -446,17 +528,12 @@ export default function ManagementGroup({
         cancelText="Cancelar"
       >
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          Após a publicação do evento ele ficará disponível para todos os
+          usuários da plataforma, você tem certeza quer deseja publicar?
         </p>
       </Modal>
       <Modal
-        title="Excluir comunidade ?"
+        title="Excluir comunidade?"
         open={isOpenModalDelete}
         maskClosable={false}
         onOk={() => mutateDeleteEvent(event.uuid)}
@@ -476,15 +553,21 @@ export default function ManagementGroup({
         cancelText="Cancelar"
       >
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          Após a exclusão, todos os dados do evento serão deletados e não
+          poderão ser recuperados, você tem certeza que deseja excluir o evento?
         </p>
       </Modal>
+      <Drawer
+        title="Prévia da tela do evento"
+        placement="bottom"
+        closable={true}
+        onClose={onClose}
+        open={open}
+        key="Brawer-Preview"
+        height="100vh"
+      >
+        {event && <PreviewEvent event={event} />}
+      </Drawer>
     </MainContainer>
   );
 }

@@ -18,6 +18,8 @@ export interface Group {
   description: string;
   coverUrl: string;
   slug: string;
+  isFollowed: boolean;
+  organizer: User;
   users: { user: User; role: Role }[];
   events: Event[];
 }

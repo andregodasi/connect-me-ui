@@ -1,12 +1,13 @@
 import React from 'react';
 import { Button } from '../Button';
 import Image from 'next/image';
+import { coverImgPlaceholder } from '@/shared/utils/helpers/coverImg';
 
 interface MyGroupCardProps {
   uuid: string;
   name: string;
   description: string;
-  coverUrl: string;
+  coverUrl: string | null;
   isAdmin: boolean;
 }
 
@@ -26,9 +27,9 @@ export function MyGroupCard({
         <Image
           width={200}
           height={200}
-          src={coverUrl}
+          src={coverUrl || coverImgPlaceholder}
           alt="community"
-          className="max-h-[12rem] w-full object-cover group-hover:opacity-75"
+          className="aspect-video max-h-[12rem] w-full object-cover group-hover:opacity-75"
         />
       </div>
       <div className="flex flex-1 flex-col justify-between p-3">

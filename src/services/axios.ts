@@ -2,7 +2,12 @@ import axios from 'axios';
 import { parseCookies } from 'nookies';
 
 export function getAPIClient(ctx?: any) {
-  const { 'connect.token': token } = parseCookies(ctx);
+  let token = null;
+  if (ctx) {
+    const { ['connect.token']: tokenData } = parseCookies(ctx);
+    token = tokenData;
+  }
+
   const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
   });
@@ -12,7 +17,7 @@ export function getAPIClient(ctx?: any) {
   });
 
   if (token) {
-    api.defaults.headers.common.Authorization = `Bearer ${token}`;
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   }
 
   return api;

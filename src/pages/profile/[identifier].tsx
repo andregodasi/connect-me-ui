@@ -13,6 +13,7 @@ import { GetServerSideProps } from 'next';
 import { getAPIClient } from '@/services/axios';
 import { getProfileSSR } from '@/services/user';
 import { User } from '@/shared/interfaces/IUser';
+import SendHail from '@/components/SendHail';
 
 const { Title } = Typography;
 
@@ -32,23 +33,11 @@ function SocialLink({ className, href, children, icon: Icon }: any) {
   );
 }
 
-function MailIcon(props: any) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
-      <path
-        fillRule="evenodd"
-        d="M6 5a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H6Zm.245 2.187a.75.75 0 0 0-.99 1.126l6.25 5.5a.75.75 0 0 0 .99 0l6.25-5.5a.75.75 0 0 0-.99-1.126L12 12.251 6.245 7.187Z"
-      />
-    </svg>
-  );
-}
-
 interface profileDetailProps {
   profile: User;
 }
 
 const profileDetail: React.FC<profileDetailProps> = ({ profile }) => {
-  console.log(profile);
   return (
     <MainContainer>
       <div className="container mx-auto px-2 sm:px-4 lg:px-8 xl:max-w-7xl">
@@ -57,7 +46,7 @@ const profileDetail: React.FC<profileDetailProps> = ({ profile }) => {
             <div className="mx-auto !max-w-xs px-2.5 lg:mx-0 lg:max-w-none">
               <div className="aspect-square !max-w-xs rotate-3 rounded-2xl object-cover shadow-lg">
                 <Image
-                  width={200}
+                  width={600}
                   height={200}
                   className="aspect-square !max-w-xs rounded-2xl object-cover"
                   src={profile.photoUrl}
@@ -144,13 +133,9 @@ const profileDetail: React.FC<profileDetailProps> = ({ profile }) => {
                   }`}
                 </SocialLink>
               ))}
-              <SocialLink
-                href="mailto:spencer@planetaria.tech"
-                icon={MailIcon}
-                className="mt-8 border-t border-zinc-100 pt-8"
-              >
-                spencer@planetaria.tech
-              </SocialLink>
+              <div className="mt-8 border-t border-zinc-100 pt-8">
+                <SendHail toUserUUID={profile.uuid} />
+              </div>
             </ul>
           </div>
         </div>

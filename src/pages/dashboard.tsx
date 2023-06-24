@@ -3,6 +3,7 @@ import { parseCookies } from 'nookies';
 import { useEffect, useState } from 'react';
 import MainContainer from '@/containers/MainContainer';
 import { TicketIcon } from '@heroicons/react/20/solid';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import EventCard from '@/components/EventCard';
 import { useQuery } from 'react-query';
 import { getPaginatedEvents } from '@/services/event';
@@ -31,20 +32,29 @@ import {
   formatInitialDateISO8601,
 } from '@/shared/utils/transforms/dates';
 import useMediaQuery from '@/hooks/useMediaQuery';
+import { Placeholder } from '@/components/Placeholder';
+import emptyEvents from '@/images/svg/empty_results_large.svg';
+import { SkeletonCards } from '@/components/SkeletonCards';
 
 const { Panel } = Collapse;
 const { RangePicker } = DatePicker;
 
 const initPageOptions: EventPageOptionWithFilters = { page: 1 };
 
-export default function Dashboard() {
+interface DashboardProps {
+  isSubscribed: boolean;
+}
+
+export default function Dashboard({ isSubscribed }: DashboardProps) {
   const { isLG } = useMediaQuery();
   const [openUpcomingAppointments, setOpenUpcomingAppointments] =
     useState(false);
   const [filters, setFilters] = useState<EventFilters>();
   const [eventList, setEventList] = useState<Event[]>([]);
-  const [pageOptions, setPageOptions] =
-    useState<EventPageOptionWithFilters>(initPageOptions);
+  const [pageOptions, setPageOptions] = useState<EventPageOptionWithFilters>({
+    ...initPageOptions,
+    isSubscribed,
+  });
   const {
     isLoading,
     data: dataPage,
@@ -80,6 +90,14 @@ export default function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataPage]);
 
+  useEffect(() => {
+    if (isSubscribed) {
+      setPageOptions((oldData) => {
+        return { ...oldData, isSubscribed };
+      });
+    }
+  }, [isSubscribed]);
+
   const handleLoadMore = () => {
     setPageOptions({
       ...pageOptions,
@@ -90,7 +108,7 @@ export default function Dashboard() {
   async function searching(data: any) {
     const filtersData: any = {
       q: data.event,
-      isFollowing: data.isFollowing,
+      isSubscribed: data.isSubscribed,
     };
 
     if (data?.rangeDate?.[0]) {
@@ -116,6 +134,14 @@ export default function Dashboard() {
   const handleOpenUpcomingAppointments = () => {
     setOpenUpcomingAppointments(true);
   };
+
+  const isShowLoading = isLoading || isFetching;
+
+  const isShowSkeleton = isShowLoading && !eventList.length;
+
+  const isShowEmpty = !isShowLoading && !eventList.length;
+
+  const isShowList = !isShowLoading && !!eventList.length;
 
   return (
     <MainContainer>
@@ -157,7 +183,20 @@ export default function Dashboard() {
                 <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
                   <div className="flex flex-col">
                     <h1 className="h-16 flex-1 border-b border-gray-200 text-2xl font-bold text-gray-900">
-                      Acompanhe todos os eventos
+                      {isSubscribed ? (
+                        <>
+                          Acompanhe seus eventos{' '}
+                          <span className="inline-flex items-center rounded-full bg-gray-100 px-3 py-0.5 text-sm font-medium text-gray-800">
+                            <CheckCircleIcon
+                              className="mr-1.5 h-5 w-5 flex-shrink-0 text-green-400"
+                              aria-hidden="true"
+                            />
+                            Inscrito
+                          </span>
+                        </>
+                      ) : (
+                        'Acompanhe todos os eventos'
+                      )}
                     </h1>
                     <hr />
                     <div className="lg:hidden">
@@ -223,8 +262,9 @@ export default function Dashboard() {
                             <div>
                               <Form.Item
                                 label="Inscrito"
-                                name="isFollowing"
+                                name="isSubscribed"
                                 className="!mb-0"
+                                initialValue={isSubscribed}
                               >
                                 <ToggleForm />
                               </Form.Item>
@@ -273,30 +313,43 @@ export default function Dashboard() {
                     aria-labelledby="gallery-heading"
                   >
                     <h2 id="gallery-heading" className="sr-only">
-                      Recently viewed
+                      Próximos eventos
                     </h2>
-                    <ul
-                      role="list"
-                      className="grid grid-cols-1 gap-x-4 gap-y-8 sm:gap-x-6 xl:gap-x-8"
-                    >
-                      {eventList.map((event) => (
-                        <li key={event.uuid} className="relative">
-                          <EventCard {...(event as any)} />
-                        </li>
-                      ))}
-                    </ul>
-                    {dataPage?.meta?.hasNextPage && (
-                      <div className="my-6 flex justify-center">
-                        <Button
-                          type="button"
-                          variant="solid"
-                          color="blue"
-                          onClick={() => handleLoadMore()}
-                          isLoading={isLoading || isFetching}
+                    {isShowEmpty && (
+                      <Placeholder
+                        image={emptyEvents}
+                        alt="Nenhum evento encontrado"
+                        title="Ops, Nenhum evento encontrado!!!"
+                        descriptionBottom="Não encontramos nenhum evento com os filtros selecionados. Tente novamente com outros filtros."
+                      />
+                    )}
+                    {isShowSkeleton && <SkeletonCards />}
+                    {isShowList && (
+                      <>
+                        <ul
+                          role="list"
+                          className="grid grid-cols-1 gap-x-4 gap-y-8 sm:gap-x-6 xl:gap-x-8"
                         >
-                          Carrefar mais
-                        </Button>
-                      </div>
+                          {eventList.map((event) => (
+                            <li key={event.uuid} className="relative">
+                              <EventCard {...(event as any)} />
+                            </li>
+                          ))}
+                        </ul>
+                        {dataPage?.meta?.hasNextPage && (
+                          <div className="my-6 flex justify-center">
+                            <Button
+                              type="button"
+                              variant="solid"
+                              color="blue"
+                              onClick={() => handleLoadMore()}
+                              isLoading={isLoading || isFetching}
+                            >
+                              Carregar mais
+                            </Button>
+                          </div>
+                        )}
+                      </>
                     )}
                   </section>
                 </div>
@@ -310,7 +363,7 @@ export default function Dashboard() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { 'connect.token': token } = parseCookies(ctx);
+  const { ['connect.token']: token } = parseCookies(ctx);
 
   if (!token) {
     return {
@@ -321,7 +374,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
+  const isSubscribed = ctx.query.isSubscribed === 'true';
+
   return {
-    props: {},
+    props: { isSubscribed },
   };
 };

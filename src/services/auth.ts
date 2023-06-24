@@ -15,7 +15,6 @@ type User = {
 
 export async function signInRequest(data: SignInRequestData) {
   const response = await api.post('/login', data);
-
   const { access_token: token } = response.data;
   const user: User = decodeToken(token) as User;
 
@@ -35,4 +34,15 @@ export async function recoverUserInformation() {
       ...response.data,
     },
   };
+}
+
+export async function forgotPasswordRequest(email: string) {
+  await api.post(`/recovery-password?user_email=${email}`);
+}
+
+export async function recoveryPasswordRequest(
+  uuid: string,
+  newPassword: string,
+) {
+  await api.put(`/recovery-password/${uuid}`, { newPassword });
 }

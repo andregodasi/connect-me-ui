@@ -1,9 +1,7 @@
 import { Fragment, useState } from 'react';
-import { StarIcon } from '@heroicons/react/20/solid';
 import { Tab } from '@headlessui/react';
 import { Group } from '@/shared/interfaces/IGroup';
 import OrganizerProfile from '@/components/OrganizerProfile';
-import ParticipantProfile from '@/components/ParticipantProfile';
 import { EventSmallCard } from '@/components/EventSmallCard';
 import { useMutation, useQuery } from 'react-query';
 import {
@@ -16,37 +14,12 @@ import { classNames } from '@/shared/helpers/styleSheets';
 import Image from 'next/image';
 import placeholderImageEvent from '@/images/event-placeholder.webp';
 
-import imageParticipant from '@/images/avatars/avatar-1.png';
-import imageParticipant2 from '@/images/avatars/avatar-2.png';
+import ParticipantListBox from '../ParticipantListBox';
+import { CommentsListBox } from '../CommentsListBox';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { eventsData } from './previewData';
 
-const reviews = {
-  average: 4,
-  featured: [
-    {
-      id: 1,
-      rating: 5,
-      content: `
-        <p>This icon pack is just what I need for my latest project. There's an icon for just about anything I could ever need. Love the playful look!</p>
-      `,
-      date: 'July 16, 2021',
-      datetime: '2021-07-16',
-      author: 'Emily Selman',
-      avatarSrc: imageParticipant,
-    },
-    {
-      id: 2,
-      rating: 5,
-      content: `
-        <p>Blown away by how polished this icon pack is. Everything looks so consistent and each SVG is optimized out of the box so I can use it directly with confidence. It would take me several hours to create a single icon this good, so it's a steal at this price.</p>
-      `,
-      date: 'July 12, 2021',
-      datetime: '2021-07-12',
-      author: 'Hector Gibbons',
-      avatarSrc: imageParticipant2,
-    },
-    // More reviews...
-  ],
-};
 const faqs = [
   {
     question: 'What format are these icons?',
@@ -111,16 +84,19 @@ const license = {
 
 interface CommunityPageProps {
   group: Group;
-  isFollower: boolean;
   isPreview?: boolean;
 }
 
 export default function CommunityPage({
   group,
-  isFollower,
+  isPreview,
 }: CommunityPageProps) {
+  const router = useRouter();
   const [groupState, setGroupState] = useState({ ...group });
-  const [isFollowerState, setIsFollowerState] = useState<boolean>(isFollower);
+  const [isFollowerState, setIsFollowerState] = useState<boolean>(
+    group.isFollowed,
+  );
+
   const { refetch: refetchGroup } = useQuery(
     [`event-${group.uuid}`],
     () => findByIdentifierGroup(group.uuid),
@@ -129,40 +105,22 @@ export default function CommunityPage({
       enabled: false,
       onSuccess(data) {
         setGroupState(data);
-        setIsFollowerState(isFollowerState);
+        setIsFollowerState(data.isFollowed);
       },
     },
   );
 
   const { mutate: mutateFollow } = useMutation(followGrpup, {
-    onError: () => {
-      console.log(`onError`);
-    },
     onSuccess: () => {
       refetchGroup();
       toast.success(`Agora você esta seguindo a comunidade ${group.name}`);
-      /* router.push('/my-events'); */
-    },
-    onSettled: (data) => {
-      // Error or success... doesn't matter!
-      console.log(data);
-      console.log(`onSettled`);
     },
   });
 
   const { mutate: mutateUnfollow } = useMutation(unfollowGroup, {
-    onError: (error) => {
-      console.log(error);
-      console.log(`onError`);
-    },
     onSuccess: () => {
       refetchGroup();
       toast.success(`Você deixou de seguir a comunidade ${group.name}`);
-    },
-    onSettled: (data) => {
-      // Error or success... doesn't matter!
-      console.log(data);
-      console.log(`onSettled`);
     },
   });
 
@@ -182,9 +140,9 @@ export default function CommunityPage({
           <div className="lg:col-span-4 lg:row-end-1">
             <div className="aspect-w-4 aspect-h-3 overflow-hidden rounded-lg bg-gray-100">
               <Image
-                width={200}
-                height={200}
-                src={placeholderImageEvent}
+                width={1200}
+                height={1200}
+                src={group.coverUrl || placeholderImageEvent}
                 alt={group.name}
                 className="object-cover object-center"
               />
@@ -203,11 +161,14 @@ export default function CommunityPage({
                   Nome da comunidade.
                 </h2>
                 <p className="mt-2 text-sm text-gray-500">
-                  Nos encontre assim {group.slug}
+                  Nos encontre no seguinte link{' '}
+                  <Link href={`/communities/${group.slug}`}>
+                    {`${router.basePath}/communities/${group.slug}`}
+                  </Link>
                 </p>
               </div>
 
-              <div>
+              {/*  <div>
                 <h3 className="sr-only">Reviews</h3>
                 <div className="flex items-center">
                   {[0, 1, 2, 3, 4].map((rating) => (
@@ -224,7 +185,7 @@ export default function CommunityPage({
                   ))}
                 </div>
                 <p className="sr-only">{reviews.average} out of 5 stars</p>
-              </div>
+              </div> */}
             </div>
 
             <p className="mt-6 text-gray-500">{group.description}</p>
@@ -268,24 +229,21 @@ export default function CommunityPage({
             <div className="mt-10 border-t border-gray-200 pt-10">
               <h3 className="text-sm font-medium text-gray-900">Organizador</h3>
               <div className="prose prose-sm mt-4 text-gray-500">
-                <OrganizerProfile />
+                <OrganizerProfile organizer={groupState.organizer} />
               </div>
             </div>
 
             <div className="mt-10 border-t border-gray-200 pt-10">
-              <h3 className="text-sm font-medium text-gray-900">
-                Participantes
-              </h3>
               <div className="mt-4 flex flex-wrap gap-4">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((key) => (
-                  <div key={key}>
-                    <ParticipantProfile name="teste" />
-                  </div>
-                ))}
+                <ParticipantListBox
+                  title="Seguidores"
+                  participants={groupState.users || []}
+                  isPreview={isPreview}
+                />
               </div>
             </div>
 
-            <div className="mt-10 border-t border-gray-200 pt-10">
+            {/*   <div className="mt-10 border-t border-gray-200 pt-10">
               <h3 className="text-sm font-medium text-gray-900">
                 Compartilhar
               </h3>
@@ -363,7 +321,7 @@ export default function CommunityPage({
                   </a>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
 
           <div className="mx-auto mt-16 w-full max-w-2xl lg:col-span-4 lg:mt-0 lg:max-w-none">
@@ -410,7 +368,12 @@ export default function CommunityPage({
               </div>
               <Tab.Panels as={Fragment}>
                 <Tab.Panel className="-mb-10">
-                  <h3 className="sr-only">Customer Reviews</h3>
+                  <CommentsListBox
+                    uuid={group.uuid}
+                    type="group"
+                    isPreview={isPreview}
+                  />
+                  {/* <h3 className="sr-only">Customer Reviews</h3>
 
                   {reviews.featured.map((review, reviewIdx) => (
                     <div
@@ -463,7 +426,7 @@ export default function CommunityPage({
                         />
                       </div>
                     </div>
-                  ))}
+                  ))} */}
                 </Tab.Panel>
 
                 <Tab.Panel className="text-sm text-gray-500">
@@ -498,21 +461,30 @@ export default function CommunityPage({
       </div>
       {/* Related products */}
       <div className="mx-auto mt-24 max-w-2xl sm:mt-32 lg:max-w-none">
-        <div className="flex items-center justify-between space-x-4">
-          <h2 className="text-lg font-medium text-gray-900">Evento</h2>
-          <a
-            href="#"
-            className="whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500"
-          >
-            Veja todos
-            <span aria-hidden="true"> &rarr;</span>
-          </a>
-        </div>
-        <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
-          {group?.events?.map(({ name, uuid }) => (
-            <EventSmallCard name={name} uuid={uuid} key={name} />
-          ))}
-        </div>
+        {!isPreview && group?.events && group?.events.length > 0 && (
+          <>
+            <div className="flex items-center justify-between space-x-4">
+              <h2 className="text-lg font-medium text-gray-900">Eventos</h2>
+            </div>
+            <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
+              {group?.events?.map((event) => (
+                <EventSmallCard key={event.uuid} event={event} />
+              ))}
+            </div>
+          </>
+        )}
+        {isPreview && (
+          <>
+            <div className="flex items-center justify-between space-x-4">
+              <h2 className="text-lg font-medium text-gray-900">Eventos</h2>
+            </div>
+            <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
+              {eventsData.map((event) => (
+                <EventSmallCard key={event.uuid} event={event} />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

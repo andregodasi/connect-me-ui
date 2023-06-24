@@ -53,3 +53,7 @@ export async function getProfileSSR(
     .get<User>(`/user/${identifier}/profile`)
     .then((res) => res.data);
 }
+
+export async function confirmEmailSSR(apiSSR: AxiosInstance, id: string) {
+  return apiSSR.put(`/user/confirm-email/${id}`);
+}

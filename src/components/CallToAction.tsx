@@ -11,7 +11,6 @@ export function CallToAction() {
       className="relative overflow-hidden bg-blue-600 py-32"
     >
       <Image
-        fill
         className="absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2"
         src={backgroundImage}
         alt=""
@@ -25,8 +24,10 @@ export function CallToAction() {
             Vamos lá!
           </h2>
           <p className="mt-4 text-lg tracking-tight text-white">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
+            Conecte-se e descubra um mundo de eventos incríveis! Aprenda,
+            compartilhe e crie conexões significativas em nossa plataforma.
+            Junte-se a nós agora mesmo e embarque em uma jornada de aprendizado
+            e networking sem igual.
           </p>
           <Button
             href="/register"

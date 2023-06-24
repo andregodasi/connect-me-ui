@@ -8,13 +8,10 @@ interface PreviewCommunityProps {
   isFollower: boolean;
 }
 
-const PreviewCommunity: React.FC<PreviewCommunityProps> = ({
-  group,
-  isFollower,
-}) => {
+const PreviewCommunity: React.FC<PreviewCommunityProps> = ({ group }) => {
   return (
     <MainContainerPreview>
-      <CommunityPage group={group} isFollower={isFollower} />
+      <CommunityPage group={group} isPreview={true} />
     </MainContainerPreview>
   );
 };

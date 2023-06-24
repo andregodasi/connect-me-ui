@@ -1,14 +1,19 @@
 import dayjs from 'dayjs';
-/* import ptbr from 'dayjs/locale/pt-br';
- */
+
 export function formatWeekDateTime(value: Date) {
-  /* dayjs.locale(ptbr); */
   return dayjs(value).format('HH:mm[h] ddd., D [de] MMM. YYYY');
 }
 
 export function formatWeekYear(value: Date) {
-  /* dayjs.locale(ptbr); */
   return dayjs(value).format('MMMM [de] YYYY');
+}
+
+export function formatDayWithHours(value: Date) {
+  const date = dayjs(value);
+  if (date.year() === dayjs().year()) {
+    return date.format('D [de] MMMM [às] HH:mm[h]');
+  }
+  return date.format('D [de] MMMM [de] YYYY [às] HH:mm[h]');
 }
 
 export function formatISO8601(value: string) {

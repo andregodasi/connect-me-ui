@@ -6,11 +6,22 @@ import { getMyGroups } from '@/services/group';
 import { Group } from '@/shared/interfaces/IGroup';
 import { MyGroupCard } from '@/components/MyGroupCard';
 import { Role } from '@/shared/enums/role.enum';
+import { Placeholder } from '@/components/Placeholder';
+import noData from '@/images/svg/no_data.svg';
 
 export default function MyCommunities() {
-  const { data: groups } = useQuery(['MyGroups'], () => getMyGroups(), {
+  const {
+    data: groups,
+    isLoading,
+    isFetching,
+  } = useQuery(['MyGroups'], () => getMyGroups(), {
     staleTime: Infinity,
   });
+
+  const isShowList = !isLoading && groups?.length;
+  const isShowLoading = isLoading || isFetching;
+  const isShowEmpty = !isShowLoading && !groups?.length;
+
   return (
     <MainContainer>
       <div className="container mx-auto py-2 px-4 ">
@@ -33,24 +44,48 @@ export default function MyCommunities() {
         </div>
       </div>
       <div className="container mx-auto py-2 px-4">
-        <ul
-          role="list"
-          className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
-        >
-          {groups?.map(
-            ({ uuid, name, description, coverUrl, users }: Group) => (
-              <li key={uuid}>
-                <MyGroupCard
-                  uuid={uuid}
-                  name={name}
-                  coverUrl={coverUrl}
-                  description={description}
-                  isAdmin={!!users?.find?.(({ role }) => role === Role.ADMIN)}
-                />
-              </li>
-            ),
-          )}
-        </ul>
+        {isLoading && (
+          <ul
+            role="list"
+            className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
+          >
+            {Array.from({ length: 8 }).map((_, index) => (
+              <div
+                className="skeleton h-full w-full rounded-lg shadow"
+                style={{ height: '316px' }}
+                key={index}
+              />
+            ))}
+          </ul>
+        )}
+        {isShowList && (
+          <ul
+            role="list"
+            className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
+          >
+            {groups?.map(
+              ({ uuid, name, description, coverUrl, users }: Group) => (
+                <li key={uuid}>
+                  <MyGroupCard
+                    uuid={uuid}
+                    name={name}
+                    coverUrl={coverUrl}
+                    description={description}
+                    isAdmin={!!users?.find?.(({ role }) => role === Role.ADMIN)}
+                  />
+                </li>
+              ),
+            )}
+          </ul>
+        )}
+        {isShowEmpty && (
+          <Placeholder
+            image={noData}
+            alt="Não encontramos nenhuma comunidade"
+            descriptionTop="Você ainda não criou nenhuma comunidade"
+            descriptionBottom='Clique em "Criar comunidade" para começar'
+          />
+        )}
       </div>
     </MainContainer>
   );

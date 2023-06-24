@@ -6,74 +6,64 @@ import backgroundImage from '@/images/background-faqs.jpg';
 const faqs = [
   [
     {
-      question:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      question: 'Como faço para me inscrever em um evento?. ',
       answer:
-        'Adipiscing enim eu turpis egestas. Amet massa vitae tortor condimentum. A cras semper auctor neque vitae tempus. Volutpat lacus laoreet non curabitur. Platea dictumst vestibulum rhoncus est pellentesque.',
+        'Ao encontrar um evento de seu interesse, clique nele para ver mais detalhes. você encontratá um botão de se inscrever. Clique nele e sua inscrição será realizada.',
     },
     {
-      question:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      question: 'Existe algum custo para participar de eventos? ',
       answer:
-        'Adipiscing enim eu turpis egestas. Amet massa vitae tortor condimentum. A cras semper auctor neque vitae tempus. Volutpat lacus laoreet non curabitur. Platea dictumst vestibulum rhoncus est pellentesque.',
+        ' Isso depende do evento específico. Alguns eventos podem ser gratuitos, enquanto outros podem exigir uma taxa de participação. Verifique os detalhes do evento para obter informações sobre os custos envolvidos, se houver.',
     },
     {
-      question:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      question: 'Como posso cancelar minha inscrição em um evento?',
       answer:
-        'Adipiscing enim eu turpis egestas. Amet massa vitae tortor condimentum. A cras semper auctor neque vitae tempus. Volutpat lacus laoreet non curabitur. Platea dictumst vestibulum rhoncus est pellentesque.',
+        'Para cancelar sua inscrição em um evento, acesse a página do evento em nosso site e procure o botão de "Não vou". Clique nele e sua inscrição será cancelada.',
     },
     {
-      question:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      question: 'Existe algum custo para criar uma comunidade?',
       answer:
-        'Adipiscing enim eu turpis egestas. Amet massa vitae tortor condimentum. A cras semper auctor neque vitae tempus. Volutpat lacus laoreet non curabitur. Platea dictumst vestibulum rhoncus est pellentesque.',
+        'Não, criar uma comunidade é totalmente gratuito. Você pode criar quantas comunidades quiser.',
     },
   ],
   [
     {
-      question:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      question: 'Existe número máximo de participantes para um evento online?',
+      answer: 'Sim, o número máximo é estipulado pelo criador do evento.',
+    },
+    {
+      question: 'Meus dados estão seguros?',
       answer:
-        'Adipiscing enim eu turpis egestas. Amet massa vitae tortor condimentum. A cras semper auctor neque vitae tempus. Volutpat lacus laoreet non curabitur. Platea dictumst vestibulum rhoncus est pellentesque.',
+        'Sim, seus dados estão seguros. Nós não compartilhamos seus dados com ninguém.',
     },
     {
       question:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+        'Meus dados são compartilhados com as empresas que estão contratando?',
       answer:
-        'Adipiscing enim eu turpis egestas. Amet massa vitae tortor condimentum. A cras semper auctor neque vitae tempus. Volutpat lacus laoreet non curabitur. Platea dictumst vestibulum rhoncus est pellentesque.',
-    },
-    {
-      question:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
-      answer:
-        'Adipiscing enim eu turpis egestas. Amet massa vitae tortor condimentum. A cras semper auctor neque vitae tempus. Volutpat lacus laoreet non curabitur. Platea dictumst vestibulum rhoncus est pellentesque.',
+        'Não, seus dados não são compartilhados com nenhuma empresa. Apenas você pode compartilhar seus dados com as empresas que você deseja.',
     },
   ],
   [
     {
-      question:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      question: 'Meus dados são usados na plataforma para outros fins?',
       answer:
-        'Adipiscing enim eu turpis egestas. Amet massa vitae tortor condimentum. A cras semper auctor neque vitae tempus. Volutpat lacus laoreet non curabitur. Platea dictumst vestibulum rhoncus est pellentesque.',
+        'Não, seus dados são usados apenas para a plataforma. Nós não compartilhamos seus dados com ninguém.',
+    },
+    {
+      question: 'Os dados do minha comunidade são publicos? ',
+      answer:
+        'Sim, os dados da sua comunidade são públicos. Qualquer pessoa pode ver os dados da sua comunidade.',
+    },
+    {
+      question: 'Os dados do meu evento são publicos?',
+      answer:
+        'Sim, os dados do seu evento são públicos. Qualquer pessoa pode ver os dados do seu evento.',
     },
     {
       question:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+        'Quando o plano para emrpesas será lançado? E qual será o valor?',
       answer:
-        'Adipiscing enim eu turpis egestas. Amet massa vitae tortor condimentum. A cras semper auctor neque vitae tempus. Volutpat lacus laoreet non curabitur. Platea dictumst vestibulum rhoncus est pellentesque.',
-    },
-    {
-      question:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
-      answer:
-        'Adipiscing enim eu turpis egestas. Amet massa vitae tortor condimentum. A cras semper auctor neque vitae tempus. Volutpat lacus laoreet non curabitur. Platea dictumst vestibulum rhoncus est pellentesque.',
-    },
-    {
-      question:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
-      answer:
-        'Adipiscing enim eu turpis egestas. Amet massa vitae tortor condimentum. A cras semper auctor neque vitae tempus. Volutpat lacus laoreet non curabitur. Platea dictumst vestibulum rhoncus est pellentesque.',
+        'O plano para empresas será lançado em breve. O valor ainda não foi definido.',
     },
   ],
 ];
@@ -88,7 +78,7 @@ export function Faqs() {
       <Image
         className="absolute top-0 left-1/2 max-w-none translate-x-[-30%] -translate-y-1/4"
         src={backgroundImage}
-        alt=""
+        alt="Seção de perguntas frequentes"
         width={1558}
         height={946}
         unoptimized
@@ -102,10 +92,9 @@ export function Faqs() {
             Perguntas frequentes
           </h2>
           <p className="mt-4 text-lg tracking-tight text-slate-700">
-            {` Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.`}
+            Encontre as respostas que você precisa! Aqui, reunimos as perguntas
+            mais comuns sobre nossa plataforma e eventos para ajudar a
+            esclarecer suas dúvidas.
           </p>
         </div>
         <ul

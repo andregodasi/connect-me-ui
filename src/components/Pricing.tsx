@@ -53,6 +53,7 @@ function Plan({
   href,
   features,
   featured = false,
+  disabled = false,
 }: any) {
   return (
     <section
@@ -88,13 +89,14 @@ function Plan({
         ))}
       </ul>
       <Button
-        href={href}
+        disabled={disabled}
+        href={disabled ? false : href}
         variant={featured ? 'solid' : 'outline'}
         color="white"
         className="mt-8"
         aria-label={`Get started with ${name} plan for ${price}`}
       >
-        Cadastre-se
+        {disabled ? 'Em breve!' : 'Cadastre-se'}
       </Button>
     </section>
   );
@@ -117,8 +119,10 @@ export function Pricing() {
             </span>
           </h2>
           <p className="mt-4 text-lg text-slate-400">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+            Se cadastre e descubra um mundo de eventos incríveis! Aprenda,
+            compartilhe e crie conexões significativas em nossa plataforma.
+            Junte-se a nós agora mesmo e embarque em uma jornada de aprendizado
+            e networking sem igual.
           </p>
         </div>
         <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-3 xl:mx-0 xl:gap-x-8">
@@ -127,6 +131,7 @@ export function Pricing() {
             price="Empresas"
             description="Ajuda empresas a encontrar talentos certo para o momento certo"
             href="/register"
+            disabled={true}
             features={[
               'Realize o fluxo de contratação por nossa plataforma',
               'Indica os melhores profissonais para sua empresa',

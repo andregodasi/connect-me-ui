@@ -11,7 +11,7 @@ export function IconConnectMe(props: any) {
     >
       <g
         xmlns="http://www.w3.org/2000/svg"
-        fill="#3662e3"
+        fill="#2563eb"
         transform="matrix(3.40056 0 0 3.40056 -.189 0)"
       >
         <path d="M19.8 15.3h.5l-.4-.2zm.5.1zm.8-.7c0 .1 0 .1.1.1l.4-.3c-.2-.1-.3-.1-.5.2zm.4-.2zm-4.1 2.3zm-.2.6l.3-.2c.1-.1.1-.2.1-.2h-.2l-.2.4c-.1-.1-.1 0 0 0zm2.2-2.9h-.1l-.2.2h.3zm-2.1 2.4l.6-.5c.1-.1.1-.2.1-.3h-.3l-1.2 1.1-.2.4.7-.6zm-1.1.8z"></path>

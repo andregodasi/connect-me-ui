@@ -14,7 +14,7 @@ export function Footer() {
             <div className="-my-1 flex flex-wrap justify-center gap-x-6">
               <NavLink href="#about">Sobre nós</NavLink>
               <NavLink href="#plataform">Plataforma</NavLink>
-              <NavLink href="#community">Comunidade</NavLink>
+              {/* <NavLink href="#community">Comunidade</NavLink> */}
               <NavLink href="#how-we-work">Como funcionamos</NavLink>
             </div>
           </nav>
@@ -47,8 +47,8 @@ export function Footer() {
             </Link>
           </div>
           <p className="mt-6 text-sm text-slate-500 sm:mt-0">
-            Copyright &copy; {new Date().getFullYear()} Connect me. All rights
-            reserved.
+            Copyright &copy; {new Date().getFullYear()} Connect me. Todos os
+            direitos reservados.
           </p>
         </div>
       </Container>

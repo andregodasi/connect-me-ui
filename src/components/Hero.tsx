@@ -1,13 +1,14 @@
-import Image from 'next/image';
+/* import Image from 'next/image'; */
 
 import { Button } from '@/components/Button';
 import { Container } from '@/components/Container';
-import logoLaravel from '@/images/logos/laravel.svg';
+import Link from 'next/link';
+/* import logoLaravel from '@/images/logos/laravel.svg';
 import logoMirage from '@/images/logos/mirage.svg';
 import logoStatamic from '@/images/logos/statamic.svg';
 import logoStaticKit from '@/images/logos/statickit.svg';
 import logoTransistor from '@/images/logos/transistor.svg';
-import logoTuple from '@/images/logos/tuple.svg';
+import logoTuple from '@/images/logos/tuple.svg'; */
 
 export function Hero() {
   return (
@@ -27,31 +28,30 @@ export function Hero() {
         </span>{' '}
         em um ambiente inclusivo, diverso e seguro.
       </h1>
-      <p className="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industrys standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book.
+      <p className="mx-auto mt-6 max-w-3xl text-lg tracking-tight text-slate-700">
+        Descubra eventos apaixonantes e compartilhe conhecimento. Conecte-se com
+        uma comunidade vibrante, encontre eventos relevantes e mergulhe em novas
+        experiências. Expanda seus horizontes, crie memórias inspiradoras e abra
+        as portas para um mundo de oportunidades. Junte-se à Connect Me e seja
+        parte dessa experiência única.
       </p>
       <div className="mt-10 flex justify-center gap-x-6">
         <Button href="/register" variant={'solid'} color={'blue'}>
           Cadastre-se
         </Button>
-        <Button
-          href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-          variant="outline"
-          color={'blue'}
-        >
-          <svg
-            aria-hidden="true"
-            className="h-3 w-3 flex-none fill-blue-600 group-active:fill-current"
-          >
-            <path d="m9.997 6.91-7.583 3.447A1 1 0 0 1 1 9.447V2.553a1 1 0 0 1 1.414-.91L9.997 5.09c.782.355.782 1.465 0 1.82Z" />
-          </svg>
-          <span className="ml-3">Um pouco sobre nós</span>
-        </Button>
+        <Link href="/about">
+          <Button variant="outline" color={'blue'}>
+            {/* <svg
+              aria-hidden="true"
+              className="h-3 w-3 flex-none fill-blue-600 group-active:fill-current"
+            >
+              <path d="m9.997 6.91-7.583 3.447A1 1 0 0 1 1 9.447V2.553a1 1 0 0 1 1.414-.91L9.997 5.09c.782.355.782 1.465 0 1.82Z" />
+            </svg> */}
+            <span className="ml-3">Um pouco sobre nós</span>
+          </Button>
+        </Link>
       </div>
-      <div className="mt-36 lg:mt-44">
+      {/*  <div className="mt-36 lg:mt-44">
         <p className="font-display text-base text-slate-900">
           Nossos apoiadores
         </p>
@@ -91,7 +91,7 @@ export function Hero() {
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </Container>
   );
 }
