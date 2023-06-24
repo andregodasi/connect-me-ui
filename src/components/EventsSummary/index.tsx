@@ -79,7 +79,7 @@ export function EventsSummary({ events, isLoading }: EventsSummaryProps) {
                         height={200}
                         className="flex h-10 w-10 items-center justify-center rounded-md bg-gray-400 object-cover ring-8 ring-white"
                         src={event.coverUrl || placeholderImage}
-                        alt={event.name}
+                        alt={event.name || ''}
                       />
                     </div>
                     <div className="min-w-0 flex-1">
@@ -90,7 +90,8 @@ export function EventsSummary({ events, isLoading }: EventsSummaryProps) {
                           </div>
                         </div>
                         <p className="mt-0.5 text-sm text-gray-500">
-                          {formatWeekDateTime(event.initialDate)}
+                          {event.initialDate &&
+                            formatWeekDateTime(event.initialDate)}
                         </p>
                       </div>
                       <div className="mt-2 text-sm text-gray-700">
