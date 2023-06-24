@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 import { Event } from '@/shared/interfaces/IEvent';
 import Link from 'next/link';
+import placeholderImageEvent from '@/images/event-placeholder.webp';
 
 export const EventSmallCard: React.FC<{
   event: Event;
@@ -12,8 +13,8 @@ export const EventSmallCard: React.FC<{
         <Image
           width={600}
           height={400}
-          src={event.coverUrl}
-          alt={event.name}
+          src={event.coverUrl || placeholderImageEvent}
+          alt={event.name || ''}
           className="!h-full object-cover object-center"
         />
         <div
