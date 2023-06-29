@@ -44,11 +44,10 @@ export const LineComments: React.FC<LineCommentsProps> = ({
   const [form] = Form.useForm();
 
   const {
-    uuid,
     text,
     starts,
     reasonDeleted,
-    user: { name, photoUrl },
+    user: { name, photoUrl, uuid },
   } = comment;
 
   const { mutate: mutateDeleteComment, isLoading: isLoadingDeleteComment } =

@@ -86,6 +86,7 @@ export const UploadImage: React.FC<UploadImageProps> = ({
       <Paragraph>{description}</Paragraph>
       {!preview && !initialImage && (
         <ImgCrop
+          modalTitle="Cortar imagem"
           rotationSlider
           aspect={AspectRatio.WIDE_SCREEN}
           showGrid
@@ -114,7 +115,7 @@ export const UploadImage: React.FC<UploadImageProps> = ({
 
       {(preview || initialImage) && (
         <Card
-          title="Cortar imagem"
+          title="Imagem de capa"
           className="shadow-lg"
           style={{ maxWidth: 320, width: '100%' }}
           cover={

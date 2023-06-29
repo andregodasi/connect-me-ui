@@ -98,7 +98,7 @@ export const MyComments: React.FC<MyCommentsProps> = ({ type, uuidEntity }) => {
                             className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                             aria-hidden="true"
                           />
-                          Comentário
+                          Avaliação
                         </div>
                       </th>
                       <th

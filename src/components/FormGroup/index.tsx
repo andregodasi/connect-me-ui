@@ -42,17 +42,20 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
     },
   );
 
-  const { mutate: mutateGroup } = useMutation(saveGroupWithFile, {
-    onError: () => {
-      toast.success(
-        'Ops! Estamos com algum problema temporário, por favor tente novamente mais tarde.',
-      );
+  const { mutate: mutateGroup, isLoading: isLoadingMutateGroup } = useMutation(
+    saveGroupWithFile,
+    {
+      onError: () => {
+        toast.success(
+          'Ops! Estamos com algum problema temporário, por favor tente novamente mais tarde.',
+        );
+      },
+      onSuccess: () => {
+        toast.success('Comunidade criada com sucesso!');
+        router.push('/my-communities');
+      },
     },
-    onSuccess: () => {
-      toast.success('Comunidade criada com sucesso!');
-      router.push('/my-communities');
-    },
-  });
+  );
 
   async function handleSubmit(data: GroupForm) {
     setIsSubmited(true);
@@ -162,6 +165,7 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
                   size="large"
                   type="primary"
                   htmlType="submit"
+                  loading={isLoadingMutateGroup}
                 >
                   {identifier ? 'Editar' : 'Criar'}
                 </Button>
