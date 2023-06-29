@@ -32,6 +32,7 @@ import { FacebookIcon } from '@/images/svg/icons/FacebookIcon';
 import { degreeArray } from '@/shared/enums/degree.enum';
 import { UploadProfile } from '@/components/UploadProfile';
 import { AuthContext } from '@/contexts/AuthContext';
+import { parseCookies } from 'nookies';
 
 const { TextArea } = Input;
 const { Text, Title } = Typography;
@@ -405,6 +406,17 @@ export const Profile: React.FC<{
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const apiClient = getAPIClient(ctx);
   const data = await getCurrentProfileSSR(apiClient);
+
+  const { ['connect.token']: token } = parseCookies(ctx);
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: { currentUser: data },

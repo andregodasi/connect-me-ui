@@ -17,6 +17,7 @@ export interface Event {
   organizer?: User;
   coverUrl?: string;
   isPublised?: boolean;
+  slug?: string;
   limitParticipants?: number;
   group?: Group;
   users?: { user: User }[];

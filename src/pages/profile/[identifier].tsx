@@ -14,6 +14,7 @@ import { getAPIClient } from '@/services/axios';
 import { getProfileSSR } from '@/services/user';
 import { User } from '@/shared/interfaces/IUser';
 import SendHail from '@/components/SendHail';
+import { parseCookies } from 'nookies';
 
 const { Title } = Typography;
 
@@ -147,6 +148,18 @@ const profileDetail: React.FC<profileDetailProps> = ({ profile }) => {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const apiClient = getAPIClient(ctx);
   const identifier = ctx.params?.identifier || '';
+
+  const { ['connect.token']: token } = parseCookies(ctx);
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
   const data = await getProfileSSR(apiClient, identifier.toString());
 
   return {

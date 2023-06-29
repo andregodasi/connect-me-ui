@@ -32,6 +32,7 @@ import { EventsListByGroup } from '@/components/EventsListByCommunity';
 import { FollowersByCommunity } from '@/components/FollowersByCommunity';
 import PreviewCommunity from '@/components/PreviewCommunity';
 import { MyComments } from '@/components/MyComments';
+import { parseCookies } from 'nookies';
 
 const statusOptions: ToggleOptions = {
   published: {
@@ -503,7 +504,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
         </p>
       </Modal>
       <Modal
-        title="Excluir comunidade ?"
+        title="Excluir comunidade?"
         open={isOpenModalDelete}
         maskClosable={false}
         onOk={() => mutateDeleteGroup(group.uuid)}
@@ -544,6 +545,18 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const identifier = ctx.params?.identifier || '';
+
+  const { ['connect.token']: token } = parseCookies(ctx);
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: { identifier },
   };

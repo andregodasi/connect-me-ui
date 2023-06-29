@@ -35,6 +35,7 @@ import { Drawer, Modal } from 'antd';
 import { MyComments } from '@/components/MyComments';
 import PreviewEvent from '@/components/PreviewEvent';
 import { EventType } from '@/shared/enums/event-type.enum';
+import { parseCookies } from 'nookies';
 
 const tabs = [
   { name: 'Applied', href: '#', count: '2', current: false },
@@ -575,6 +576,16 @@ export default function ManagementGroup({
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const identifier = ctx.params?.identifier || '';
   const identifierEvent = ctx.params?.identifierEvent || '';
+  const { ['connect.token']: token } = parseCookies(ctx);
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
   return {
     props: { identifier, identifierEvent },
   };

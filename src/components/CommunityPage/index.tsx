@@ -19,7 +19,9 @@ import { CommentsListBox } from '../CommentsListBox';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { eventsData } from './previewData';
-
+import { ShareLinkButton } from '../ShareLinkButton';
+import { getWindow } from '@/shared/helpers/dom';
+/* 
 const faqs = [
   {
     question: 'What format are these icons?',
@@ -31,8 +33,7 @@ const faqs = [
     answer:
       "Yes. The icons are drawn on a 24 x 24 pixel grid, but the icons can be scaled to different sizes as needed. We don't recommend going smaller than 20 x 20 or larger than 64 x 64 to retain legibility and visual balance.",
   },
-  // More FAQs...
-];
+]; */
 const license = {
   href: '#',
   summary:
@@ -45,7 +46,7 @@ const license = {
   <h2 dir="auto"><a id="user-content-precisa-de-ajuda" class="anchor" aria-hidden="true" href="#precisa-de-ajuda"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>Precisa de ajuda?</h2>
   <p dir="auto">Caso tenha alguma dúvida ou sugestão, você encontra todos os nossos contatos no site oficial da comunidade <a href="http://devpp.tech" rel="nofollow">http://devpp.tech</a></p>
   <h2 dir="auto"><a id="user-content-versão-rápida" class="anchor" aria-hidden="true" href="#versão-rápida"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>Versão rápida</h2>
-  <p dir="auto">Todos os encontros da Dev PP são dedicadas a fornecer uma experiência de encontros livres de assédio para
+  <p dir="auto">Todos os encontros da Connect me são dedicadas a fornecer uma experiência de encontros livres de assédio para
   todos, independentemente do sexo, identidade de gênero e expressão, idade, orientação sexual, deficiência, aparência física,
   tamanho corporal, cor de pele, etnia, religião (ou falta dela) ou escolhas de tecnologias. Nós não toleramos o assédio aos participantes,
   sob qualquer forma.
@@ -76,8 +77,6 @@ const license = {
   respeitado.</p>
   <p dir="auto">Esperamos que os participantes sigam estas regras durante os encontros, além de eventos sociais relacionados, como after-parties,
   happy-hours ou jantares.</p>
-  <p dir="auto">Este Código de Conduta foi traduzido e adaptado de: <a href="http://confcodeofconduct.com/" rel="nofollow">confcodeofconduct.com</a><br>
-  Esta obra está licenciada sob <a href="http://creativecommons.org/licenses/by/3.0/deed.en_US" rel="nofollow">Creative Commons Attribution 3.0 Unported License</a></p>
   </article>
   `,
 };
@@ -193,12 +192,12 @@ export default function CommunityPage({
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
               {isFollowerState ? (
                 <>
-                  <button
-                    type="button"
-                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 py-3 px-8 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                  >
-                    Compartilhar
-                  </button>
+                  <ShareLinkButton
+                    link={
+                      getWindow()?.location.href ||
+                      `${router.basePath}/communities/${group.slug}`
+                    }
+                  />
                   <button
                     onClick={() => handleUnfollow()}
                     type="button"
@@ -216,12 +215,12 @@ export default function CommunityPage({
                   >
                     Seguir
                   </button>
-                  <button
-                    type="button"
-                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-50 py-3 px-8 text-base font-medium text-blue-700 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                  >
-                    Compartilhar
-                  </button>
+                  <ShareLinkButton
+                    link={
+                      getWindow()?.location.href ||
+                      `${router.basePath}/communities/${group.slug}`
+                    }
+                  />
                 </>
               )}
             </div>
@@ -340,7 +339,7 @@ export default function CommunityPage({
                   >
                     Mensagens
                   </Tab>
-                  <Tab
+                  {/*  <Tab
                     className={({ selected }) =>
                       classNames(
                         selected
@@ -351,7 +350,7 @@ export default function CommunityPage({
                     }
                   >
                     FAQ
-                  </Tab>
+                  </Tab> */}
                   <Tab
                     className={({ selected }) =>
                       classNames(
@@ -362,7 +361,7 @@ export default function CommunityPage({
                       )
                     }
                   >
-                    Código
+                    Código de conduta
                   </Tab>
                 </Tab.List>
               </div>
@@ -429,7 +428,7 @@ export default function CommunityPage({
                   ))} */}
                 </Tab.Panel>
 
-                <Tab.Panel className="text-sm text-gray-500">
+                {/*  <Tab.Panel className="text-sm text-gray-500">
                   <h3 className="sr-only">Frequently Asked Questions</h3>
 
                   <dl>
@@ -444,7 +443,7 @@ export default function CommunityPage({
                       </Fragment>
                     ))}
                   </dl>
-                </Tab.Panel>
+                </Tab.Panel> */}
 
                 <Tab.Panel className="pt-10">
                   <h3 className="sr-only">Código de conduta</h3>
