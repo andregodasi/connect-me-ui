@@ -18,7 +18,7 @@ export default function MyCommunities() {
     staleTime: Infinity,
   });
 
-  const isShowList = !isLoading && groups?.length;
+  const isShowList = !isLoading && !!groups?.length;
   const isShowLoading = isLoading || isFetching;
   const isShowEmpty = !isShowLoading && !groups?.length;
 

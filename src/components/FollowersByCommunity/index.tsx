@@ -49,7 +49,7 @@ export const FollowersByCommunity: React.FC<FollowersByCommunityProps> = ({
   };
 
   const isShowLoading = isLoading || isFetching;
-  const isShowList = !isLoading && followersPage?.length;
+  const isShowList = !isLoading && !!followersPage?.length;
   const isShowEmpty = !isLoading && !followersPage?.length;
 
   return (

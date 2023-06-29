@@ -53,7 +53,7 @@ export const SubscribersList: React.FC<SubscribersListProps> = ({
   };
 
   const isShowLoading = isLoading || isFetching;
-  const isShowList = !isLoading && subscriberPage?.length;
+  const isShowList = !isLoading && !!subscriberPage?.length;
   const isShowEmpty = !isLoading && !subscriberPage?.length;
 
   return (
