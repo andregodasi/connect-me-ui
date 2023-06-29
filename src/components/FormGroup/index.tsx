@@ -97,7 +97,7 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
                 { max: 100, message: FormMessages.MAX_LENGTH_100 },
               ]}
             >
-              <Input placeholder="input placeholder" size="large" />
+              <Input size="large" />
             </Form.Item>
             <Form.Item
               label="Slug"
@@ -115,7 +115,7 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
                 },
               ]}
             >
-              <Input placeholder="input placeholder" size="large" />
+              <Input size="large" />
             </Form.Item>
             <Form.Item
               label="Descrição"
@@ -126,7 +126,6 @@ export const FormGroup: React.FC<{ identifier?: string }> = ({
               ]}
             >
               <TextArea
-                placeholder="input placeholder"
                 size="large"
                 showCount
                 maxLength={1000}

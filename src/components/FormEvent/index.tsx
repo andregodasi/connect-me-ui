@@ -108,7 +108,7 @@ export const FormEvent: React.FC<{
                 { max: 100, message: FormMessages.MAX_LENGTH_100 },
               ]}
             >
-              <Input placeholder="input placeholder" size="large" />
+              <Input size="large" />
             </Form.Item>
             <Form.Item
               label="Slug"
@@ -126,7 +126,7 @@ export const FormEvent: React.FC<{
                 },
               ]}
             >
-              <Input placeholder="input placeholder" size="large" />
+              <Input size="large" />
             </Form.Item>
             <Form.Item
               label="Descrição"
@@ -137,7 +137,6 @@ export const FormEvent: React.FC<{
               ]}
             >
               <TextArea
-                placeholder="input placeholder"
                 size="large"
                 showCount
                 maxLength={1000}
@@ -156,7 +155,7 @@ export const FormEvent: React.FC<{
                 { max: 100, message: FormMessages.MAX_LENGTH_100 },
               ]}
             >
-              <Input placeholder="input placeholder" size="large" />
+              <Input size="large" />
             </Form.Item>
             <Form.Item
               label="Data do evento"
