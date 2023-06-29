@@ -36,12 +36,17 @@ export const ShareLinkButton: React.FC<ShareLinkButtonProps> = ({ link }) => {
         maskClosable={false}
         onCancel={() => setIsOpenModalShare(false)}
         footer={[
-          <Button key="closeBtnShare" size="large" type="text">
+          <Button
+            key="closeBtnShare"
+            size="large"
+            type="text"
+            onClick={() => setIsOpenModalShare(false)}
+          >
             Fechar
           </Button>,
         ]}
       >
-        <p>Comparilhe par que mais pessoas possam participar!</p>
+        <p>Compartilhe para que mais pessoas possam participar!</p>
         <div className="flex gap-4 py-4">
           <LinkedinShareButton url={link}>
             <LinkedinIcon size={42} round />
