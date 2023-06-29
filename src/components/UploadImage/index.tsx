@@ -97,16 +97,16 @@ export const UploadImage: React.FC<UploadImageProps> = ({
             name="file"
             onChange={onChangeDrop}
             onDrop={onDrop}
+            action={'/api/noop'}
           >
             <p className="ant-upload-drag-icon">
               <InboxOutlined />
             </p>
             <p className="ant-upload-text">
-              Click or drag file to this area to upload
+              Clique ou arraste o arquivo para esta área para fazer o upload
             </p>
             <p className="ant-upload-hint">
-              Support for a single or bulk upload. Strictly prohibited from
-              uploading company data or other banned files.
+              Após realizar o upload, você poderá cortar a imagem.
             </p>
           </Dragger>
         </ImgCrop>
@@ -114,6 +114,7 @@ export const UploadImage: React.FC<UploadImageProps> = ({
 
       {(preview || initialImage) && (
         <Card
+          title="Cortar imagem"
           className="shadow-lg"
           style={{ maxWidth: 320, width: '100%' }}
           cover={
