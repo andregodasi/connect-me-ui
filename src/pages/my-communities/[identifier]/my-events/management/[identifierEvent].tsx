@@ -59,7 +59,7 @@ const statusOptions: ToggleOptions = {
       'Esse evento está em rascunho e está visiavel apenas para o seu administrador',
   },
   delete: {
-    name: 'Excluído',
+    name: 'Excluir',
     action: 'Excluir',
     description:
       'Esse evento será excluída e todas suas informação serão apagadas.',
@@ -492,7 +492,7 @@ export default function ManagementGroup({
                         )
                       }
                     >
-                      Comentários
+                      Avaliações
                     </Tab>
                   </Tab.List>
                 </div>

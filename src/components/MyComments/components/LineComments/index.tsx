@@ -53,7 +53,7 @@ export const LineComments: React.FC<LineCommentsProps> = ({
   const { mutate: mutateDeleteComment, isLoading: isLoadingDeleteComment } =
     useMutation(deleteComment, {
       onSuccess: () => {
-        toast.success('Comentário excluído com sucesso!');
+        toast.success('Avaliação excluída com sucesso!');
         refetchComments();
         setIsOpenDelteComment(false);
         setIsOpenCompleteComment(false);
@@ -136,8 +136,8 @@ export const LineComments: React.FC<LineCommentsProps> = ({
           className="flex flex-row-reverse items-center gap-2"
           onClick={() => setIsOpenCompleteComment(true)}
         >
-          Ver comentário
-          <span className="sr-only">Ver comentário completo</span>
+          Ver avaliação
+          <span className="sr-only">Ver avaliação completo</span>
         </Button>
       </td>
       <td className="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
@@ -154,7 +154,7 @@ export const LineComments: React.FC<LineCommentsProps> = ({
         </Link>
       </td>
       <Drawer
-        title="Comentário completo"
+        title="Avaliação completo"
         placement="right"
         onClose={() => setIsOpenCompleteComment(false)}
         open={isOpenCompleteComment}
@@ -164,7 +164,7 @@ export const LineComments: React.FC<LineCommentsProps> = ({
           <Descriptions.Item label="Avaliação">
             <Rate disabled defaultValue={starts} />
           </Descriptions.Item>
-          <Descriptions.Item label="Comentário">{text}</Descriptions.Item>
+          <Descriptions.Item label="Avaliação">{text}</Descriptions.Item>
           {reasonDeleted && (
             <Descriptions.Item label="Motivo do arquivamento">
               {reasonDeleted}
@@ -174,13 +174,13 @@ export const LineComments: React.FC<LineCommentsProps> = ({
 
         {!reasonDeleted && (
           <Paragraph>
-            Ao arquivar comentário, ele não será mais visível para os usuários
-            da plataforma.
+            Ao arquivar uma avaliação, ele não será mais visível para os
+            usuários da plataforma.
           </Paragraph>
         )}
         {reasonDeleted && (
           <Paragraph>
-            Esse comentário foi arquivado, ele não é mais visível para os
+            Essa avaliação foi arquivado, ele não é mais visível para os
             usuários da plataforma.
           </Paragraph>
         )}
@@ -229,12 +229,12 @@ export const LineComments: React.FC<LineCommentsProps> = ({
         cancelText="Fechar"
       >
         <Paragraph>
-          {`Ao Arquivar esse comentário não será mais monstrado na página ${
+          {`Ao Arquivar essa avaliação não será mais monstrado na página ${
             type === 'event' ? 'do evento' : 'da comunidade'
-          }. O dono do comentário receberá um email com o motivo do arquivamento.
-          Você tem certeza que deseja arquivar esse comentário?`}
+          }. O dono da avaliação receberá um email com o motivo do arquivamento.
+          Você tem certeza que deseja arquivar essa avaliação?`}
         </Paragraph>
-        <h3 className="sr-only">Arquivar comentário</h3>
+        <h3 className="sr-only">Arquivar avaliação</h3>
         <Form
           form={form}
           onFinish={handleDeleteComment}
@@ -242,7 +242,7 @@ export const LineComments: React.FC<LineCommentsProps> = ({
           className="!mt-4"
         >
           <Form.Item
-            label="Motivo do arquivamento do comentário"
+            label="Motivo do arquivamento da avaliação"
             name="reasonDeleted"
             rules={[
               { required: true, message: FormMessages.REQUIRED_FIELD },

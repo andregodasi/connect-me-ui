@@ -46,13 +46,13 @@ const license = {
   summary:
     'For personal and professional use. You cannot resell or redistribute these icons in their original or modified state.',
   content: `
-  <article class="markdown-body entry-content container-lg" itemprop="text"><h1 dir="auto"><a id="user-content-código-de-conduta" class="anchor" aria-hidden="true" href="#código-de-conduta"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>Código de Conduta</h1>
+  <article class="markdown-body entry-content container-lg" itemprop="text"><h1 dir="auto">Código de Conduta</h1>
   <p dir="auto">Todos os participantes, palestrantes, patrocinadores e voluntários dos encontros precisam concordar com este código de conduta.
   Os organizadores vão reforçar que este código seja seguido durante todos os eventos. Esperamos a cooperação de todos os participantes
   para ajudar a garantir um ambiente seguro para todos.</p>
-  <h2 dir="auto"><a id="user-content-precisa-de-ajuda" class="anchor" aria-hidden="true" href="#precisa-de-ajuda"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>Precisa de ajuda?</h2>
-  <p dir="auto">Caso tenha alguma dúvida ou sugestão, você encontra todos os nossos contatos no site oficial da comunidade <a href="http://devpp.tech" rel="nofollow">http://devpp.tech</a></p>
-  <h2 dir="auto"><a id="user-content-versão-rápida" class="anchor" aria-hidden="true" href="#versão-rápida"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>Versão rápida</h2>
+  <h2 dir="auto">Precisa de ajuda?</h2>
+  <p dir="auto">Caso tenha alguma dúvida ou sugestão, você encontra todos os nossos contatos no site oficial da comunidade <a href="https://connect-me-dev.vercel.app/" rel="nofollow">https://connect-me-dev.vercel.app/</a></p>
+  <h2 dir="auto">Versão rápida</h2>
   <p dir="auto">Todos os encontros da Connect me são dedicadas a fornecer uma experiência de encontros livres de assédio para
   todos, independentemente do sexo, identidade de gênero e expressão, idade, orientação sexual, deficiência, aparência física,
   tamanho corporal, cor de pele, etnia, religião (ou falta dela) ou escolhas de tecnologias. Nós não toleramos o assédio aos participantes,
@@ -63,7 +63,7 @@ const license = {
   mexer em equipamentos, entrar em salas fechadas, alterar configuração de palco ou assentos e utilizar o microfone sem permissão.</p>
   <p dir="auto">Os participantes que violarem estas regras poderão ser punidos ou expulsos do grupo e impedidos de participar de novos eventos e eventos afiliados
   <em>sem restituição</em>, a critério dos organizadores.</p>
-  <h2 dir="auto"><a id="user-content-versão-detalhada" class="anchor" aria-hidden="true" href="#versão-detalhada"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>Versão detalhada</h2>
+  <h2 dir="auto">Versão detalhada</h2>
   <p dir="auto">Assédio inclui comentários verbais ofensivos relacionados ao gênero, identidade de gênero e expressão, idade, orientação
   sexual, deficiência, aparência física, tamanho corporal, cor de pele, etnia, religião, escolhas de tecnologias, imagens
   sexuais em espaços públicos, intimidação deliberada, perseguição, <em>stalking</em>, fotografias ou filmagens constrangedoras,

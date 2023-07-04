@@ -48,7 +48,7 @@ const statusOptions: ToggleOptions = {
       'Essa comunidade está em rascunho e está visiavel apenas para o seu administrador',
   },
   delete: {
-    name: 'Excluído',
+    name: 'Excluir',
     action: 'Excluir',
     description:
       'Essa comunidade será excluída e todas suas informação serão apagadas.',
@@ -440,7 +440,7 @@ export default function ManagementGroup({ identifier }: ManagementGroupProps) {
                         )
                       }
                     >
-                      Comentários
+                      Avaliações
                     </Tab>
                   </Tab.List>
                   <Link

@@ -86,7 +86,7 @@ export const MyComments: React.FC<MyCommentsProps> = ({ type, uuidEntity }) => {
                             className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                             aria-hidden="true"
                           />
-                          Comentário
+                          Avaliação
                         </div>
                       </th>
                       <th
@@ -117,7 +117,7 @@ export const MyComments: React.FC<MyCommentsProps> = ({ type, uuidEntity }) => {
                         scope="col"
                         className="relative py-3.5 pl-3 pr-4 sm:pr-0"
                       >
-                        <span className="sr-only">Ver comentário completo</span>
+                        <span className="sr-only">Ver avaliação completo</span>
                       </th>
                       <th
                         scope="col"
@@ -167,11 +167,11 @@ export const MyComments: React.FC<MyCommentsProps> = ({ type, uuidEntity }) => {
       {isShowEmpty ? (
         <Placeholder
           image={commentsEmpty}
-          title="Não encontramos nenhum comentário"
-          alt="Não encontramos nenhum comentário"
+          title="Não encontramos nenhuma avaliação"
+          alt="Não encontramos nenhuma avaliação"
           descriptionTop={`${
             type === 'event' ? 'Seu Evento' : 'Sua comunidade'
-          } ainda não recebeu nenhum comentário.`}
+          } ainda não recebeu nenhuma avaliação.`}
         />
       ) : null}
     </div>

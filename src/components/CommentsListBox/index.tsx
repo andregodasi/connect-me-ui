@@ -59,7 +59,7 @@ export const CommentsListBox: React.FC<CommentsListBoxProps> = ({
   const { mutate: mutateComment, isLoading: isLoadingCreateComment } =
     useMutation(createComment, {
       onSuccess: () => {
-        toast.success('Comentário inserido com sucesso!');
+        toast.success('Avaliação inserida com sucesso!');
         resetComments();
         form.resetFields();
       },
@@ -96,7 +96,7 @@ export const CommentsListBox: React.FC<CommentsListBoxProps> = ({
 
   return (
     <>
-      <h3 className="sr-only">Comentários</h3>
+      <h3 className="sr-only">Avaliações</h3>
       <Form
         form={form}
         onFinish={handleAddComent}
@@ -110,7 +110,7 @@ export const CommentsListBox: React.FC<CommentsListBoxProps> = ({
             { max: 1000, message: maxLengthMessage(1000) },
           ]}
         >
-          <TextArea placeholder="Escreva seu comentário" />
+          <TextArea placeholder="Escreva sus avaliação" />
         </Form.Item>
         <div className="flex justify-between">
           <Form.Item
@@ -122,7 +122,7 @@ export const CommentsListBox: React.FC<CommentsListBoxProps> = ({
 
           <Form.Item>
             <Button
-              title="Enviar comentário"
+              title="Enviar avaliação"
               shape="circle"
               type="primary"
               htmlType="submit"
@@ -161,10 +161,10 @@ export const CommentsListBox: React.FC<CommentsListBoxProps> = ({
       {isShowLoading && <CommentsLoading />}
       {isShowPlaceholder && (
         <Placeholder
-          descriptionTop="Não encontramos nenhum comentário"
+          descriptionTop="Não encontramos nenhuma avaliação"
           descriptionBottom="Seja o primeiro a comentar!"
           image={commentsEmpty}
-          alt="Não encontramos nenhum comentário"
+          alt="Não encontramos nenhuma avaliação"
         />
       )}
     </>

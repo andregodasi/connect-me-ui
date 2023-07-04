@@ -12,8 +12,8 @@ import logoTuple from '@/images/logos/tuple.svg'; */
 
 export function Hero() {
   return (
-    <Container className="pt-20 pb-16 text-center lg:pt-32">
-      <h1 className="mx-auto max-w-4xl font-display text-5xl font-medium tracking-tight text-slate-900 sm:text-7xl">
+    <Container className="pt-6 pb-6 text-center md:pb-16 md:pt-20 lg:pt-32">
+      <h1 className="mx-auto max-w-xl font-display text-2xl font-medium tracking-tight text-slate-900 md:text-3xl lg:text-5xl">
         Crie e participe de eventos de forma{' '}
         <span className="relative whitespace-nowrap text-blue-600">
           <svg
@@ -28,7 +28,7 @@ export function Hero() {
         </span>{' '}
         em um ambiente inclusivo, diverso e seguro.
       </h1>
-      <p className="mx-auto mt-6 max-w-3xl text-lg tracking-tight text-slate-700">
+      <p className="text-md mx-auto mt-6 max-w-3xl tracking-tight text-slate-700 md:text-lg">
         Descubra eventos apaixonantes e compartilhe conhecimento. Conecte-se com
         uma comunidade vibrante, encontre eventos relevantes e mergulhe em novas
         experiências. Expanda seus horizontes, crie memórias inspiradoras e abra
@@ -36,11 +36,20 @@ export function Hero() {
         parte dessa experiência única.
       </p>
       <div className="mt-10 flex justify-center gap-x-6">
-        <Button href="/register" variant={'solid'} color={'blue'}>
+        <Button
+          href="/register"
+          variant={'solid'}
+          color={'blue'}
+          className="text-sm lg:text-lg"
+        >
           Cadastre-se
         </Button>
         <Link href="/about">
-          <Button variant="outline" color={'blue'}>
+          <Button
+            variant="outline"
+            color={'blue'}
+            className="text-sm lg:text-lg"
+          >
             {/* <svg
               aria-hidden="true"
               className="h-3 w-3 flex-none fill-blue-600 group-active:fill-current"
