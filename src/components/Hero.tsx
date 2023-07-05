@@ -13,7 +13,7 @@ import logoTuple from '@/images/logos/tuple.svg'; */
 export function Hero() {
   return (
     <Container className="pt-6 pb-6 text-center md:pb-16 md:pt-20 lg:pt-32">
-      <h1 className="mx-auto max-w-xl font-display text-2xl font-medium tracking-tight text-slate-900 md:text-3xl lg:text-5xl">
+      <h1 className="mx-auto max-w-4xl font-display text-2xl font-medium tracking-tight text-slate-900 md:text-5xl lg:text-7xl">
         Crie e participe de eventos de forma{' '}
         <span className="relative whitespace-nowrap text-blue-600">
           <svg
