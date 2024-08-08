@@ -1,34 +1,98 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p align="center">
+  <img alt="Inoa" width="220" src="https://raw.githubusercontent.com/andregodasi/connect-me-ui/3161a801e8b4978b1258cca7eccb013898650fea/src/images/logos/new-logo-connect-me.svg">
+</p>
 
-## Getting Started
+## 💻 Projeto
 
-First, run the development server:
+Monografia apresentada ao curso de Pós graduação em Desenvolvimento Ágil de Software, Setor de Educação Profissional e Tecnologia, Universidade Federal do Paraná, como requisito parcial à obtenção do título de Especialista em Desenvolvimento Ágil de Software
+
+
+## 📜 Monografia
+
+Acesse a monografia clicando [aqui](https://github.com/andregodasi/connect-me-ui/blob/main/public/doc-connect-me.pdf).
+
+
+## 📑 Resumo
+
+No contexto atual, há uma demanda crescente por eventos e comunidades que promovam networking, aprendizado e troca de conhecimentos. No entanto, a organização desses eventos e a busca por comunidades adequadas podem ser desafiadoras, com a dispersão de informações e a falta de uma plataforma centralizada. Este trabalho apresenta o desenvolvimento da Plataforma Connect me, um sistema de gerenciamento de eventos e comunidades. O objetivo do sistema é proporcionar uma plataforma que conecta pessoas interessadas em eventos e comunidades, facilitando a organização e participação em atividades relevantes. O sistema oferece um ambiente online onde os usuários podem encontrar informações sobre eventos e comunidades relacionadas aos seus interesses profissionais, acadêmicos ou pessoais. Foi desenvolvido utilizando-se da linguagem JavaScript, os frameworks ReactJS com NextJS e NestJS e banco de dados Postgresql.
+ 
+
+## 🧪 Tecnologias
+
+Esse projeto foi desenvolvido com as seguintes tecnologias:
+
+- [React](https://react.dev/)
+- [Next](https://nextjs.org/)
+- [Ant design](https://ant.design/)
+- [Tanstack - React Query](https://tanstack.com/)
+- [Tailwindcss](https://tailwindcss.com/)
+- [Axios](https://axios-http.com/)
+- [Vercel](https://vercel.com/)
+
+## 🖼️ Veja mais sobre projeto
+
+<h1 align="center">
+    <img alt="home" src="https://github.com/andregodasi/connect-me-ui/blob/main/src/images/screenshots/home-page.png?raw=true" />
+</h1>
+
+<h1 align="center">
+    <img alt="home-logged" src="https://github.com/andregodasi/connect-me-ui/blob/main/src/images/screenshots/home-logged.png?raw=true" />
+</h1>
+
+<h1 align="event">
+    <img alt="Challenge" src="https://github.com/andregodasi/connect-me-ui/blob/main/src/images/screenshots/event-details.png?raw=true" />
+</h1>
+
+<h1 align="community">
+    <img alt="Challenge" src="https://github.com/andregodasi/connect-me-ui/blob/main/src/images/screenshots/community-details.png?raw=true" />
+</h1>
+
+
+## 🚀 Como executar
+
+Clone o projeto e acesse a pasta do mesmo.
 
 ```bash
-npm run dev
-# or
-yarn dev
+$ git clone https://github.com/andregodasi/connect-me-ui.git
+$ cd connect-me-ui
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Para iniciá-lo, siga os passos abaixo:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+$ npm install
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Running the app
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+# development
+$ npm run dev
 
-## Learn More
+# build
+$ npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+O app estará disponível em  [http://localhost:3000](http://localhost:3000).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📝 License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para mais detalhes.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🦸 Autor
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<a href="https://www.linkedin.com/in/andre-godasi/">
+ <img style="border-radius: 50%;" src="https://media.licdn.com/dms/image/C4D03AQGxOMYvdCao3A/profile-displayphoto-shrink_200_200/0/1661188755674?e=1724284800&v=beta&t=9ZeBK2WzsdYpBxjA4RG2TijNkI4d0iKD2HyL7zT9mn4" width="100px;" alt=""/>
+ <br />
+ <sub><b>André Gonçalves</b></sub></a> <a href="https://www.linkedin.com/in/andre-godasi/" title="André Gonçalves">🚀</a>
+ <br />
+
+---
+
+## 📝 Licença
+
+Este projeto esta sobe a licença [MIT](./LICENSE).
+
+Feito por André Gonçalves 👋🏽 [Entre em contato!](https://www.linkedin.com/in/andre-godasi/)
